@@ -1,0 +1,65 @@
+.main-header {
+  height: 70px;
+  background: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 25px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.menu-btn {
+  font-size: 20px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 50%;
+  background: #f1f5f9;
+}
+
+.session-dropdown {
+  padding: 6px 12px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+/* Notification */
+.header-icon {
+  cursor: pointer;
+  font-size: 18px;
+}
+
+/* Profile Section */
+.user-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Empty Avatar */
+.avatar-placeholder {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #e5e7eb;
+  border: 2px solid #d1d5db;
+}
+
+/* Name Placeholder */
+.user-name-placeholder {
+  width: 100px;
+  height: 22px;
+  background: #e5e7eb;
+  border-radius: 6px;
+}

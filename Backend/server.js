@@ -7,9 +7,9 @@ const cors = require('cors');
 const http = require('http');
 
 // 🔹 Import routes
-const authRoutes = require('./routes/api/Auth.Route'); // existing auth
+// const authRoutes = require('./routes/api/Auth.Route'); // existing auth
 // later you will add:
-// const masterAuthRoutes = require('./routes/masterAuth.route');
+const masterRoutes = require('./routes/api/Master.Route');
 
 const app = express();
 const server = http.createServer(app);
@@ -28,8 +28,8 @@ app.get('/', (req, res) => {
 });
 
 // 🔹 Routes
-app.use('/api', authRoutes);
-// app.use('/api/master', masterAuthRoutes); // will enable later
+// app.use('/api', authRoutes);
+app.use('/api', masterRoutes); // will enable later
 
 // 🔹 Database connection + server start
 mongoose

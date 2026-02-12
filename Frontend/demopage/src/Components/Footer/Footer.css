@@ -1,16 +1,17 @@
 /* Footer Styles */
 
 .footer {
-  background-color: #1a1a2e;
+  background-color: #6f6f9e;
   color: #e0e0e0;
-  padding-top: 80px;
+ 
 }
-
 .footer-main {
+      background-color: #6f6f9e;
+
   padding: 60px 20px 40px;
 }
-
 .container {
+       background-color: #161624 ;
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 20px;
@@ -112,8 +113,8 @@
 
 /* Footer Bottom */
 .footer-bottom {
-  background-color: #141428;
-  padding: 30px 20px;
+     background-color: #161624;
+  padding: 10px 20px;
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
@@ -122,7 +123,7 @@
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 15px;
 }
 
 .footer-bottom-content p {

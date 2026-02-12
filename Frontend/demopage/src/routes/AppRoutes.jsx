@@ -1,0 +1,233 @@
+import { createBrowserRouter } from "react-router-dom";
+
+/* =======================
+   Layouts
+======================= */
+import AppLayout from "../layout/AppLayout";
+import OrgLayout from "../layout/OrgLayout";
+import AdminLayout from "../layout/AdminLayout";
+import MasterLayout from "../layout/MasterLayout";
+import SuperAdminLayout from "../layout/SuperAdminLayout";
+
+/* =======================
+   Public Pages
+======================= */
+import Home from "../page/Public/Home/Home";
+import About from "../page/Public/About/About";
+import Contact from "../page/Public/Contact/Contact";
+import Blog from "../page/Public/Blog/Blog";
+import Login from "../page/Public/Login/Login";
+import Module from "../page/Public/Module/Module";
+
+/* =======================
+   Org Dashboard
+======================= */
+import Student from "../page/dashboard/academic/Student";
+import Teacher from "../page/dashboard/academic/Teacher";
+// import Parent from "../page/dashboard/academic/Parent";
+
+/* =======================
+   Admin
+======================= */
+import Admin from "../page/dashboard/admin/Admin";
+
+/* =======================
+   Master
+======================= */
+import MasterPanel from "../page/dashboard/masterpanel/MasterPannel";
+import RegisterOrg from "../page/dashboard/masterpanel/page/organizations/RegisterOrg";
+// (Optional future page)
+// import OrganizationList from "../page/dashboard/masterpanel/page/organizations/OrganizationList";
+// =======================
+// STUDENT MODULE IMPORTS
+// =======================
+
+import Attendance from "../page/dashboard/academic/components/attendance/Attendance";
+import AttendanceView from "../page/dashboard/academic/components/attendance/AttendanceView";
+import AttendanceCreate from "../page/dashboard/academic/components/attendance/AttendanceCreate";
+
+import Homework from "../page/dashboard/academic/components/homework/Homework";
+import HomeworkView from "../page/dashboard/academic/components/homework/HomeworkView";
+import HomeworkCreate from "../page/dashboard/academic/components/homework/HomeworkCreate";
+
+import Announcement from "../page/dashboard/academic/components/announcement/Announcement";
+import AnnouncementView from "../page/dashboard/academic/components/announcement/AnnouncementView";
+import AnnouncementCreate from "../page/dashboard/academic/components/announcement/AnnoucementCreate";
+
+import Notice from "../page/dashboard/academic/components/notice/Notice";
+import NoticeView from "../page/dashboard/academic/components/notice/NoticeView";   
+import NoticeCreate from "../page/dashboard/academic/components/notice/NoticeCreate";
+
+import Result from "../page/dashboard/academic/components/result/Result";
+import ResultView from "../page/dashboard/academic/components/result/ResultView";
+
+import FeeLedger from "../page/dashboard/academic/components/fees/FeeLedger";
+import FeesView from "../page/dashboard/academic/components/fees/FeesView";
+import FeesManage from "../page/dashboard/academic/components/fees/FeesManage";
+import ResultEdit from "../page/dashboard/academic/components/result/ResultEdit"; 
+import Syllabus from "../page/dashboard/academic/components/syllabus/Syllabus";
+import SyllabusView from "../page/dashboard/academic/components/syllabus/SyllabusView";
+import SyllabusUpload from "../page/dashboard/academic/components/syllabus/SyllabusUpload";
+
+import Timetable from "../page/dashboard/academic/components/timetable/Timetable";
+import TimetableView from "../page/dashboard/academic/components/timetable/TimetableView";
+import TimetableCreate from "../page/dashboard/academic/components/timetable/TimetableCreate";
+
+import Profile from "../page/dashboard/academic/components/profile/Profile";
+import ProfileEdit from "../page/dashboard/academic/components/profile/ProfileEdit";
+import ProfileView from "../page/dashboard/academic/components/profile/ProfileView";
+
+
+
+ import AcademicDashboard from "../page/dashboard/academic/AcademicDashboard";
+/* =======================
+   SuperAdmin
+======================= */
+import SuperAdmin from "../page/dashboard/superadmin/SuperAdmin";
+
+const router = createBrowserRouter([
+  /* 🌐 PUBLIC WEBSITE */
+  {
+    element: <AppLayout />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: "about", element: <About /> },
+      { path: "contact", element: <Contact /> },
+      { path: "blog", element: <Blog /> },
+      { path: "login", element: <Login /> },
+      { path: "module", element: <Module /> },
+    ],
+  },
+
+  /* 🏢 ORG DASHBOARD */
+// routes/AppRoutes.jsx
+
+{
+  path: "/dashboard",
+  element: <OrgLayout />,
+  children: [
+
+    // =========================
+    // 🎓 STUDENT ROUTES
+    // =========================
+    {
+      path: "student",
+      element: <Student />,
+      children: [
+        { index: true, element: <AcademicDashboard /> },
+
+        { path: "attendance", element: <Attendance /> },
+        { path: "attendance/view", element: <AttendanceView /> },
+
+        { path: "homework", element: <Homework /> },
+        { path: "homework/view", element: <HomeworkView /> },
+
+        { path: "announcements", element: <Announcement /> },
+        { path: "announcements/view", element: <AnnouncementView /> },
+
+        { path: "notices", element: <Notice /> },
+
+        { path: "results", element: <Result /> },
+        { path: "results/view", element: <ResultView /> },
+
+        { path: "fees", element: <FeeLedger /> },
+        { path: "fees/view", element: <FeesView /> },
+
+        { path: "syllabus", element: <Syllabus /> },
+        { path: "syllabus/view", element: <SyllabusView /> },
+
+        { path: "timetable", element: <Timetable /> },
+        { path: "timetable/view", element: <TimetableView /> },
+
+        { path: "profile", element: <Profile /> },
+        { path: "profile/edit", element: <ProfileEdit /> },
+      {path:"profile/view",
+  element:<ProfileView  />},
+
+
+     
+      ],
+    },
+
+    // =========================
+    // 👨‍🏫 TEACHER ROUTES
+    // =========================
+    {
+      path: "teacher",
+      element: <Teacher />,
+      children: [
+        { index: true, element: <AcademicDashboard /> },
+        { path: "attendance", element: <AttendanceCreate /> },
+        { path: "homework", element: <HomeworkCreate /> },
+        { path: "notice", element: <NoticeCreate /> },
+        { path: "announcements", element: <AnnouncementCreate /> },
+           { path: "syllabus/upload", element: <SyllabusUpload /> },
+           { path: "syllabus/view", element: <SyllabusView /> },
+        { path: "results", element: <ResultEdit /> },
+        { path: "timetable", element: <TimetableCreate /> },
+        { path: "profile", element: <Profile /> },
+     
+      ],
+    },
+
+    // =========================
+    // 👨‍👩‍👧 PARENT ROUTES
+    // =========================
+    // {
+    //   path: "parent",
+    //   element: <Parent />,
+    //   children: [
+    //     { index: true, element: <AcademicDashboard /> },
+    //     { path: "attendance", element: <AttendanceView /> },
+    //     { path: "homework", element: <HomeworkView /> },
+    //     { path: "announcements", element: <AnnouncementView /> },
+    //     { path: "results", element: <ResultView /> },
+    //     { path: "fees", element: <FeesView /> },
+    //     { path: "profile", element: <ProfileView /> },
+    //   ],
+    // },
+  ],
+},
+
+
+  /* 🛠 ADMIN */
+  {
+    path: "/admin",
+    element: <AdminLayout />,
+    children: [
+      { index: true, element: <Admin /> },
+    ],
+  },
+
+  /* 👑 SUPER ADMIN */
+  {
+    path: "/superadmin",
+    element: <SuperAdminLayout />,
+    children: [
+      { index: true, element: <SuperAdmin /> },
+    ],
+  },
+
+  /* 👑 MASTER PANEL */
+  {
+    path: "/master",
+    element: <MasterLayout />,
+    children: [
+      { index: true, element: <MasterPanel /> },
+
+      /* Organizations */
+      {
+        path: "organizations/add",
+        element: <RegisterOrg />,
+      },
+
+      // Uncomment when ready
+      // {
+      //   path: "organizations/list",
+      //   element: <OrganizationList />,
+      // },
+    ],
+  },
+]);
+
+export default router;
