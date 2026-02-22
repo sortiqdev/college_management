@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-
+import DashboardRedirect from "../routes/DashboardRedirect"
 /* =======================
    Layouts
 ======================= */
@@ -24,7 +24,7 @@ import Module from "../page/Public/Module/Module";
 ======================= */
 import Student from "../page/dashboard/academic/Student";
 import Teacher from "../page/dashboard/academic/Teacher";
-// import Parent from "../page/dashboard/academic/Parent";
+import Parent from "../page/dashboard/academic/Parent";
 
 /* =======================
    Admin
@@ -84,6 +84,8 @@ import ProfileView from "../page/dashboard/academic/components/profile/ProfileVi
    SuperAdmin
 ======================= */
 import SuperAdmin from "../page/dashboard/superadmin/SuperAdmin";
+import TeacherDashboard from "../page/dashboard/academic/TeacherDashboard";
+import ParentDashboard from "../page/dashboard/academic/ParentDashboard";
 
 const router = createBrowserRouter([
   /* 🌐 PUBLIC WEBSITE */
@@ -106,7 +108,10 @@ const router = createBrowserRouter([
   path: "/dashboard",
   element: <OrgLayout />,
   children: [
-
+  {
+      index: true,
+      element: <DashboardRedirect />,
+    },
     // =========================
     // 🎓 STUDENT ROUTES
     // =========================
@@ -156,7 +161,7 @@ const router = createBrowserRouter([
       path: "teacher",
       element: <Teacher />,
       children: [
-        { index: true, element: <AcademicDashboard /> },
+        { index: true, element: <TeacherDashboard /> },
         { path: "attendance", element: <AttendanceCreate /> },
         { path: "homework", element: <HomeworkCreate /> },
         { path: "notice", element: <NoticeCreate /> },
@@ -173,19 +178,19 @@ const router = createBrowserRouter([
     // =========================
     // 👨‍👩‍👧 PARENT ROUTES
     // =========================
-    // {
-    //   path: "parent",
-    //   element: <Parent />,
-    //   children: [
-    //     { index: true, element: <AcademicDashboard /> },
-    //     { path: "attendance", element: <AttendanceView /> },
-    //     { path: "homework", element: <HomeworkView /> },
-    //     { path: "announcements", element: <AnnouncementView /> },
-    //     { path: "results", element: <ResultView /> },
-    //     { path: "fees", element: <FeesView /> },
-    //     { path: "profile", element: <ProfileView /> },
-    //   ],
-    // },
+    {
+      path: "parent",
+      element: <Parent />,
+      children: [
+        { index: true, element: <ParentDashboard /> },
+        { path: "attendance", element: <AttendanceView /> },
+        { path: "homework", element: <HomeworkView /> },
+        { path: "announcements", element: <AnnouncementView /> },
+        { path: "results", element: <ResultView /> },
+        { path: "fees", element: <FeesView /> },
+        { path: "profile", element: <ProfileView /> },
+      ],
+    },
   ],
 },
 

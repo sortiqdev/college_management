@@ -11,6 +11,7 @@ import "./Sidebar.css";
 
 export default function Sidebar() {
   const { role } = useAuth();
+  console.log(role);
   const location = useLocation();
 
   const [openKey, setOpenKey] = useState(null);
@@ -21,24 +22,22 @@ export default function Sidebar() {
   if (role === "master") menu = MASTER_MENU;
   else if (role === "superadmin") menu = SUPERADMIN_MENU;
   else if (role === "admin") menu = ADMIN_MENU;
-  else menu = ORG_MENU;
+  else menu = ORG_MENU(role);
 
   const isChildActive = (children) => {
     return children?.some((child) =>
-      location.pathname === child.path
+      location.pathname.startsWith(child.path)
     );
   };
 
   return (
     <aside className={`sidebar ${collapsed ? "collapsed" : ""}`}>
       
-      {/* Header */}
       <div className="sidebar-header">
         {!collapsed && <h2>MyPlatform</h2>}
         <button onClick={() => setCollapsed(!collapsed)}>☰</button>
       </div>
 
-      {/* Menu */}
       <ul className="sidebar-menu">
         {menu.map((item) => (
           <li key={item.key}>
@@ -56,7 +55,6 @@ export default function Sidebar() {
                   <span className="icon">
                     {item.icon && <item.icon size={18} />}
                   </span>
-
                   {!collapsed && <span>{item.label}</span>}
                 </div>
 
@@ -84,7 +82,6 @@ export default function Sidebar() {
             ) : (
               <NavLink
                 to={item.path}
-                end
                 className={({ isActive }) =>
                   isActive
                     ? "sidebar-link active"
@@ -94,7 +91,6 @@ export default function Sidebar() {
                 <span className="icon">
                   {item.icon && <item.icon size={18} />}
                 </span>
-
                 {!collapsed && <span>{item.label}</span>}
               </NavLink>
             )}

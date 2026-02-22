@@ -1,41 +1,55 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./DashboardHeader.css";
-import { MenuOutlined } from "@ant-design/icons";
 import { User } from "lucide-react";
 
-export default function DashboardHeader() {
+export default function DashboardHeader({ user, onLogout }) {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [today, setToday] = useState("");
+
+  useEffect(() => {
+    const now = new Date();
+    const formatted = now.toLocaleDateString("en-IN", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+    setToday(formatted);
+  }, []);
 
   return (
     <div className="main-header">
-
-      {/* Left Section */}
+      
+      {/* LEFT SIDE (Welcome + Date) */}
       <div className="header-left">
-        
-
-        <select className="session-dropdown">
-          <option>Date </option>
-        </select>
+        <h2 className="welcome-text">
+          Welcome, {user?.name || "User"} 👋
+        </h2>
+        <span className="header-date">{today}</span>
       </div>
 
-      {/* Right Section */}
+      {/* RIGHT SIDE (Bell + Profile) */}
       <div className="header-right">
-
         <div className="header-icon">🔔</div>
 
-        {/* Empty Profile Placeholder */}
-        <div className="user-profile">
-         <div className="avatar-placeholder">
-    <User size={40} />
-  </div>
+        <div
+          className="user-profile"
+          onClick={() => setDropdownOpen(!dropdownOpen)}
+        >
+          <div className="avatar-placeholder">
+            <User size={24} />
+          </div>
 
-          <span className="user-name-placeholder">
-            {/* No Name Until Backend */}
-             user name placeholder 
-          </span>
+          {dropdownOpen && (
+            <div className="profile-dropdown">
+              <div className="dropdown-item">Profile</div>
+              <div className="dropdown-item logout" onClick={onLogout}>
+                Logout
+              </div>
+            </div>
+          )}
         </div>
-
       </div>
-
     </div>
   );
 }

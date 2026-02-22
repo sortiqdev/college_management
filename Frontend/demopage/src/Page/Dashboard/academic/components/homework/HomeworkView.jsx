@@ -25,8 +25,8 @@ setHomeworkData(Array.isArray(result) ? result : []);
 
 
 
-      } catch () {
-        console.log("Homework API not ready — showing empty state");
+      } catch  {
+        console.log("Homework API not ready - showing empty state");
         setHomeworkData([]);
       } finally {
         setLoading(false);
