@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
 // 🔹 Routes
 // app.use('/api', authRoutes);
 app.use('/api', masterRoutes); // will enable later
-
+app.use('/api/auth', require('./routes/api/Auth.Route')); // existing auth route
 // 🔹 Database connection + server start
 mongoose
   .connect(process.env.MONGO_URI)

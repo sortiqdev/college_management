@@ -9,9 +9,7 @@ export default function Syllabus({ role }) {
   return (
     <div className="syllabus-page">
 
-      <div className="syllabus-header">
-        <h2>Syllabus</h2>
-      </div>
+     
 
       {isTeacher ? <SyllabusUpload /> : <SyllabusView />}
 

@@ -15,7 +15,7 @@
 
 /* Header Section */
 .quesans-header {
-    background: linear-gradient(135deg, #815991 0%, #6d79bb 100%);
+        background: linear-gradient(120deg, #667eea 0%, #764ba2 100%);
   color: white;
   padding: 60px 20px;
   text-align: center;
@@ -227,11 +227,11 @@
 
 /* CTA Section */
 .quesans-cta {
-    background: linear-gradient(135deg, #0b1232 0%, #160c20 100%)
+  background: linear-gradient(120deg, rgb(102, 126, 234) 0%, rgb(118, 75, 162) 100%);
 ;  color: white;
   padding: 60px 20px;
   text-align: center;
-  border-radius: 12px;
+ 
 }
 
 .quesans-cta h2 {

@@ -37,6 +37,13 @@
   list-style: none;
   padding: 10px;
   margin: 0;
+    height: 100vh;
+    overflowY: auto;
+    background: linear-gradient( #192644, #111827);
+    color: #e2e8f0;
+
+
+
 }
 
 .sidebar-link,

@@ -72,11 +72,19 @@ import SyllabusUpload from "../page/dashboard/academic/components/syllabus/Sylla
 import Timetable from "../page/dashboard/academic/components/timetable/Timetable";
 import TimetableView from "../page/dashboard/academic/components/timetable/TimetableView";
 import TimetableCreate from "../page/dashboard/academic/components/timetable/TimetableCreate";
+import User from "../page/dashboard/admin/components/users/User";
+import UserList from "../page/dashboard/admin/components/users/UserList";
+import UserCreate from "../page/dashboard/admin/components/users/UserCreate";
+
 
 import Profile from "../page/dashboard/academic/components/profile/Profile";
 import ProfileEdit from "../page/dashboard/academic/components/profile/ProfileEdit";
 import ProfileView from "../page/dashboard/academic/components/profile/ProfileView";
+import Departments from "../page/dashboard/admin/components/departments/Department";
+import DepartmentCreate from "../page/dashboard/admin/components/departments/DepartmentCreate";
+import DepartmentList from "../page/dashboard/admin/components/departments/DepartmentList";
 
+/* =======================
 
 
  import AcademicDashboard from "../page/dashboard/academic/AcademicDashboard";
@@ -84,8 +92,11 @@ import ProfileView from "../page/dashboard/academic/components/profile/ProfileVi
    SuperAdmin
 ======================= */
 import SuperAdmin from "../page/dashboard/superadmin/SuperAdmin";
+import AdminDashboard from "../page/dashboard/admin/AdminDashboard";
 import TeacherDashboard from "../page/dashboard/academic/TeacherDashboard";
 import ParentDashboard from "../page/dashboard/academic/ParentDashboard";
+import SuperAdminDashboard from "../page/dashboard/superadmin/SuperAdminDashboard";
+import AcademicDashboard from "../page/dashboard/academic/AcademicDashboard";
 
 const router = createBrowserRouter([
   /* 🌐 PUBLIC WEBSITE */
@@ -112,6 +123,61 @@ const router = createBrowserRouter([
       index: true,
       element: <DashboardRedirect />,
     },
+
+
+ {
+    path: "superadmin",
+     element: <SuperAdmin />,
+
+    children: [
+      { index: true, element: <SuperAdminDashboard /> },
+      { path: "profile", element: <ProfileView /> },
+       { path: "notice", element: <NoticeCreate /> },
+        { path: "announcements", element: <AnnouncementCreate /> },
+{  path: "departments",
+  element: <Departments />,
+  children: [
+    { index: true, element: <DepartmentList /> },
+    { path: "add", element: <DepartmentCreate /> },
+  ],
+},          {
+            path: "users",
+            element: <User />,
+            children: [
+              { index: true, element: <UserList /> },
+              { path: "add", element: <UserCreate /> },
+            ],
+          },
+    ],
+  },
+   {
+      path: "admin",
+      element: <Admin />,
+      children: [
+        { index: true, element: <AdminDashboard /> },
+              { path: "profile", element: <ProfileView /> },
+       { path: "notice", element: <NoticeCreate /> },
+        { path: "announcements", element: <AnnouncementCreate /> },
+        {
+  path: "departments",
+  element: <Departments />,
+  children: [
+    { index: true, element: <DepartmentList /> },
+    { path: "add", element: <DepartmentCreate /> },
+  ],
+},
+{
+            path: "users",
+            element: <User />,
+            children: [
+              { index: true, element: <UserList /> },
+              { path: "add", element: <UserCreate /> },
+            ],
+          },
+      ],
+    },
+
+
     // =========================
     // 🎓 STUDENT ROUTES
     // =========================
@@ -184,8 +250,9 @@ const router = createBrowserRouter([
       children: [
         { index: true, element: <ParentDashboard /> },
         { path: "attendance", element: <AttendanceView /> },
-        { path: "homework", element: <HomeworkView /> },
-        { path: "announcements", element: <AnnouncementView /> },
+       
+        { path: "announcement", element: <AnnouncementView /> },
+         { path: "notice", element: <NoticeView /> },
         { path: "results", element: <ResultView /> },
         { path: "fees", element: <FeesView /> },
         { path: "profile", element: <ProfileView /> },
@@ -196,20 +263,18 @@ const router = createBrowserRouter([
 
 
   /* 🛠 ADMIN */
-  {
-    path: "/admin",
-    element: <AdminLayout />,
-    children: [
-      { index: true, element: <Admin /> },
-    ],
-  },
+
 
   /* 👑 SUPER ADMIN */
   {
     path: "/superadmin",
-    element: <SuperAdminLayout />,
+     element: <OrgLayout />,
+
     children: [
-      { index: true, element: <SuperAdmin /> },
+      { index: true, element: <SuperAdminDashboard /> },
+      { path: "profile", element: <ProfileView /> },
+       { path: "notice", element: <NoticeCreate /> },
+        { path: "announcements", element: <AnnouncementCreate /> },
     ],
   },
 

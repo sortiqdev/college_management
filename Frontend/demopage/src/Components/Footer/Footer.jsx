@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <footer className="footer">
       <div className="footer-main">
-        <div className="container">
+        <div className="container1">
           <div className="footer-grid">
             {/* Company Info */}
             <div className="footer-section">
@@ -78,7 +78,7 @@ export default function Footer() {
 
       {/* Footer Bottom */}
       <div className="footer-bottom">
-        <div className="container">
+        <div className="container2">
           <div className="footer-bottom-content">
             <p>&copy; 2026 AdminPro. All rights reserved.</p>
             <div className="footer-badges">

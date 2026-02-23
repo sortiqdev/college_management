@@ -32,11 +32,46 @@ const stories = [
     ],
     image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT3UUxB5JFyVGf4BVa3MKEIEO184Gk2_HuJIw&s",
   },
+  {
+  title: "Enterprise-Grade Security",
+  text: [
+    "End-to-end data encryption",
+    "Multi-level authentication",
+    "Role-based data protection",
+    "Secure cloud infrastructure",
+  ],
+  image: "https://img.icons8.com/color/256/privacy-policy.png",
+},
+{
+  title: "Smart Analytics & Reporting",
+  text: [
+    "Real-time dashboards",
+    "Custom report generation",
+    "Performance tracking",
+    "Data-driven decision making",
+  ],
+  image: "https://img.icons8.com/color/256/combo-chart.png",
+},
+{
+  title: "Cloud-Based & Scalable",
+  text: [
+    "Access from anywhere",
+    "Multi-branch support",
+    "Automatic backups",
+    "Scales with your institution",
+  ],
+  image: "https://img.icons8.com/color/256/cloud.png",
+},
 ];
 
 export default function StorySection() {
   return (
     <section className="story-dark">
+
+
+    
+
+
       <h2 className="story-heading">
         Why <span>Choose Us</span>
       </h2>
@@ -54,8 +89,8 @@ export default function StorySection() {
             initial={{ opacity: 0, x: isLeft ? -120 : 120 }}
             whileInView={{ opacity: 1, x: 0 }}
             exit={{ opacity: 0, x: isLeft ? -120 : 120 }}
-            transition={{ duration: 0.9, ease: "easeInOut" }}
-            viewport={{ amount: 0.6 }} // 🔥 reversible
+            transition={{ duration: 0.5, ease: "easeInOut" }}
+            viewport={{ amount: 0.4 }} // 🔥 reversible
           >
             <div className="story-content">
               <h3>{item.title}</h3>

@@ -1,9 +1,5 @@
-import React from 'react'
+import { Outlet } from "react-router-dom";
 
-const SuperAdmin = () => {
-  return (
-    <div>SuperAdmin</div>
-  )
+export default function SuperAdmin() {
+  return <Outlet />;
 }
-
-export default SuperAdmin

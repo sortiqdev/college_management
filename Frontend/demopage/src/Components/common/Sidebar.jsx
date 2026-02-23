@@ -1,28 +1,50 @@
 import { NavLink, useLocation } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../../Hooks/useAuth";
-
-import { MASTER_MENU } from "../../config/sidebar.master";
-import { SUPERADMIN_MENU } from "../../config/sidebar.superadmin";
-import { ADMIN_MENU } from "../../config/sidebar.admin";
 import { ORG_MENU } from "../../config/sidebar.org";
-
 import "./Sidebar.css";
-
+import { ROLE_PERMISSIONS } from "../../config/permission";
 export default function Sidebar() {
   const { role } = useAuth();
-  console.log(role);
   const location = useLocation();
 
   const [openKey, setOpenKey] = useState(null);
   const [collapsed, setCollapsed] = useState(false);
 
-  let menu = [];
+  // 🔥 Get full menu
+  const fullMenu = ORG_MENU(role);
 
-  if (role === "master") menu = MASTER_MENU;
-  else if (role === "superadmin") menu = SUPERADMIN_MENU;
-  else if (role === "admin") menu = ADMIN_MENU;
-  else menu = ORG_MENU(role);
+  // 🔥 STRICT ROLE-BASED FILTERING
+  // If item.roles is missing OR role not included → hide
+ const permissions = ROLE_PERMISSIONS[role] || [];
+
+const menu = fullMenu
+  .map((item) => {
+    // 🔹 If item has children (Dropdown)
+    if (item.children) {
+      const allowedChildren = item.children.filter((child) =>
+        permissions.includes(child.key)
+      );
+
+      // Show parent ONLY if at least one child allowed
+      if (allowedChildren.length > 0) {
+        return {
+          ...item,
+          children: allowedChildren,
+        };
+      }
+
+      return null;
+    }
+
+    // 🔹 Normal item
+    if (permissions.includes(item.key)) {
+      return item;
+    }
+
+    return null;
+  })
+  .filter(Boolean);
 
   const isChildActive = (children) => {
     return children?.some((child) =>
@@ -32,18 +54,19 @@ export default function Sidebar() {
 
   return (
     <aside className={`sidebar ${collapsed ? "collapsed" : ""}`}>
-      
+      {/* Header */}
       <div className="sidebar-header">
-        {!collapsed && <h2>MyPlatform</h2>}
+        {!collapsed && <h2>{role} Platform</h2>}
         <button onClick={() => setCollapsed(!collapsed)}>☰</button>
       </div>
 
+      {/* Menu */}
       <ul className="sidebar-menu">
         {menu.map((item) => (
           <li key={item.key}>
-            
             {item.children ? (
               <>
+                {/* Parent Dropdown */}
                 <div
                   onClick={() =>
                     setOpenKey(openKey === item.key ? null : item.key)
@@ -58,6 +81,7 @@ export default function Sidebar() {
                   {!collapsed && <span>{item.label}</span>}
                 </div>
 
+                {/* Dropdown Children */}
                 {(openKey === item.key ||
                   isChildActive(item.children)) &&
                   !collapsed && (
@@ -66,6 +90,7 @@ export default function Sidebar() {
                         <li key={child.key}>
                           <NavLink
                             to={child.path}
+                            end
                             className={({ isActive }) =>
                               isActive
                                 ? "sidebar-link active"
@@ -80,8 +105,10 @@ export default function Sidebar() {
                   )}
               </>
             ) : (
+              /* Normal Link */
               <NavLink
                 to={item.path}
+                end
                 className={({ isActive }) =>
                   isActive
                     ? "sidebar-link active"

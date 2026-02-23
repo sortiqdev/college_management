@@ -55,19 +55,28 @@ const features = [
 
 const HomeFeature = () => {
   const trackRef = useRef(null);
+  const animationRef = useRef(null);
 
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      gsap.to(trackRef.current, {
-        xPercent: -50,
-        duration: 5,
-        repeat: -1,
-        ease: "linear",
-      });
+    animationRef.current = gsap.to(trackRef.current, {
+      xPercent: -50,
+      duration: 5, // smoother scroll
+      repeat: -1,
+      ease: "linear",
     });
 
-    return () => ctx.revert();
+    return () => {
+      animationRef.current?.kill();
+    };
   }, []);
+
+  const handleMouseEnter = () => {
+    animationRef.current?.pause();
+  };
+
+  const handleMouseLeave = () => {
+    animationRef.current?.resume();
+  };
 
   return (
     <section className="feature-section">
@@ -76,7 +85,11 @@ const HomeFeature = () => {
         <p>Everything you need to run your institution smarter</p>
       </div>
 
-      <div className="slider">
+      <div
+        className="slider"
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
         <div className="slider-track" ref={trackRef}>
           {[...features, ...features].map((item, index) => (
             <div className="feature-card" key={index}>

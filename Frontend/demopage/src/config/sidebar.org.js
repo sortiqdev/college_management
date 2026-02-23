@@ -16,36 +16,25 @@ import {
   GraduationCap,
   School,
   UserCog,
+  ShieldCheck,
+  FileSearch,
+  BadgeCheck,
+  Wallet,
 } from "lucide-react";
 
 export const ORG_MENU = (role) => [
-  // ================= DASHBOARD =================
+  // ================= COMMON =================
   {
-    key: "home",
+    key: "dashboard",
     label: "Dashboard",
     path: `/dashboard/${role}`,
     icon: LayoutDashboard,
   },
+  
 
-  // ================= ACADEMIC =================
-  {
-    key: "students",
-    label: "Students",
-    path: `/dashboard/${role}/students`,
-    icon: GraduationCap,
-  },
-  {
-    key: "teachers",
-    label: "Teachers",
-    path: `/dashboard/${role}/teachers`,
-    icon: Users,
-  },
-  {
-    key: "attendance",
-    label: "Attendance",
-    path: `/dashboard/${role}/attendance`,
-    icon: ClipboardCheck,
-  },
+
+
+  // ================= ACADEMICS =================
   {
     key: "syllabus",
     label: "Syllabus",
@@ -61,8 +50,14 @@ export const ORG_MENU = (role) => [
   {
     key: "assignments",
     label: "Assignments",
-    path: `/dashboard/${role}/assignments`,
+    path: `/dashboard/${role}/homework`,
     icon: FileText,
+  },
+  {
+    key: "attendance",
+    label: "Attendance",
+    path: `/dashboard/${role}/attendance`,
+    icon: ClipboardCheck,
   },
   {
     key: "result",
@@ -70,7 +65,32 @@ export const ORG_MENU = (role) => [
     path: `/dashboard/${role}/result`,
     icon: BarChart3,
   },
-
+{
+  key: "users",
+  label: "User Management",
+  icon: Users,
+  children: [
+    {
+      key: "user-list",
+      label: "User List",
+      path: `/dashboard/${role}/users`,
+      icon: Users,
+    },
+    {
+      key: "user-create",
+      label: "Create User",
+      path: `/dashboard/${role}/users/add`,
+      icon: UserCog,
+    }
+  ]
+},
+  // ================= SECURITY =================
+  {
+    key: "roles-permissions",
+    label: "Roles & Permissions",
+    path: `/dashboard/${role}/roles-permissions`,
+    icon: ShieldCheck,
+  },
   // ================= COMMUNICATION =================
   {
     key: "announcement",
@@ -78,6 +98,26 @@ export const ORG_MENU = (role) => [
     path: `/dashboard/${role}/announcement`,
     icon: Megaphone,
   },
+   {
+  key: "departments",
+  label: "Departments",
+  icon: Building2,
+ 
+  children: [
+    {
+      key: "department-list",
+      label: "Department List",
+      path: `/dashboard/${role}/departments`,
+     
+    },
+    {
+      key: "department-create",
+      label: "Create Department",
+      path: `/dashboard/${role}/departments/add`,
+ 
+    },
+  ],
+},
   {
     key: "notice",
     label: "Notices",
@@ -91,6 +131,18 @@ export const ORG_MENU = (role) => [
     label: "Fees Management",
     path: `/dashboard/${role}/fees`,
     icon: CreditCard,
+  },
+  {
+    key: "billing",
+    label: "Billing & Subscription",
+    path: `/dashboard/${role}/billing`,
+    icon: Wallet,
+  },
+  {
+    key: "payroll",
+    label: "Payroll",
+    path: `/dashboard/${role}/payroll`,
+    icon: BadgeCheck,
   },
 
   // ================= FACILITIES =================
@@ -113,7 +165,7 @@ export const ORG_MENU = (role) => [
     icon: Building2,
   },
 
-  // ================= ADMIN SETTINGS =================
+  // ================= ORGANIZATION =================
   {
     key: "school",
     label: "School Management",
@@ -121,15 +173,56 @@ export const ORG_MENU = (role) => [
     icon: School,
   },
   {
-    key: "user-management",
-    label: "User Management",
-    path: `/dashboard/${role}/user-management`,
-    icon: UserCog,
+    key: "organization-profile",
+    label: "Organization Profile",
+    path: `/dashboard/${role}/organization-profile`,
+    icon: Building2,
+  },
+
+  // ================= USER MANAGEMENT =================
+  {
+    key: "students",
+    label: "Students",
+    path: `/dashboard/${role}/students`,
+    icon: GraduationCap,
   },
   {
-    key: "settings",
-    label: "Settings",
-    path: `/dashboard/${role}/settings`,
+    key: "teachers",
+    label: "Teachers",
+    path: `/dashboard/${role}/teachers`,
+    icon: Users,
+  },
+  {
+    key: "admins",
+    label: "Admins",
+    path: `/dashboard/${role}/admins`,
+    icon: UserCog,
+  },
+
+  {
+    key: "audit-logs",
+    label: "Audit Logs",
+    path: `/dashboard/${role}/audit-logs`,
+    icon: FileSearch,
+  },
+  {
+    key: "security-settings",
+    label: "Security Settings",
+    path: `/dashboard/${role}/security-settings`,
     icon: Settings,
+  },
+
+  // ================= REPORTING =================
+  {
+    key: "reports",
+    label: "Reports",
+    path: `/dashboard/${role}/reports`,
+    icon: BarChart3,
+  },
+   {
+    key: "profile",
+    label: "Profile",
+    path: `/dashboard/${role}/profile`,
+    icon: UserCog,
   },
 ];

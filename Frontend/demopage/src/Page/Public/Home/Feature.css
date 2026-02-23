@@ -47,7 +47,6 @@
 .feature-card {
   width: 280px;
   height: 320px;
-   background: linear-gradient(180deg, #ffffff, #bed9ff);
   border-radius: 18px;
   padding: 24px;
   display: flex;
@@ -61,6 +60,7 @@
 
 .feature-card:hover {
   transform: translateY(-10px);
+    background: linear-gradient(180deg, #ffffff, #bed9ff);
 }
 
 /* ===============================

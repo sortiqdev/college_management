@@ -1,6 +1,6 @@
 .home-blog {
   padding: 100px 6%;
-    background: linear-gradient(120deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(120deg, #ffffff 0%, #ffffff 100%);
 }
 
 .home-blog-header {
@@ -27,7 +27,7 @@
 }
 
 .home-blog-card {
-    background: linear-gradient(180deg, #ffffff, #ffffff);
+     background: linear-gradient(180deg, #ffffff, #bed9ff);
   padding: 25px;
   border-radius: 14px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.05);
