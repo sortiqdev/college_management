@@ -5,14 +5,14 @@ import DashboardRedirect from "../routes/DashboardRedirect"
 ======================= */
 import AppLayout from "../layout/AppLayout";
 import OrgLayout from "../layout/OrgLayout";
-import AdminLayout from "../layout/AdminLayout";
-import MasterLayout from "../layout/MasterLayout";
-import SuperAdminLayout from "../layout/SuperAdminLayout";
+
+
+
 
 /* =======================
    Public Pages
 ======================= */
-import Home from "../page/Public/Home/Home";
+import Home from "../page/Public/Home/Home.jsx";
 import About from "../page/Public/About/About";
 import Contact from "../page/Public/Contact/Contact";
 import Blog from "../page/Public/Blog/Blog";
@@ -279,25 +279,7 @@ const router = createBrowserRouter([
   },
 
   /* 👑 MASTER PANEL */
-  {
-    path: "/master",
-    element: <MasterLayout />,
-    children: [
-      { index: true, element: <MasterPanel /> },
-
-      /* Organizations */
-      {
-        path: "organizations/add",
-        element: <RegisterOrg />,
-      },
-
-      // Uncomment when ready
-      // {
-      //   path: "organizations/list",
-      //   element: <OrganizationList />,
-      // },
-    ],
-  },
+  
 ]);
 
 export default router;
