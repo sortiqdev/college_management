@@ -3,7 +3,7 @@ import "./Syllabus.css";
 
 export default function SyllabusUpload() {
 
-  const [file, setFile] = useState(null);
+  const [ setFile] = useState(null);
 
   const handleUpload = (e) => {
     e.preventDefault();

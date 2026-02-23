@@ -19,7 +19,7 @@ export default function AttendanceView() {
         // setAttendanceData(res.data);
   const result = await getStudentAttendance();
         setAttendanceData(result)
-      } catch (error) {
+      } catch  {
         console.log("Attendance API not ready");
         setAttendanceData(null); // keep empty for now
       } finally {

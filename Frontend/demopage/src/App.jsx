@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
-import Header from "./Components/Header/Header";
-import Footer from "./Components/Footer/Footer";
-import Chat from "./Components/Chatbot/chat";
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
+import Chat from "./components/Chatbot/chat";
 import "./App.css";
 
 const App = () => {

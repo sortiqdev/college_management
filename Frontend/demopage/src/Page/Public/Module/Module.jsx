@@ -1,6 +1,8 @@
-import React, { useEffect } from 'react';
+"use-client";
+
+import { useEffect } from 'react';
 import './Module.css';
-import { motion } from 'framer-motion';
+// import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -89,11 +91,9 @@ export default function Module() {
           duration: 1200,
           loop: true,
         });
-      } catch (err) {
-        // animejs not installed — not critical
-        // eslint-disable-next-line no-console
-        console.warn('animejs not installed. Run `npm i animejs` to enable subtle pulse animations.');
-      }
+      } catch  {
+        
+        console.log('animejs not found, skipping pulse animation');}
     })();
   }, []);
 

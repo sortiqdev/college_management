@@ -12,7 +12,7 @@ import OrgLayout from "../layout/OrgLayout";
 /* =======================
    Public Pages
 ======================= */
-import Home from "../page/Public/Home/Home.jsx";
+import Home from "../page/Public/home/Home";
 import About from "../page/Public/About/About";
 import Contact from "../page/Public/Contact/Contact";
 import Blog from "../page/Public/Blog/Blog";

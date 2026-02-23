@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from "react";
+"use-client";
+
+import  { useEffect, useState } from "react";
 import { FileTextOutlined, FilePdfOutlined, BookOutlined, DownloadOutlined } from "@ant-design/icons";
 import { getStudentSyllabus } from "../../../../../services/dataProvider";
 
 export default function SyllabusView() {
 
   const [syllabusList, setSyllabusList] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [setLoading] = useState(true);
 
   useEffect(() => {
     const fetchSyllabus = async () => {
@@ -24,7 +26,7 @@ export default function SyllabusView() {
     };
 
     fetchSyllabus();
-  }, []);
+  }, [setLoading]);
 
 
 

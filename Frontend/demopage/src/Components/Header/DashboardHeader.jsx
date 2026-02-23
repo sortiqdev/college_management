@@ -6,7 +6,7 @@ export default function DashboardHeader({ user, onLogout }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [today, setToday] = useState("");
 
-  useEffect(() => {
+  useEffect(() => async () => {
     const now = new Date();
     const formatted = now.toLocaleDateString("en-IN", {
       weekday: "long",

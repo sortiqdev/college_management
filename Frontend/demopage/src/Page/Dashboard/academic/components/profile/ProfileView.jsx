@@ -20,7 +20,7 @@ export default function ProfileView() {
         // setData(res.data || null);
         const  result = await getStudentProfile();
 setData(result);
-      } catch (error) {
+      } catch{
         console.log("Profile API not ready — showing empty state");
         setData(null);
       } finally {

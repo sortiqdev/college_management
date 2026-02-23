@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 
 export default function TimetableCreate() {
 
-  const [data, setData] = useState([]);
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
