@@ -16,7 +16,6 @@ import {
   UserAddOutlined,
   LockOutlined,
 } from "@ant-design/icons";
-import dayjs from "dayjs";
 
 const UserCreate = () => {
   const [form] = Form.useForm();
@@ -71,6 +70,7 @@ const UserCreate = () => {
 
       message.success("User Created Successfully");
       form.resetFields();
+    // eslint-disable-next-line no-unused-vars
     } catch (error) {
       message.error("Something went wrong");
     } finally {
