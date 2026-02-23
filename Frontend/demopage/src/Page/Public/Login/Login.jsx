@@ -3,7 +3,7 @@ import { School, Person } from "@mui/icons-material";
 import { useState, useRef } from "react";
 import { Form, Input, Button, message } from "antd";
 import ReCAPTCHA from "react-google-recaptcha";
-import video from "../../../assets/Video/video.mp4";
+// import video from "../../../assets/Video/video.mp4";
 import "./Login.css";
 
 const Login = () => {
@@ -39,7 +39,7 @@ const Login = () => {
 
       {/* BACKGROUND VIDEO */}
       <video autoPlay muted loop playsInline className="login-video">
-        <source src={video} type="video/mp4" />
+        {/* <source src={video} type="video/mp4" /> */}
       </video>
 
       {/* OVERLAY */}
