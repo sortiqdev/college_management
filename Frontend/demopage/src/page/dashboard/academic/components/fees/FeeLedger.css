@@ -1,0 +1,74 @@
+.fee-view-container,
+.fee-manage-container {
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+}
+
+/* Transport Card */
+.transport-card {
+  background: #f9fafb;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.fee-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.summary-card {
+  padding: 20px;
+  border-radius: 10px;
+  color: white;
+  text-align: center;
+}
+
+.paid {
+  background: #3b82f6;
+}
+
+.due {
+  background: #f87171;
+}
+
+.fine {
+  background: #f59e0b;
+}
+
+/* Table */
+.manage-table table,
+.class-fee-table table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.manage-table th,
+.manage-table td,
+.class-fee-table th,
+.class-fee-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.filter-section {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.filter-section select,
+.filter-section input {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+.empty-row {
+  text-align: center;
+  padding: 20px;
+  color: #6b7280;
+}

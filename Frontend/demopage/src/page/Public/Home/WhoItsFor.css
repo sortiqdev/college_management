@@ -1,0 +1,102 @@
+/* ===============================
+   Section
+================================ */
+.who-section {
+  padding: 90px 6%;
+  background: rgb(248, 242, 250);
+  font-family: "Poppins", sans-serif;
+}
+
+/* ===============================
+   Title
+================================ */
+.who-title {
+  text-align: center;
+  font-size: 38px;
+  font-weight: 700;
+  margin-bottom: 60px;
+  color: #2b2b2b;
+}
+
+/* ===============================
+   Grid
+================================ */
+.who-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}
+
+/* ===============================
+   Card
+================================ */
+.who-card {
+  background: linear-gradient(180deg, #ffffff, #bed9ff);
+  border-radius: 16px;
+  padding: 40px 26px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Left blue accent line */
+.who-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 5px;
+  height: 100%;
+  background: #5b6cff;
+  border-radius: 16px 0 0 16px;
+}
+
+/* Hover */
+.who-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 25px 45px rgba(0, 0, 0, 0.15);
+}
+
+/* ===============================
+   Icon
+================================ */
+.who-icon {
+  font-size: 46px;
+  margin-bottom: 20px;
+}
+
+/* ===============================
+   Text
+================================ */
+.who-card h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 12px;
+}
+
+.who-card p {
+  font-size: 15px;
+  color: #475569;
+  line-height: 1.7;
+}
+
+/* ===============================
+   Responsive
+================================ */
+@media (max-width: 1024px) {
+  .who-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .who-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .who-title {
+    font-size: 28px;
+  }
+}

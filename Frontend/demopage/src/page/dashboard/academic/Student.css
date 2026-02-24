@@ -1,0 +1,131 @@
+/* Student Dashboard Styles */
+.student-dashboard {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f5f6fa;
+  min-height: 100vh;
+}
+
+.dashboard-body {
+  display: flex;
+  height: calc(100vh - 70px);
+  overflow: hidden;
+}
+
+/* Main Content */
+main.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #f5f6fa;
+}
+
+.content-header {
+  padding: 20px 30px;
+  background: white;
+  border-bottom: 1px solid #ecf0f1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
+}
+
+.content-header h2 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.content-body {
+  flex: 1;
+  padding: 30px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.content-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.content-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.content-body::-webkit-scrollbar-thumb {
+  background: #bdc3c7;
+  border-radius: 4px;
+}
+
+.content-body::-webkit-scrollbar-thumb:hover {
+  background: #95a5a6;
+}
+
+.view {
+  padding: 8px;
+  color: #111827;
+  min-height: 400px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.content-body > * {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .dashboard-body {
+    height: calc(100vh - 60px);
+  }
+
+  .content-body {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-body {
+    flex-direction: column;
+    height: auto;
+  }
+
+  main.content {
+    height: calc(100vh - 70px);
+  }
+
+  .content-header {
+    padding: 15px 20px;
+  }
+
+  .content-header h2 {
+    font-size: 18px;
+  }
+
+  .content-body {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .content-header {
+    padding: 12px 15px;
+  }
+
+  .content-header h2 {
+    font-size: 16px;
+  }
+
+  .content-body {
+    padding: 12px;
+  }
+}
+

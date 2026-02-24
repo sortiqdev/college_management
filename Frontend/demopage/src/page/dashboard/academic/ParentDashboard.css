@@ -1,0 +1,87 @@
+/* Parent Dashboard - reuse Teacher styling patterns */
+
+.parent-dashboard {
+  padding: 20px;
+  background: linear-gradient(135deg, #fdfefe 0%, #eef2f7 100%);
+  min-height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.dashboard-header {
+  margin-bottom: 32px;
+}
+
+.dashboard-header h1 {
+  font-size: 30px;
+  font-weight: 700;
+  color: #0d47a1;
+  margin: 0 0 6px 0;
+}
+
+.dashboard-header p {
+  font-size: 15px;
+  color: #545454;
+  margin: 0;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.dashboard-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  transition: all 0.25s ease;
+  border-left: 5px solid;
+}
+
+.dashboard-card .card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.card-icon {
+  width: 50px;
+  height: 50px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius: 10px;
+  font-size: 26px;
+}
+
+.card-title { font-size: 13px; color:#666; font-weight:600; text-transform:uppercase; }
+.card-count { font-size: 40px; color:#073763; font-weight:700; margin-bottom:8px; }
+.card-hint { font-size:13px; color:#888; margin-bottom:8px; }
+.card-footer { border-top:1px solid rgba(0,0,0,0.04); padding-top:10px; display:flex; justify-content:space-between; align-items:center; }
+.view-link{ color:#0d47a1; font-weight:600; }
+.small-btn{ background:#0d47a1; color:white; border:none; padding:8px 12px; border-radius:6px; cursor:pointer; }
+.ghost-btn{ background:transparent; border:1px solid #d0d0d0; padding:8px 12px; border-radius:6px; cursor:pointer; }
+
+.bg-blue{ background:linear-gradient(135deg,#ffffff,#eef6ff); border-left-color:#1976d2; }
+.bg-purple{ background:linear-gradient(135deg,#fff,#faf1ff); border-left-color:#8e24aa; }
+.bg-orange{ background:linear-gradient(135deg,#fff,#fff8f0); border-left-color:#fb8c00; }
+.bg-red{ background:linear-gradient(135deg,#fff,#fff5f5); border-left-color:#e53935; }
+.bg-green{ background:linear-gradient(135deg,#fff,#f6fff6); border-left-color:#2e7d32; }
+
+/* Summary area */
+.classes-section{ background:white; border-radius:12px; padding:22px; box-shadow:0 4px 12px rgba(0,0,0,0.06); }
+.section-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:16px; }
+.section-header h2{ margin:0; font-size:20px; color:#073763; }
+.summary-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap:14px; }
+.summary-card{ padding:16px; background:#f9fafb; border-radius:10px; }
+.summary-card h3{ margin:0; font-size:14px; color:#444; }
+.summary-value{ font-size:22px; font-weight:700; color:#0d47a1; margin:8px 0; }
+.summary-desc{ color:#777; font-size:13px; }
+
+.loading{ min-height:200px; display:flex; align-items:center; justify-content:center; font-weight:600; color:#666; }
+.error{ color:#b00020; margin-bottom:12px; }
+
+@media (max-width:768px){ .stats-grid{ grid-template-columns: repeat(auto-fit,minmax(150px,1fr)); } .card-count{ font-size:32px; } }

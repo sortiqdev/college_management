@@ -1,0 +1,128 @@
+/* Master Panel Main Styles */
+.master-panel {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f5f6fa;
+  min-height: 100vh;
+}
+
+.panel-body {
+  display: flex;
+  height: calc(100vh - 70px);
+  overflow: hidden;
+}
+
+/* Main Content */
+main.panel-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #f5f6fa;
+}
+
+.content-header {
+  padding: 25px 35px;
+  background: white;
+  border-bottom: 1px solid #ecf0f1;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  flex-shrink: 0;
+}
+
+.content-header h2 {
+  margin: 0;
+  color: #2c3e50;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.content-area {
+  flex: 1;
+  padding: 35px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.content-area::-webkit-scrollbar {
+  width: 8px;
+}
+
+.content-area::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.content-area::-webkit-scrollbar-thumb {
+  background: #bdc3c7;
+  border-radius: 4px;
+}
+
+.content-area::-webkit-scrollbar-thumb:hover {
+  background: #95a5a6;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.content-area > * {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .panel-body {
+    height: calc(100vh - 60px);
+  }
+
+  .content-area {
+    padding: 25px;
+  }
+
+  .content-header {
+    padding: 20px 25px;
+  }
+}
+
+@media (max-width: 768px) {
+  .panel-body {
+    flex-direction: column;
+    height: auto;
+  }
+
+  main.panel-content {
+    height: calc(100vh - 70px);
+  }
+
+  .content-header {
+    padding: 15px 20px;
+  }
+
+  .content-header h2 {
+    font-size: 20px;
+  }
+
+  .content-area {
+    padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .content-header {
+    padding: 12px 15px;
+  }
+
+  .content-header h2 {
+    font-size: 18px;
+  }
+
+  .content-area {
+    padding: 12px;
+  }
+}
