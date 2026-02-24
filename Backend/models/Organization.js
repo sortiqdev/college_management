@@ -1,4 +1,5 @@
 const mongoose = require ("mongoose");
+import { motion } from "framer-motion";
 
 const OrganizationSchema =  new mongoose.Schema(
     {

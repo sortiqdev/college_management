@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-// import { motion } from "framer-motion";
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
 import { AnimatePresence } from "framer-motion";
 import "./Hero.css";
 

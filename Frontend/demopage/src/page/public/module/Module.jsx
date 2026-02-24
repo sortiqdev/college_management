@@ -5,6 +5,8 @@ import './Module.css';
 // import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
 
 const sections = [
   {
