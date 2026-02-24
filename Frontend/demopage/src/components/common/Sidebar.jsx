@@ -1,6 +1,6 @@
 import { NavLink, useLocation } from "react-router-dom";
 import { useState } from "react";
-import { useAuth } from "../../Hooks/useAuth";
+import { useAuth } from "../../hooks/useAuth";
 import { ORG_MENU } from "../../config/sidebar.org";
 import "./Sidebar.css";
 import { ROLE_PERMISSIONS } from "../../config/permission";

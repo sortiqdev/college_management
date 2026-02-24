@@ -1,0 +1,140 @@
+/* ROOT PAGE */
+.module-page {
+  background: #f7f9fc;
+  color: #1f2937;
+  font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont;
+}
+
+/* HERO */
+.module-hero {
+  text-align: center;
+  padding: 100px 20px 60px;
+  max-width: 900px;
+  margin: auto;
+}
+
+.module-hero h1 {
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 14px;
+  color: #0f172a;
+}
+
+.module-hero p {
+  font-size: 17px;
+  color: #475569;
+  line-height: 1.6;
+}
+
+.scroll-hint {
+  margin-top: 28px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #10b981;
+}
+
+/* CONTENT */
+.module-content {
+  max-width: 1200px;
+  margin: auto;
+  padding: 40px 20px 40px;
+}
+
+/* SECTION */
+.module-section {
+  margin-bottom: 40px;
+}
+
+/* SECTION HEADING */
+.section-heading {
+  margin-bottom: 32px;
+  max-width: 600px;
+}
+
+.section-heading h2 {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #0f172a;
+}
+
+.section-heading p {
+  font-size: 15px;
+  color: #64748b;
+}
+
+/* GRID */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+/* CARD */
+.feature-card {
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+/* Hover enhancement (works with Framer Motion too) */
+.feature-card:hover {
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.12);
+}
+
+/* ICON */
+.feature-icon {
+  font-size: 28px;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* BODY */
+.feature-body h3 {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #0f172a;
+}
+
+.feature-body p {
+  font-size: 14px;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+/* FOOTER */
+.module-footer {
+  text-align: center;
+  padding: 40px 20px 60px;
+  font-size: 14px;
+  color: #64748b;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .feature-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .module-hero h1 {
+    font-size: 34px;
+  }
+}
+
+@media (max-width: 600px) {
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .module-hero {
+    padding: 80px 16px 50px;
+  }
+}

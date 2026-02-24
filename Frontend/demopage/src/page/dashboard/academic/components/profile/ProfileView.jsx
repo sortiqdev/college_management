@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import API from "../../../../../services/api";
 import "./Profile.css";
-import { useAuth } from "../../../../../Hooks/useAuth";
+import { useAuth } from "../../../../../hooks/useAuth";
 
 import { getStudentProfile } from "../../../../../services/dataProvider";
 
