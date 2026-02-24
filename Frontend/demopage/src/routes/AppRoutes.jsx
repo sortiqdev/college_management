@@ -12,12 +12,12 @@ import OrgLayout from "../layout/OrgLayout";
 /* =======================
    Public Pages
 ======================= */
-import Home from "../page/Public/home/Home";
-import About from "../page/Public/About/About";
-import Contact from "../page/Public/Contact/Contact";
-import Blog from "../page/Public/Blog/Blog";
-import Login from "../page/Public/Login/Login";
-import Module from "../page/Public/Module/Module";
+import Home from "../page/public/home/Home";
+import About from "../page/public/about/About";
+import Contact from "../page/public/contact/Contact";
+import Blog from "../page/public/blog/Blog";
+import Login from "../page/public/login/Login";
+import Module from "../page/public/module/Module";
 
 /* =======================
    Org Dashboard
