@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import "./homework.css";
+import "./Homework.css";
 
 export default function HomeworkCreate() {
   const [form, setForm] = useState({
