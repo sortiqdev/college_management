@@ -34,8 +34,7 @@ import Admin from "../page/dashboard/admin/Admin";
 /* =======================
    Master
 ======================= */
-import MasterPanel from "../page/dashboard/masterpanel/MasterPannel";
-import RegisterOrg from "../page/dashboard/masterpanel/page/organizations/RegisterOrg";
+
 // (Optional future page)
 // import OrganizationList from "../page/dashboard/masterpanel/page/organizations/OrganizationList";
 // =======================
