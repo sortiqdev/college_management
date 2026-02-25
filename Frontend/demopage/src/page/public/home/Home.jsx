@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 import HomeFeature from './HomeFeature';
 import HeroSection from './hero';
 import CTA from './CTA/CTA';

@@ -1,6 +1,6 @@
 .main-header {
   height: 75px;
-  background: #ffffff;
+   background: rgb(248, 242, 250);
   border-bottom: 1px solid #e5e7eb;
   display: flex;
   justify-content: space-between;

@@ -31,7 +31,7 @@ const audiences = [
 const WhoItsFor = () => {
   return (
     <section className="who-section">
-      <h2 className="who-title">Who It's For</h2>
+      <h2 className="who-title pt-20">Who It's For</h2>
 
       <div className="who-grid">
         {audiences.map((item, index) => (

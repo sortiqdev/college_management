@@ -33,8 +33,8 @@ export default function Header() {
             </NavLink>
           </li>
           <li>
-            <NavLink to="/faq" className="nav-link">
-              FAQ
+            <NavLink to="/module" className="nav-link">
+              Module
             </NavLink>
           </li>
           <li>

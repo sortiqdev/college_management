@@ -96,6 +96,10 @@ import TeacherDashboard from "../page/dashboard/academic/TeacherDashboard";
 import ParentDashboard from "../page/dashboard/academic/ParentDashboard";
 import SuperAdminDashboard from "../page/dashboard/superadmin/SuperAdminDashboard";
 import AcademicDashboard from "../page/dashboard/academic/AcademicDashboard";
+import Library from "../page/dashboard/academic/components/library/library";
+import LibraryReports from "../page/dashboard/academic/components/library/libraryReports";
+import LibraryCreate from "../page/dashboard/academic/components/library/libraryCreate";
+import LibraryView from "../page/dashboard/academic/components/library/libraryView";
 
 const router = createBrowserRouter([
   /* 🌐 PUBLIC WEBSITE */
@@ -154,25 +158,25 @@ const router = createBrowserRouter([
       element: <Admin />,
       children: [
         { index: true, element: <AdminDashboard /> },
-              { path: "profile", element: <ProfileView /> },
-       { path: "notice", element: <NoticeCreate /> },
+        { path: "profile", element: <ProfileView /> },
+        { path: "notice", element: <NoticeCreate /> },
         { path: "announcements", element: <AnnouncementCreate /> },
-        {
-  path: "departments",
-  element: <Departments />,
-  children: [
-    { index: true, element: <DepartmentList /> },
-    { path: "add", element: <DepartmentCreate /> },
-  ],
-},
-{
-            path: "users",
-            element: <User />,
+        { path: "departments",  element: <Departments />,
             children: [
-              { index: true, element: <UserList /> },
-              { path: "add", element: <UserCreate /> },
-            ],
-          },
+             { index: true, element: <DepartmentList /> },
+             { path: "add", element: <DepartmentCreate /> },
+                  ],},
+        { path: "users", element: <User />,
+            children: [
+             { index: true, element: <UserList /> },
+            { path: "add", element: <UserCreate /> },
+                 ], },
+        {path:"library", element:<Library  />,
+            children:[
+              {index: true, element: <LibraryReports />},
+              {path:"add" , element: <LibraryCreate />}
+            ]
+        }
       ],
     },
 
@@ -199,7 +203,11 @@ const router = createBrowserRouter([
 
         { path: "results", element: <Result /> },
         { path: "results/view", element: <ResultView /> },
-
+        {path: "library", element:<Library />,
+          children:[
+            {index: true , element: <LibraryView />}
+          ]
+        },
         { path: "fees", element: <FeeLedger /> },
         { path: "fees/view", element: <FeesView /> },
 
@@ -234,6 +242,12 @@ const router = createBrowserRouter([
            { path: "syllabus/upload", element: <SyllabusUpload /> },
            { path: "syllabus/view", element: <SyllabusView /> },
         { path: "results", element: <ResultEdit /> },
+        {path:"library", element:<Library  />,
+            children:[
+              {index: true, element: <LibraryView />},
+              {path:"add" , element: <LibraryCreate />}
+            ]
+        },
         { path: "timetable", element: <TimetableCreate /> },
         { path: "profile", element: <Profile /> },
      

@@ -1,6 +1,6 @@
 .home-blog {
   padding: 100px 6%;
-    background: linear-gradient(120deg, #ffffff 0%, #ffffff 100%);
+     background: rgb(248, 242, 250);
 }
 
 .home-blog-header {
@@ -11,7 +11,7 @@
 .home-blog-header h2 {
   font-size: 36px;
   font-weight: 700;
-  color: #ffffff;
+  color: #2f00ff;
 }
 
 .home-blog-header p {
@@ -74,16 +74,8 @@
   margin-top: 50px;
 }
 
-.home-blog-btn button {
-  padding: 12px 30px;
-  border: none;
-  background: #000;
-  color: white;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.3s;
-}
+
 
 .home-blog-btn button:hover {
-  background: #333;
+  background: #6994a9;
 }

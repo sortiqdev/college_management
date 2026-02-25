@@ -19,16 +19,7 @@
   text-align: center;
 }
 
-.about-hero h1 {
-  font-size: 48px;
-  margin-bottom: 15px;
-  font-weight: 700;
-}
 
-.about-hero p {
-  font-size: 20px;
-  opacity: 0.95;
-}
 
 /* About Content */
 .about-content {

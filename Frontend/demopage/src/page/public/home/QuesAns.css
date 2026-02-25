@@ -254,40 +254,9 @@
   margin-bottom: 25px;
 }
 
-.btn-primary {
-  padding: 12px 35px;
-  background: white;
-  color: #667eea;
-  border: none;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 15px;
-}
 
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-}
 
-.btn-secondary {
-  padding: 12px 35px;
-  background: transparent;
-  color: white;
-  border: 2px solid white;
-  border-radius: 6px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 15px;
-}
 
-.btn-secondary:hover {
-  background: white;
-  color: #667eea;
-  transform: translateY(-2px);
-}
 
 .support-email {
   font-size: 14px;

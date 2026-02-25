@@ -143,8 +143,8 @@ export default function QuesAns() {
         <h2>Still have questions?</h2>
         <p>Can't find the answer you're looking for? Our dedicated support team is here to help.</p>
         <div className="cta-buttons">
-          <button className="btn-primary">Contact Sales Team</button>
-          <button className="btn-secondary">Schedule Demo</button>
+                <button className="bg-gradient-to-br from-[#76efff] to-[#00ccff] hover:from-indigo-600 hover:via-sky-600 hover:to-emerald-600 text-white rounded-[50px] px-6 py-3 shadow-lg transition-all duration-300">Contact Sales Team</button>
+                <button className="bg-gradient-to-br from-[#76efff] to-[#00ccff] hover:from-indigo-600 hover:via-sky-600 hover:to-emerald-600 text-white rounded-[50px] px-6 py-3 shadow-lg transition-all duration-300">Schedule Demo</button>
         </div>
         <p className="support-email">Email us at support@adminpro.com or chat with us in the corner</p>
       </section>

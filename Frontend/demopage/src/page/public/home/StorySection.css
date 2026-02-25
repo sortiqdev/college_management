@@ -1,7 +1,7 @@
 /* SECTION */
 .story-dark {
-    background: linear-gradient(90deg, #4a5794 0%, #735ff9 100%);
-  padding: 50px 0;
+    background: white;
+  padding-bottom:50px ;
   color: #e5e7eb;
 }
 
@@ -9,19 +9,19 @@
 .story-heading {
   text-align: center;
   font-size: 44px;
-  margin-bottom: 12px;
+  margin-bottom: 5px;
   font-weight: bolder;
 }
 
 .story-heading span {
-  color: #000000;
+  color: #ffffff;
 }
 
 .story-subheading {
   font-weight: 550;
   text-align: center;
-  color: #040404;
-  margin-bottom: 50px;
+  color: #ffffff;
+  margin-bottom: 20px;
 }
 
 /* CARD */

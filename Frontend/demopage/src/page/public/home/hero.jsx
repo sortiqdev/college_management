@@ -40,7 +40,8 @@ const slides = [
     image: image5,
   },
 ];
-
+// let a = 10 ;
+// alert ("a"+ a++)
 const HeroSection = () => {
   const [index, setIndex] = useState(0);
 
@@ -69,15 +70,15 @@ const HeroSection = () => {
           Built for administrators, faculty, and students.
         </p>
 
-        <div className="hero-buttons">
-          <button className="primary-btn">Get Started</button>
-          <button className="secondary-btn">Sign In</button>
+        <div className="hero-buttons flex gap-10 mb-20">
+          <button className="bg-gradient-to-br from-[#76efff] to-[#00ccff] hover:from-indigo-600 hover:via-sky-600 hover:to-emerald-600 text-white rounded-[50px] px-6 py-3 shadow-lg transition-all duration-300">Get Started</button>
+             <button className="bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500 hover:from-indigo-600 hover:via-sky-600 hover:to-emerald-600 text-white rounded-[50px] px-6 py-3 shadow-lg transition-all duration-300">Sign In</button>
         </div>
 
         <div className="hero-tags">
-          <span>🔒 Secure Records</span>
-          <span>⚡ Fast Access</span>
-          <span>👥 Role-Based</span>
+          <span className="bg-white shadow-md rounded-[50px] ">🔒 Secure Records</span>
+          <span className="bg-white shadow-md rounded-[50px]">⚡ Fast Access</span>
+          <span className="bg-white shadow-md rounded-[50px] ">👥 Role-Based</span>
         </div>
       </div>
 

@@ -23,13 +23,8 @@ export default function ContactPreview() {
       <button
         onClick={() => navigate("/contact")}
         style={{
-          padding: "12px 30px",
-          background: "white",
-          color: "black",
-          border: "none",
-         
           cursor: "pointer"
-        }}
+        }} className="bg-gradient-to-br from-[#76efff] to-[#00ccff] px-4 py-4 rounded-full text-s font-medium w-36 m-4"
       >
         Contact Us
       </button>

@@ -82,7 +82,7 @@ export default function HomeBlogSection() {
             className="home-blog-card"
             onClick={() => navigate("/blog")}
           >
-            <div className="blog-badge">{blog.category}</div>
+            <div className="bg-gradient-to-br from-[#76efff] to-[#00ccff] px-4 py-1 rounded-full text-s font-medium w-36 m-4">{blog.category}</div>
 
             <h3>{blog.title}</h3>
 
@@ -96,8 +96,8 @@ export default function HomeBlogSection() {
         ))}
       </div>
 
-      <div className="home-blog-btn">
-        <button onClick={() => navigate("/blog")}>
+      <div className="home-blog-btn ">
+        <button className="bg-gradient-to-br from-[#76efff] to-[#00ccff] px-6 py-3 rounded-full text-white font-medium hover:opacity-90 transition-opacity" onClick={() => navigate("/blog")}>
           View All Blogs
         </button>
       </div>

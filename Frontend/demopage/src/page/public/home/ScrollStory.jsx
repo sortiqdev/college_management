@@ -67,18 +67,20 @@ const stories = [
 
 export default function StorySection() {
   return (
-    <section className="story-dark">
+    <section className="story-dark wrapper">
 
 
     
 
-
-      <h2 className="story-heading">
+<div className="bg-gradient-to-br from-[#667eea] to-[#764ba2] text-white py-10 px-6 rounded-lg mb-10">
+   <h2 className="story-heading">
         Why <span>Choose Us</span>
       </h2>
       <p className="story-subheading">
         Designed to simplify, scale, and secure your institution
       </p>
+</div>
+     
 
       {stories.map((item, index) => {
         const isLeft = index % 2 === 0;

@@ -65,6 +65,7 @@ export const ORG_MENU = (role) => [
     path: `/dashboard/${role}/result`,
     icon: BarChart3,
   },
+ 
 {
   key: "users",
   label: "User Management",
@@ -149,8 +150,25 @@ export const ORG_MENU = (role) => [
   {
     key: "library",
     label: "Library",
-    path: `/dashboard/${role}/library`,
+    
     icon: Library,
+      children: [
+        {
+          key: "library-view",
+          label: "View Books",
+          path : `/dashboard/${role}/library`,
+        },
+        {
+          key: "library-create",
+          label: "Add Books",
+          path : `/dashboard/${role}/library/add`,
+        },
+        {
+          key: "library-reports", 
+          label: "Library Reports",
+          path : `/dashboard/${role}/library/reports`,
+        }
+      ],
   },
   {
     key: "transport",
