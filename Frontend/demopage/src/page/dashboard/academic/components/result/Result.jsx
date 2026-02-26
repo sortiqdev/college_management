@@ -1,15 +1,9 @@
-import React from "react";
-import "./Result.css";
-import ResultView from "./ResultView";
+import { Outlet } from "react-router-dom";
 
 export default function Result() {
   return (
-    <div className="result-page">
-      <div className="result-header">
-        <h2>🎓 Academic Results</h2>
-      </div>
-
-      <ResultView />
+    <div >
+      <Outlet />
     </div>
   );
 }

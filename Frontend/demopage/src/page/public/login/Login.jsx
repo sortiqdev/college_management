@@ -1,8 +1,44 @@
 import { useState } from "react";
 import { Mail, Lock, GraduationCap, User, Shield, Phone, Building } from "lucide-react";
+import API from "../../../services/api";
 
 export default function Login() {
   const [role, setRole] = useState("student");
+ const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [phone, setPhone] = useState("");
+  const [orgCode, setOrgCode] = useState("");
+
+  const handleLogin = async (e) => {
+  e.preventDefault();
+
+  const payload = {
+    role,
+    email,
+    password,
+    phone,
+    orgCode: role === "teacher" || role === "admin" ? orgCode : null,
+  };
+
+  console.log("Sending Payload To Backend:", payload);
+
+  try {
+    const res = await API.post("/auth/login", payload);
+
+    console.log("Login Successful:", res.data);
+
+    // Example: store token if backend sends it
+    if (res.data.token) {
+      localStorage.setItem("token", res.data.token);
+    }
+
+    alert("Login Successful ✅");
+  } catch (error) {
+    console.error("Login Failed ❌", error.response?.data || error.message);
+    alert(error.response?.data?.message || "Login Failed");
+  }
+};
+
 
   return (
     <div className="min-h-screen flex bg-gradient-to-br from-[#0f172a] via-[#1e3a5f] to-[#0f172a] text-white">
@@ -64,6 +100,7 @@ export default function Login() {
             <div className="flex items-center bg-white/10 rounded-xl px-4 py-3 mt-1 border border-white/20 focus-within:border-blue-400 transition">
               <Mail size={18} className="text-gray-400 mr-2" />
               <input
+               onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 placeholder="name@college.com"
                 className="bg-transparent w-full outline-none text-white placeholder-gray-400"
@@ -77,6 +114,7 @@ export default function Login() {
             <div className="flex items-center bg-white/10 rounded-xl px-4 py-3 mt-1 border border-white/20 focus-within:border-blue-400 transition">
               <Phone size={18} className="text-gray-400 mr-2" />
               <input
+                onChange={(e) => setPhone(e.target.value)}
                 type="tel"
                 placeholder="+91 98765 43210"
                 className="bg-transparent w-full outline-none text-white placeholder-gray-400"
@@ -91,6 +129,7 @@ export default function Login() {
               <div className="flex items-center bg-white/10 rounded-xl px-4 py-3 mt-1 border border-white/20 focus-within:border-blue-400 transition">
                 <Building size={18} className="text-gray-400 mr-2" />
                 <input
+                  onChange={(e) => setOrgCode(e.target.value)}
                   type="text"
                   placeholder="Enter organization code"
                   className="bg-transparent w-full outline-none text-white placeholder-gray-400"
@@ -105,8 +144,9 @@ export default function Login() {
             <div className="flex items-center bg-white/10 rounded-xl px-4 py-3 mt-1 border border-white/20 focus-within:border-blue-400 transition">
               <Lock size={18} className="text-gray-400 mr-2" />
               <input
+                onChange={(e) => setPassword(e.target.value)}
                 type="password"
-                placeholder="Enter your password"
+                placeholder="Enter your Mobile Number"
                 className="bg-transparent w-full outline-none text-white placeholder-gray-400"
               />
             </div>
@@ -125,7 +165,7 @@ export default function Login() {
           </div>
 
           {/* Button */}
-          <button className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:opacity-90 transition-all duration-300 font-semibold shadow-lg">
+          <button onClick={handleLogin} className="w-full py-3 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 hover:opacity-90 transition-all duration-300 font-semibold shadow-lg">
             Sign In
           </button>
         </div>

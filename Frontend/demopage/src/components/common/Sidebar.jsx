@@ -47,10 +47,10 @@ const menu = fullMenu
   .filter(Boolean);
 
   const isChildActive = (children) => {
-    return children?.some((child) =>
-      location.pathname.startsWith(child.path)
-    );
-  };
+  return children?.some(
+    (child) => location.pathname === child.path
+  );
+};
 
   return (
     <aside className={`sidebar ${collapsed ? "collapsed" : ""}`}>

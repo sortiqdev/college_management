@@ -15,6 +15,7 @@ export const ROLE_PERMISSIONS = {
     "assignments",
      "fees",
     "library-view",
+    "hostel-view",
     "transport",
     "hostel",
     "result",
@@ -36,17 +37,18 @@ export const ROLE_PERMISSIONS = {
 
   teacher: [
     "dashboard",
-    "students",
+    
     "attendance",
     "syllabus",
     "timetable",
     "assignments",
     "result",
     "notice",
-     "reports",
-     "library-view",
      "library-create",
-     
+     "library-view",
+     "hostel-view",
+     "transport",
+     "hostel-management",
     "announcement",
     "fees",
     "library",

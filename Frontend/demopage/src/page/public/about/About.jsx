@@ -4,9 +4,10 @@ import './About.css';
 export default function About() {
   return (
     <div className="about-container">
-      <section className="bg-gradient-to-br from-[#667eea] to-[#764ba2] text-white py-20 text-left">
-        <h1 className="text-6xl font-bold mb-4  px-20 w-[80%]">College Management Platform Built for Real Campus Operations </h1>
-        <p className="text-lg opacity-95  px-20 w-[80%]">The CMS unifies admissions, academics, attendance, fees, exams, communication, and administration into one secure and role-based system for students, faculty, parents, and institutional leadership.</p>
+      <section className="bg-white  py-20 text-left">
+        <h1 className="text-6xl font-bold mb-4 text-black font-serif  px-20 w-[80%]">College Management Platform </h1>
+        <p className="text-5xl font-bold mb-4 text-black font-serif  px-20 w-[80%]"> Built for Real Campus Operations </p>
+        <p className="text-lg opacity-95 text-blue-900  px-20 w-[80%]">The CMS unifies admissions, academics, attendance, fees, exams, communication, and administration into one secure and role-based system for students, faculty, parents, and institutional leadership.</p>
        
        <div className='px-20 mt-10'>
         <button className="bg-gradient-to-br from-[#76efff] to-[#00ccff] hover:from-indigo-600 hover:via-sky-600 hover:to-emerald-600 text-white rounded-[50px] px-6 py-3 shadow-lg transition-all duration-300">Explore About us</button>

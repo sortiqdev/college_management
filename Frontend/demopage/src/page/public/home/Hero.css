@@ -18,12 +18,7 @@
   max-width: 600px;
 }
 
-.hero-subtitle {
-  font-size: 24px;
-  font-weight: 300;
-  color: #7f96ff;
-  margin-bottom: 20px;
-}
+
 
 .hero-left h1 {
   font-size: 50px;
@@ -35,7 +30,7 @@
 
 .hero-description {
   font-size: 22px;   /* reduced from 29px (was too large) */
-  color:#7f96ff;
+
   margin-bottom: 35px;
   line-height: 1.6;
 }

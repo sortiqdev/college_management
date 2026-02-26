@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
-
+import API from "../../../services/api";
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
 
   const [formData, setFormData] = useState({
-    name: "",
+    full_name: "",
     email: "",
-    phone: "",
-    department: "",
+    phone_number: "",
+    subject: "",
     message: "",
   });
 
@@ -16,17 +16,23 @@ export default function Contact() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const res = await API.post("/contact", formData);
+      console.log("Response:", res);
+    } catch (error) {
+      console.log("Error:", error);
+    }
     setSubmitted(true);
 
     setTimeout(() => {
       setSubmitted(false);
       setFormData({
-        name: "",
+        full_name: "",
         email: "",
-        phone: "",
-        department: "",
+        phone_number: "",
+        subject: "",
         message: "",
       });
     }, 3000);
@@ -36,9 +42,9 @@ export default function Contact() {
     <div className="bg-gray-100">
 
       {/* HERO SECTION */}
-      <section className="bg-gradient-to-br from-[#667eea] to-[#764ba2] text-white py-20 text-center">
-        <h1 className="text-5xl font-serif font-bold mb-4">Get in Touch</h1>
-        <p className="text-lg max-w-2xl mx-auto opacity-90">
+      <section className="bg-white   py-20 text-center">
+        <h1 className="text-6xl font-serif  text-black font-black mb-4">Get in Touch</h1>
+        <p className="text-lg max-w-2xl mx-auto text-blue-900 opacity-90">
           We'd love to hear from you. Reach out for admissions,
           collaborations, or general inquiries.
         </p>
@@ -46,7 +52,7 @@ export default function Contact() {
 
       {/* CONTACT CARDS */}
       <section className="max-w-7xl mx-auto px-6 -mt-16 relative z-10">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 bg-gradient-to-b from-[#ffffff] to-[#bed9ff] p-8 rounded-3xl shadow-xl">
 
           {/* Visit */}
           <div className="bg-white rounded-3xl shadow-lg p-8 text-center">
@@ -133,9 +139,9 @@ export default function Contact() {
           <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-6">
 
             <input
-              name="name"
+              name="full_name"
               placeholder="Full Name"
-              value={formData.name}
+              value={formData.full_name}
               onChange={handleChange}
               required
               className="p-4 rounded-xl border border-gray-300 focus:ring-2 focus:ring-teal-500 outline-none"
@@ -152,21 +158,21 @@ export default function Contact() {
             />
 
             <input
-              name="phone"
+              name="phone_number"
               placeholder="Phone Number"
-              value={formData.phone}
+              value={formData.phone_number}
               onChange={handleChange}
               className="p-4 rounded-xl border border-gray-300 focus:ring-2 focus:ring-teal-500 outline-none"
             />
 
             <select
-              name="department"
-              value={formData.department}
+              name="subject"
+              value={formData.subject}
               onChange={handleChange}
               className="p-4 rounded-xl border border-gray-300 focus:ring-2 focus:ring-teal-500 outline-none"
             >
-              <option value="">Select Department</option>
-              <option>Admissions</option>
+              <option value="">Select Subject</option>
+              <option>Join With Us</option>
               <option>Support</option>
               <option>General Inquiry</option>
             </select>
@@ -183,7 +189,7 @@ export default function Contact() {
 
             <button
               type="submit"
-              className="md:col-span-2 bg-gradient-to-r from-blue-700 to-teal-600 text-white py-4 rounded-xl font-semibold flex items-center justify-center gap-2 hover:opacity-90 transition"
+              className="md:col-span-2 bg-gradient-to-br from-[#76efff] to-[#00ccff] hover:from-indigo-600 hover:via-sky-600 hover:to-emerald-600 text-white rounded-[50px] px-6 py-3 shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
             >
               Send Message <Send size={18} />
             </button>

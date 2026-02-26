@@ -57,22 +57,22 @@ const HeroSection = () => {
 
       {/* LEFT STATIC SIDE */}
       <div className="hero-left">
-        <p className="hero-subtitle">College Management System</p>
+        <p className="text-lg font-serif text-blue-900 mb-8">College Management System</p>
 
-        <h1>
+        <h1 className="text-5xl font-black text-black font-serif mb-6">
           Simple, secure, and <br />
           professional campus <br />
           operations
         </h1>
 
-        <p className="hero-description">
+        <p className="hero-description font-serif text-blue-900">
           Manage admissions, academics, attendance, and communication in one place.
           Built for administrators, faculty, and students.
         </p>
 
         <div className="hero-buttons flex gap-10 mb-20">
           <button className="bg-gradient-to-br from-[#76efff] to-[#00ccff] hover:from-indigo-600 hover:via-sky-600 hover:to-emerald-600 text-white rounded-[50px] px-6 py-3 shadow-lg transition-all duration-300">Get Started</button>
-             <button className="bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500 hover:from-indigo-600 hover:via-sky-600 hover:to-emerald-600 text-white rounded-[50px] px-6 py-3 shadow-lg transition-all duration-300">Sign In</button>
+             <button className="bg-gradient-to-br from-[#76efff] to-[#00ccff] hover:from-indigo-600 hover:via-sky-600 hover:to-emerald-600 text-white rounded-[50px] px-6 py-3 shadow-lg transition-all duration-300">Sign In</button>
         </div>
 
         <div className="hero-tags">
@@ -83,7 +83,7 @@ const HeroSection = () => {
       </div>
 
       {/* RIGHT CARD */}
-      <div className="hero-card">
+      <div className="hero-card font-serif">
         <AnimatePresence mode="wait">
           <motion.div
             key={index}

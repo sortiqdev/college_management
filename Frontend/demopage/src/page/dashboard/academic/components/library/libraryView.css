@@ -1,0 +1,127 @@
+.library-view-container {
+  padding: 12px;
+}
+
+.user-info-card {
+  margin-bottom: 24px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.user-info-card .ant-card-head {
+  border-bottom: none;
+}
+
+.user-info-content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 40px;
+  padding: 8px;
+}
+
+.user-info-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.info-icon {
+  font-size: 28px;
+  color: white;
+}
+
+.info-label {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+}
+
+.info-value {
+  font-size: 18px;
+  color: white;
+  margin: 4px 0 0 0;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.books-table-card {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.books-table-card .ant-card-head {
+  background-color: #f5f5f5;
+  border-bottom: 2px solid #1890ff;
+}
+
+.books-table-card .ant-card-head .ant-card-title {
+  color: #1890ff;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+/* Table styling */
+.ant-table {
+  font-size: 14px;
+}
+
+.ant-table-thead > tr > th {
+  background-color: #fafafa;
+  font-weight: 600;
+  color: #262626;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background-color: #f5f5f5;
+}
+
+/* Search input styling */
+.ant-input {
+  border-radius: 4px;
+  padding: 8px 12px;
+}
+
+.ant-input:hover,
+.ant-input:focus {
+  border-color: #1890ff;
+}
+
+/* Empty state styling */
+.ant-empty {
+  padding: 48px 0;
+}
+
+.ant-empty-description {
+  color: #8c8c8c;
+  font-size: 14px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .user-info-content {
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  .ant-divider-vertical {
+    height: 0 !important;
+  }
+
+  .user-info-item {
+    width: 100%;
+  }
+
+  .info-value {
+    font-size: 16px;
+  }
+
+  .books-table-card {
+    margin-top: 16px;
+  }
+}

@@ -74,7 +74,8 @@ import TimetableCreate from "../page/dashboard/academic/components/timetable/Tim
 import User from "../page/dashboard/admin/components/users/User";
 import UserList from "../page/dashboard/admin/components/users/UserList";
 import UserCreate from "../page/dashboard/admin/components/users/UserCreate";
-
+import Hostel from "../page/dashboard/academic/components/hostel/hostel";
+import HostelView from "../page/dashboard/academic/components/hostel/hostelView";
 
 import Profile from "../page/dashboard/academic/components/profile/Profile";
 import ProfileEdit from "../page/dashboard/academic/components/profile/ProfileEdit";
@@ -100,6 +101,7 @@ import Library from "../page/dashboard/academic/components/library/library";
 import LibraryReports from "../page/dashboard/academic/components/library/libraryReports";
 import LibraryCreate from "../page/dashboard/academic/components/library/libraryCreate";
 import LibraryView from "../page/dashboard/academic/components/library/libraryView";
+import HostelCreate from "../page/dashboard/academic/components/hostel/hostelCreate";
 
 const router = createBrowserRouter([
   /* 🌐 PUBLIC WEBSITE */
@@ -136,7 +138,7 @@ const router = createBrowserRouter([
       { index: true, element: <SuperAdminDashboard /> },
       { path: "profile", element: <ProfileView /> },
        { path: "notice", element: <NoticeCreate /> },
-        { path: "announcements", element: <AnnouncementCreate /> },
+        { path: "announcement", element: <AnnouncementCreate /> },
 {  path: "departments",
   element: <Departments />,
   children: [
@@ -160,7 +162,12 @@ const router = createBrowserRouter([
         { index: true, element: <AdminDashboard /> },
         { path: "profile", element: <ProfileView /> },
         { path: "notice", element: <NoticeCreate /> },
-        { path: "announcements", element: <AnnouncementCreate /> },
+        { path: "announcement", element: <Announcement/>,
+          children:[
+            {index:true, element:<AnnouncementView />},
+            {path:"add", element:<AnnouncementCreate />}
+          ]
+         },
         { path: "departments",  element: <Departments />,
             children: [
              { index: true, element: <DepartmentList /> },
@@ -171,10 +178,10 @@ const router = createBrowserRouter([
              { index: true, element: <UserList /> },
             { path: "add", element: <UserCreate /> },
                  ], },
-        {path:"library", element:<Library  />,
+       {path:"library", element:<Library  />,
             children:[
-              {index: true, element: <LibraryReports />},
-              {path:"add" , element: <LibraryCreate />}
+              {index: true, element: <LibraryCreate />},
+              {path:"reports" , element: <LibraryReports />}
             ]
         }
       ],
@@ -196,10 +203,17 @@ const router = createBrowserRouter([
         { path: "homework", element: <Homework /> },
         { path: "homework/view", element: <HomeworkView /> },
 
-        { path: "announcements", element: <Announcement /> },
-        { path: "announcements/view", element: <AnnouncementView /> },
-
-        { path: "notices", element: <Notice /> },
+        { path: "announcement", element: <Announcement /> },
+        { path: "announcement/view", element: <AnnouncementView /> },
+        {path:"notice", element:<Notice />,
+          children:[
+            {index:true, element:<NoticeView />},
+          ]
+        },
+       {path:"hostel", element: <Hostel />,
+          children:[
+            {index: true, element: <HostelView />},]
+       },
 
         { path: "results", element: <Result /> },
         { path: "results/view", element: <ResultView /> },
@@ -234,23 +248,37 @@ const router = createBrowserRouter([
       path: "teacher",
       element: <Teacher />,
       children: [
+         { path: "fees", element: <FeesView /> },
         { index: true, element: <TeacherDashboard /> },
         { path: "attendance", element: <AttendanceCreate /> },
         { path: "homework", element: <HomeworkCreate /> },
         { path: "notice", element: <NoticeCreate /> },
-        { path: "announcements", element: <AnnouncementCreate /> },
-           { path: "syllabus/upload", element: <SyllabusUpload /> },
-           { path: "syllabus/view", element: <SyllabusView /> },
-        { path: "results", element: <ResultEdit /> },
-        {path:"library", element:<Library  />,
+        { path: "announcement", element: <AnnouncementCreate /> },
+           { path: "syllabus", element: <SyllabusUpload />,
             children:[
-              {index: true, element: <LibraryView />},
-              {path:"add" , element: <LibraryCreate />}
+               { path: "syllabus/view", element: <SyllabusView /> },
             ]
-        },
+            },
+          
+        { path: "results", element: <ResultEdit /> },
+      {path: "hostel", element: <Hostel />,
+          children: [
+            { index: true, element: <HostelView /> },
+            { path: "management", element: <HostelCreate /> }
+          ]
+        }
+,
         { path: "timetable", element: <TimetableCreate /> },
         { path: "profile", element: <Profile /> },
-     
+     {
+      path: "library",
+      element: <Library />,
+      children: [
+        { index: true, element: <LibraryView /> },
+        { path: "add", element: <LibraryCreate /> },  // match sidebar
+        { path: "reports", element: <LibraryReports /> }
+      ]
+    },
       ],
     },
 

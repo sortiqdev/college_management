@@ -179,8 +179,20 @@ export const ORG_MENU = (role) => [
   {
     key: "hostel",
     label: "Hostel",
-    path: `/dashboard/${role}/hostel`,
+   
     icon: Building2,
+    children: [
+      {
+        key: "hostel-view", 
+        label: "My Room",
+        path : `/dashboard/${role}/hostel`,
+      },
+      {
+        key: "hostel-management",
+        label: "Hostel Management",
+        path : `/dashboard/${role}/hostel/management`,
+      },
+    ],
   },
 
   // ================= ORGANIZATION =================
