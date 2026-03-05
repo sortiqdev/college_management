@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import "./DashboardHeader.css";
 import { User } from "lucide-react";
+import authService from "../../services/auth.service";
 
 export default function DashboardHeader({ user, onLogout }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [today, setToday] = useState("");
+  const navigate = useNavigate();
 
-  useEffect(() => async () => {
+  useEffect(() => {
     const now = new Date();
     const formatted = now.toLocaleDateString("en-IN", {
       weekday: "long",
@@ -14,8 +17,29 @@ export default function DashboardHeader({ user, onLogout }) {
       month: "long",
       year: "numeric",
     });
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setToday(formatted);
   }, []);
+
+  // Handle logout with backend invalidation and session cleanup
+  const handleLogout = async () => {
+    try {
+      // Call logout service to invalidate token and clear session
+      await authService.logout();
+
+      // Call parent component's onLogout if provided
+      if (onLogout) {
+        onLogout();
+      }
+
+      // Redirect to login page
+      navigate("/login", { replace: true });
+    } catch (error) {
+      console.error("Logout failed:", error);
+      // Still redirect to login even if logout failed
+      navigate("/login", { replace: true });
+    }
+  };
 
   return (
     <div className="main-header">
@@ -43,7 +67,7 @@ export default function DashboardHeader({ user, onLogout }) {
           {dropdownOpen && (
             <div className="profile-dropdown">
               <div className="dropdown-item">Profile</div>
-              <div className="dropdown-item logout" onClick={onLogout}>
+              <div className="dropdown-item logout" onClick={handleLogout}>
                 Logout
               </div>
             </div>

@@ -13,7 +13,7 @@ import {
   message,
   DatePicker,
 } from "antd";
-import { LockOutlined, UploadOutlined } from "@ant-design/icons";
+import { LockOutlined, UploadOutlined, SwapOutlined } from "@ant-design/icons";
 import API from "../../../../../services/api";
 
 const courseDepartmentMap = {
@@ -37,67 +37,101 @@ const UserCreate = () => {
 
   const selectedRole = Form.useWatch("role", form);
 
-  const handleSubmit = async (values) => {
-    setLoading(true);
+  // Password Generator Function
+  const generatePassword = () => {
+    const uppercase = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+    const lowercase = "abcdefghijkmnpqrstuvwxyz";
+    const numbers = "23456789";
+    const special = "!@#$%^&*()+{}|:<>?-=/";
+    const allChars = uppercase + lowercase + numbers + special;
 
-    try {
-      const payload = {};
+    let password = "";
+    // Ensure at least one character from each category
+    password += uppercase[Math.floor(Math.random() * uppercase.length)];
+    password += lowercase[Math.floor(Math.random() * lowercase.length)];
+    password += numbers[Math.floor(Math.random() * numbers.length)];
+    password += special[Math.floor(Math.random() * special.length)];
 
-      // Helper function to convert file to base64
-      const fileToBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-          const reader = new FileReader();
-          reader.onload = () => resolve(reader.result);
-          reader.onerror = reject;
-          reader.readAsDataURL(file);
-        });
-      };
+    // Fill the rest with random characters
+    const minLength = 8;
+    while (password.length < minLength) {
+      password += allChars[Math.floor(Math.random() * allChars.length)];
+    }
 
-      // Process values
-      for (let key of Object.keys(values)) {
-        if (values[key]) {
-          if (Array.isArray(values[key])) {
-            // Handle file arrays
-            payload[key] = [];
-            for (let item of values[key]) {
-              if (item.originFileObj) {
-                const base64 = await fileToBase64(item.originFileObj);
-                payload[key].push({
-                  name: item.name,
-                  size: item.size,
-                  data: base64,
-                });
-              }
-            }
-          } else if (values[key]?._isAMomentObject) {
-            // Handle DatePicker values
-            payload[key] = values[key].format("YYYY-MM-DD");
-          } else {
-            payload[key] = values[key];
+    // Shuffle the password
+    password = password
+      .split("")
+      .sort(() => Math.random() - 0.5)
+      .join("");
+
+    form.setFieldsValue({
+  password: password
+});
+    message.success("Password generated successfully!");
+  };
+
+const handleSubmit = async (values) => {
+  setLoading(true);
+
+  try {
+    const formData = new FormData();
+
+    for (let key of Object.keys(values)) {
+      const value = values[key];
+
+      if (!value) continue;
+
+      // DatePicker
+      if (value?._isAMomentObject) {
+        formData.append(key, value.format("YYYY-MM-DD"));
+      }
+
+      // Documents upload
+      else if (key === "documents" && Array.isArray(value)) {
+        value.forEach((file) => {
+          if (file.originFileObj) {
+            formData.append("document", file.originFileObj);
           }
+        });
+      }
+
+      // Photo upload
+      else if (key === "photo" && Array.isArray(value)) {
+        if (value[0]?.originFileObj) {
+          formData.append("photo", value[0].originFileObj);
         }
       }
 
-      console.log("==== Payload Sent To Backend ====");
-      console.log(JSON.stringify(payload, null, 2));
-
-      await API.post("/auth/register", payload, {
-        headers: { "Content-Type": "application/json" },
-      });
-
-      message.success("User Registered Successfully");
-      form.resetFields();
-    } catch (error) {
-      console.error(error);
-      message.error("Registration Failed");
-    } finally {
-      setLoading(false);
+      // Normal fields
+      else {
+        formData.append(key, value);
+      }
     }
-  };
 
+    console.log("==== FormData Sent To Backend ====");
+    for (let pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
+
+    await API.post("register", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+
+    message.success("User Registered Successfully");
+    form.resetFields();
+
+  } catch (error) {
+    console.error(error);
+    message.error("Registration Failed");
+  } finally {
+    setLoading(false);
+  }
+};
   return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      <Card title="Create User" className="rounded-2xl shadow-md">
+    <div classname="p-6 bg-gray-50 min-h-screen">
+      <Card title="Create User" classname="rounded-2xl shadow-md">
         <Form layout="vertical" form={form} onFinish={handleSubmit}>
           {/* BASIC INFO */}
           <Row gutter={16}>
@@ -124,21 +158,15 @@ const UserCreate = () => {
                 <Input size="large" />
               </Form.Item>
             </Col>
+          </Row> 
+
+          <Row gutter={16}>
+            <Col span={24}>
+              <Form.Item label="Address" name="address" rules={[{ required: true }]}>
+                <Input size="large" />
+              </Form.Item>
+            </Col>
           </Row>
-
-          <Divider />
-
-          {/* ROLE */}
-          <Form.Item label="Role" name="role" rules={[{ required: true }]}>
-            <Select
-              size="large"
-              options={[
-                { label: "Student", value: "student" },
-                { label: "Teacher", value: "teacher" },
-                { label: "Admin", value: "admin" },
-              ]}
-            />
-          </Form.Item>
 
           <Divider />
 
@@ -163,6 +191,30 @@ const UserCreate = () => {
             </Col>
           </Row>
 
+
+            <Divider />
+            <Row gutter={16}>
+                 <Col span={12}>
+                 <Form.Item label="City" name="city" rules={[{ required: true }]}>
+                    <Input size="large" />
+                  </Form.Item>
+                 </Col>
+                <Col span={12}>
+                 <Form.Item label="State" name="state" rules={[{ required: true }]}>
+                    <Input size="large" />
+                  </Form.Item>
+                 </Col>
+            </Row>
+<Divider />
+     <Form.Item label="Role" name="role" rules={[{ required: true }]}>
+            <Select
+              size="large"
+              options={[
+                { label: "Student", value: "student" },
+                { label: "Teacher", value: "teacher" },
+                { label: "Admin", value: "admin" },
+              ]} />
+          </Form.Item>
           {/* STUDENT SECTION */}
           {selectedRole === "student" && (
             <>
@@ -182,7 +234,7 @@ const UserCreate = () => {
 
               <Row gutter={16}>
                 <Col span={12}>
-                  <Form.Item label="10th School Name" name="tenthSchool" rules={[{ required: true }]}>
+                  <Form.Item label="10th School name" name="tenthSchool" rules={[{ required: true }]}>
                     <Input size="large" />
                   </Form.Item>
                 </Col>
@@ -195,7 +247,7 @@ const UserCreate = () => {
 
               <Row gutter={16}>
                 <Col span={12}>
-                  <Form.Item label="12th School Name" name="twelfthSchool" rules={[{ required: true }]}>
+                  <Form.Item label="12th School name" name="twelfthSchool" rules={[{ required: true }]}>
                     <Input size="large" />
                   </Form.Item>
                 </Col>
@@ -224,7 +276,12 @@ const UserCreate = () => {
 
               <Row gutter={16}>
                 <Col span={12}>
-                  <Form.Item label="Parent Name" name="parentName" rules={[{ required: true }]}>
+                  <Form.Item label="Father name" name="fatherName" rules={[{ required: true }]}>
+                    <Input size="large" />
+                  </Form.Item>
+                </Col>
+                  <Col span={12}>
+                  <Form.Item label="Mother name" name="motherName" rules={[{ required: true }]}>
                     <Input size="large" />
                   </Form.Item>
                 </Col>
@@ -237,8 +294,48 @@ const UserCreate = () => {
 
               <Divider />
               <h3>Course Enrollment</h3>
+                  <Row gutter={16}>
+  <Col span={8}>
+    <Form.Item
+      label="Registration Type"
+      name="registrationType"
+      rules={[{ required: true }]}
+    >
+      <Select
+        size="large"
+        options={[
+          { label: "Regular", value: "regular" },
+          { label: "Lateral Entry", value: "lateral_entry" },
+          { label: "Transfer", value: "transfer" },
+        ]}
+      />
+    </Form.Item>
+  </Col>
 
-              <Form.Item label="Select Course" name="course" rules={[{ required: true }]}>
+  <Col span={8}>
+    <Form.Item
+      label="Program Duration (Years)"
+      name="programDuration"
+      rules={[{ required: true }]}
+    >
+      <Input size="large" type="number" placeholder="Example: 4" />
+    </Form.Item>
+  </Col>
+
+  <Col span={8}>
+    <Form.Item
+      label="Academic Year Start"
+      name="academicStartYear"
+      rules={[{ required: true }]}
+    >
+      <Input size="large" type="number" placeholder="Example: 2026" />
+    </Form.Item>
+  </Col>
+</Row>
+               
+
+
+              <Form.Item label="Select Program" name="program" rules={[{ required: true }]}>
                 <Select
                   size="large"
                   options={Object.keys(courseDepartmentMap).map((course) => ({
@@ -250,12 +347,12 @@ const UserCreate = () => {
 
               <Form.Item shouldUpdate>
                 {() => {
-                  const selectedCourse = form.getFieldValue("course");
+                  const selectedCourse = form.getFieldValue("program");
                   const departments = courseDepartmentMap[selectedCourse] || [];
                   return (
                     <Form.Item
-                      label="Department"
-                      name="department"
+                      label="Field"
+                      name="field"
                       rules={[{ required: true }]}
                     >
                       <Select
@@ -271,6 +368,10 @@ const UserCreate = () => {
               </Form.Item>
 
               <Row gutter={16}>
+                  <Col span={12}>
+                  <Form.Item label="Roll Number" name="rollNumber" rules={[{ required: true }]}>
+                    <Input size="large" />
+                  </Form.Item> </Col>
                 <Col span={12}>
                   <Form.Item label="Year" name="year" rules={[{ required: true }]}>
                     <Select
@@ -296,26 +397,30 @@ const UserCreate = () => {
               </Row>
 
               <Form.Item
-                label="Upload Documents"
-                name="documents"
-                valuePropName="fileList"
-                getValueFromEvent={(e) => e.fileList}
-              >
-                <Upload beforeUpload={() => false} multiple>
-                  <Button icon={<UploadOutlined />}>Upload Documents</Button>
-                </Upload>
-              </Form.Item>
+                  label="Upload Documents"
+                  name="documents"
+                  valuePropName="fileList"
+                  getValueFromEvent={(e) => e.fileList}>
+                  <Upload beforeUpload={() => false} multiple>
+                   <Button icon={<UploadOutlined />}>Upload Documents</Button>
+                  </Upload>
+               </Form.Item>
 
-              <Form.Item
-                label="Upload Photo"
-                name="photo"
-                valuePropName="fileList"
-                getValueFromEvent={(e) => e.fileList}
-              >
-                <Upload beforeUpload={() => false}>
-                  <Button icon={<UploadOutlined />}>Upload Photo</Button>
-                </Upload>
-              </Form.Item>
+          <Form.Item
+  label="Upload Photo"
+  name="photo"
+  valuePropName="fileList"
+  getValueFromEvent={(e) => e.fileList}
+>
+  <Upload
+    beforeUpload={() => false}
+    listType="picture"
+    maxCount={1}
+    accept=".jpg,.jpeg,.png"
+  >
+    <Button icon={<UploadOutlined />}>Upload Photo</Button>
+  </Upload>
+</Form.Item>
             </>
           )}
 
@@ -339,18 +444,14 @@ const UserCreate = () => {
                 />
               </Form.Item>
 
-              <Form.Item label="Subjects Teaching" name="subjects" rules={[{ required: true }]}>
-                <Input size="large" placeholder="Comma separated subjects" />
-              </Form.Item>
-
-              <Form.Item label="Designation" name="designation" rules={[{ required: true }]}>
+                  <Form.Item label="Designation" name="designation" rules={[{ required: true }]}>
                 <Select
                   size="large"
                   options={[
                     { label: "Assistant Professor", value: "assistant_professor" },
                     { label: "Professor", value: "professor" },
                     { label: "HOD", value: "hod" },
-                    {label: "laboratory_incharge", value: "laboratory_incharge"},
+                    {label: "Laboratory Assistant", value: "laboratory_incharge"},
                   ]}
                 />
               </Form.Item>
@@ -358,7 +459,7 @@ const UserCreate = () => {
               <Form.Item
                 label="Upload Certificates"
                 name="certificates"
-                valuePropName="fileList"
+                valuePropname="fileList"
                 getValueFromEvent={(e) => e.fileList}
               >
                 <Upload beforeUpload={() => false} multiple>
@@ -370,13 +471,46 @@ const UserCreate = () => {
 
           <Divider />
 
-          <Form.Item
-            label="Password"
-            name="password"
-            rules={[{ required: true, min: 8 }]}
-          >
-            <Input.Password size="large" prefix={<LockOutlined />} />
-          </Form.Item>
+         <Form.Item
+  label="Password"
+  name="password"
+  rules={[{ required: true, min: 8 }]}
+>
+  <div className="flex gap-2">
+
+    <Form.Item name="password" noStyle>
+      <Input.Password
+        size="large"
+        prefix={<LockOutlined />}
+        className="flex-1"
+      />
+    </Form.Item>
+
+    <Button
+      type="dashed"
+      size="large"
+      icon={<SwapOutlined />}
+      onClick={generatePassword}
+      className="bg-blue-50 border-blue-300 text-blue-600 hover:bg-blue-100"
+    >
+      Generate
+    </Button>
+
+  </div>
+</Form.Item>
+          {/* REGISTER CODE - FOR TEACHER & ADMIN */}
+          {(selectedRole === "teacher" || selectedRole === "admin") && (
+            <>
+              <Divider />
+              <Form.Item
+                label="Organization Code"
+                name="orgnizationCode"
+                rules={[{ required: true, message: "Organization code is required" }]}
+              >
+                <Input size="large" placeholder="Enter your organization code" />
+              </Form.Item>
+            </>
+          )}
 
             {(selectedRole === "student" ||
             selectedRole === "teacher") && (
@@ -389,7 +523,7 @@ const UserCreate = () => {
                   <Form.Item
                     label="Hostel Required?"
                     name="hostel"
-                    valuePropName="checked"
+                    valuePropname="checked"
                   >
                     <Switch />
                   </Form.Item>
@@ -399,7 +533,7 @@ const UserCreate = () => {
                   <Form.Item
                     label="Bus Service Required?"
                     name="busService"
-                    valuePropName="checked"
+                    valuePropname="checked"
                   >
                     <Switch />
                   </Form.Item>

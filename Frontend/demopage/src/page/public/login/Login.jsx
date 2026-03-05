@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { Mail, Lock, GraduationCap, User, Shield, Phone, Building } from "lucide-react";
 import API from "../../../services/api";
+import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import { useUser } from "../../../hooks/useUser";
+
 
 export default function Login() {
   const [role, setRole] = useState("student");
@@ -8,31 +12,39 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [orgCode, setOrgCode] = useState("");
+   const navigate = useNavigate();
+   const { saveUser } = useUser();
 
   const handleLogin = async (e) => {
   e.preventDefault();
-
   const payload = {
-    role,
-    email,
-    password,
-    phone,
-    orgCode: role === "teacher" || role === "admin" ? orgCode : null,
+    role,    email,    password,    phone,    orgCode: role === "teacher" || role === "admin" ? orgCode : null,
   };
 
-  console.log("Sending Payload To Backend:", payload);
-
   try {
-    const res = await API.post("/auth/login", payload);
+    const res = await API.post("/login", payload);
 
-    console.log("Login Successful:", res.data);
+    saveUser(res.data.user);
 
-    // Example: store token if backend sends it
-    if (res.data.token) {
-      localStorage.setItem("token", res.data.token);
-    }
+console.log("==== Login Response ====");
+    console.log(res.data);
+    const decode = jwtDecode(res.data.token);
+    console.log("==== Decoded JWT ====");
+    console.log(decode);
+localStorage.setItem("token", res.data.token);
+localStorage.setItem("role", role);
 
-    alert("Login Successful ✅");
+switch(role){
+  case "student":
+    navigate("/dashboard/student");
+    break;
+  case "teacher":
+    navigate("/dashboard/teacher");
+    break;
+  case "admin":
+    navigate("/dashboard/admin");
+    break;
+}
   } catch (error) {
     console.error("Login Failed ❌", error.response?.data || error.message);
     alert(error.response?.data?.message || "Login Failed");

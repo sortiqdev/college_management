@@ -1,32 +1,35 @@
 import React, { useEffect, useState } from "react";
-import { Spin, message } from "antd";
-import { FileTextOutlined, CalendarOutlined, BookOutlined, UploadOutlined, EditOutlined, ClockCircleOutlined } from "@ant-design/icons";
+import { Spin, message, Modal, Upload, Tag } from "antd";
+import {
+  FileTextOutlined,
+  UploadOutlined,
+  ClockCircleOutlined,
+} from "@ant-design/icons";
+
 import { getStudentHomework } from "../../../../../services/dataProvider";
 import HomeworkEdit from "./HomeworkEdit";
 
-export default function HomeworkView({ role }) {
+export default function HomeworkView() {
 
   const [homeworkData, setHomeworkData] = useState([]);
   const [loading, setLoading] = useState(true);
+  // eslint-disable-next-line no-unused-vars
   const [editMode, setEditMode] = useState(false);
-  const [uploadingIndex, setUploadingIndex] = useState(null);
-  const [selectedFiles, setSelectedFiles] = useState({});
+
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [selectedHomework, setSelectedHomework] = useState(null);
+
+  const [uploadedFiles, setUploadedFiles] = useState({});
+  const [submittedHomework, setSubmittedHomework] = useState({});
 
   useEffect(() => {
+
     const fetchHomework = async () => {
       try {
-        // 🔥 Backend API (when ready)
-        // const res = await API.get("/student/homework");
-        // setHomeworkData(Array.isArray(res.data) ? res.data : []);
-
-        // TEMP: empty fallback
-        // setHomeworkData([]);  // keep empty until backend ready
-        
         const result = await getStudentHomework();
         setHomeworkData(Array.isArray(result) ? result : []);
-
       } catch {
-        console.log("Homework API not ready - showing empty state");
+        console.log("Homework API not ready");
         setHomeworkData([]);
       } finally {
         setLoading(false);
@@ -34,32 +37,78 @@ export default function HomeworkView({ role }) {
     };
 
     fetchHomework();
+
   }, []);
 
-  const handleFileChange = (index, e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setSelectedFiles({ ...selectedFiles, [index]: file });
-    }
+  // =========================
+  // OPEN UPLOAD MODAL
+  // =========================
+  const handleUploadClick = (homework) => {
+    setSelectedHomework(homework);
+    setIsModalVisible(true);
   };
 
-  const handleUpload = (index) => {
-    const file = selectedFiles[index];
+  // =========================
+  // FILE SELECT
+  // =========================
+  const handleUploadFiles = ({ file }) => {
+
+  const realFile = file.originFileObj || file;
+
+  setUploadedFiles((prev) => ({
+    ...prev,
+    [selectedHomework.id]: realFile
+  }));
+
+  message.success(`${file.name} ready to submit`);
+
+};
+
+  // =========================
+  // SUBMIT HOMEWORK
+  // =========================
+  const handleSubmitHomework = async () => {
+
+    const file = uploadedFiles[selectedHomework.id];
+
     if (!file) {
-      message.error("Please select a file first");
+      message.error("Please upload a file first");
       return;
     }
 
-    // Simulate upload
-    setUploadingIndex(index);
-    setTimeout(() => {
-      message.success(`${file.name} submitted successfully!`);
-      setUploadingIndex(null);
-      setSelectedFiles({ ...selectedFiles, [index]: null });
-    }, 1500);
+    try {
+
+      const formData = new FormData();
+      formData.append("homeworkId", selectedHomework.id);
+      formData.append("file", file);
+
+      // Example API
+      // await API.post("/homework/submit", formData);
+
+      setSubmittedHomework({
+        ...submittedHomework,
+        [selectedHomework.id]: true
+      });
+
+      message.success("Homework submitted successfully");
+
+      setIsModalVisible(false);
+      setSelectedHomework(null);
+
+    } catch {
+      message.error("Submission failed");
+    }
+
   };
 
-  // ============ LOADING ============
+  const handleModalClose = () => {
+    setIsModalVisible(false);
+    setSelectedHomework(null);
+  };
+
+  // =========================
+  // LOADING
+  // =========================
   if (loading) {
     return (
       <div className="flex justify-center items-center min-h-[60vh]">
@@ -68,170 +117,247 @@ export default function HomeworkView({ role }) {
     );
   }
 
-  // ============ EMPTY STATE ============
+  // =========================
+  // EMPTY STATE
+  // =========================
   if (!homeworkData.length) {
     return (
-      <div className="p-6 bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
-        <div className="max-w-2xl mx-auto bg-white rounded-2xl shadow-md p-12 text-center">
+      <div className="p-6 bg-gray-50 min-h-screen">
+        <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-md p-12 text-center">
           <FileTextOutlined className="text-6xl text-gray-300 mb-4" />
-          <h3 className="text-2xl font-bold text-gray-800 mb-2">No Homework Assigned</h3>
-          <p className="text-gray-600">Homework assignments will appear here once your teacher assigns them.</p>
+          <h3 className="text-2xl font-bold text-gray-800 mb-2">
+            No Homework Assigned
+          </h3>
+          <p className="text-gray-600">
+            Homework assignments will appear here once your teacher assigns them.
+          </p>
         </div>
       </div>
     );
   }
-console.log("HomeworkView Role:", role);
-  // ============ RENDER DATA ============
+
   return (
     <div className="p-6 bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
-
-      {/* Header */}
+      {/* HEADER */}
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
           <FileTextOutlined className="text-3xl text-blue-600" />
-          <h1 className="text-3xl font-bold text-gray-900">Homework</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Homework & Assignments</h1>
         </div>
-        <p className="text-gray-600">View and submit your homework assignments</p>
+        <p className="text-gray-600">View and manage your homework assignments</p>
       </div>
 
-      {/* Homework List */}
-      <div className="space-y-6">
-        {homeworkData.map((item, index) => (
-          <div 
-            key={index} 
-            className="bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-6 border-t-4 border-blue-500"
-          >
-            {/* Header Section */}
-            <div className="flex justify-between items-start mb-4">
-              <div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-2">{item.title}</h3>
-                <div className="flex flex-wrap gap-3">
-                  <span className="inline-flex items-center gap-2 text-sm text-gray-700 bg-blue-50 px-4 py-2 rounded-full">
-                    <BookOutlined className="text-blue-600" />
-                    {item.subject}
-                  </span>
-                  <span className="inline-flex items-center gap-2 text-sm text-gray-700 bg-green-50 px-4 py-2 rounded-full">
-                    <CalendarOutlined className="text-green-600" />
-                    {item.className}
-                  </span>
-                </div>
-              </div>
+      {/* TABLE */}
 
-              {/* Quick Upload Button for Students */}
-              {role === "student" && (
-                <button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-bold py-2 px-4 rounded-lg transition-all duration-300 hover:shadow-md flex items-center gap-2 whitespace-nowrap">
-                  <UploadOutlined className="text-lg" />
-                  Upload Now
-                </button>
-              )}
-            </div>
+      <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-200">
 
-            {/* Description */}
-            <div className="mb-6 p-4 bg-gray-50 rounded-lg border-l-4 border-blue-500">
-              <p className="text-gray-800 leading-relaxed">{item.description}</p>
-            </div>
+        <div className="overflow-x-auto">
 
-            {/* Due Date */}
-            <div className="mb-6 flex items-center gap-3 text-lg">
-              <ClockCircleOutlined className="text-orange-500 text-xl" />
-              <span className="font-semibold text-gray-800">Due Date:</span>
-              <span className="bg-gradient-to-r from-orange-100 to-orange-50 text-orange-700 px-4 py-2 rounded-lg font-bold">
-                {item.dueDate}
-              </span>
-            </div>
+          <table className="w-full">
 
-            {/* Metadata */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 p-4 bg-gray-50 rounded-lg">
-              <div>
-                <p className="text-xs text-gray-500 uppercase font-semibold mb-1">Subject</p>
-                <p className="font-bold text-gray-900">{item.subject}</p>
-              </div>
-              <div>
-                <p className="text-xs text-gray-500 uppercase font-semibold mb-1">Class</p>
-                <p className="font-bold text-gray-900">{item.className}</p>
-              </div>
-              <div>
-                <p className="text-xs text-gray-500 uppercase font-semibold mb-1">Status</p>
-                <p className="font-bold text-orange-600">Pending</p>
-              </div>
-            </div>
+            <thead className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
 
-            {/* STUDENT UI */}
-            {role === "student" && (
-              <div className="bg-gradient-to-br from-blue-50 to-blue-90 border-2 border-blue-200 rounded-xl p-6">
-                <h4 className="text-lg font-bold text-gray-900 mb-4">📤 Submit Your Homework</h4>
-                
-                <div className="space-y-4">
-                  {/* File Input */}
-                  <div className="relative group">
-                    <input 
-                      type="file" 
-                      id={`file-${index}`}
-                      onChange={(e) => handleFileChange(index, e)}
-                      className="hidden"
-                      disabled={uploadingIndex === index}
-                    />
-                    <label 
-                      htmlFor={`file-${index}`}
-                      className="block border-2 border-dashed border-blue-400 rounded-lg p-6 text-center cursor-pointer hover:border-blue-600 hover:bg-blue-100 transition-all duration-300"
-                    >
-                      <UploadOutlined className="text-3xl text-blue-600 mb-2" />
-                      <p className="text-sm text-gray-700 font-semibold">
-                        {selectedFiles[index] ? selectedFiles[index].name : "Click to upload or drag and drop"}
-                      </p>
-                      <p className="text-xs text-gray-500 mt-1">PDF, DOC, DOCX, PNG, JPG (Max 10MB)</p>
-                    </label>
-                  </div>
+              <tr>
+                <th className="px-6 py-4 text-left">Title</th>
+                <th className="px-6 py-4 text-left">Subject</th>
+                <th className="px-6 py-4 text-left">Class</th>
+                <th className="px-6 py-4 text-left">Due Date</th>
+                <th className="px-6 py-4 text-center">Status</th>
+                <th className="px-6 py-4 text-center">Submission</th>
+                <th className="px-6 py-4 text-center">Actions</th>
+              </tr>
 
-                  {/* Upload Button */}
-                  <button
-                    onClick={() => handleUpload(index)}
-                    disabled={uploadingIndex === index || !selectedFiles[index]}
-                    className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 disabled:from-gray-400 disabled:to-gray-500 text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 hover:shadow-md flex items-center justify-center gap-2"
-                  >
-                    {uploadingIndex === index ? (
-                      <>
-                        <Spin size="small" style={{ color: 'white' }} />
-                        Uploading...
-                      </>
-                    ) : (
-                      <>
-                        <UploadOutlined />
-                        Upload Submission
-                      </>
-                    )}
-                  </button>
+            </thead>
 
-                  {selectedFiles[index] && (
-                    <p className="text-sm text-blue-700 bg-blue-50 p-3 rounded-lg">
-                      ✓ File selected: <span className="font-bold">{selectedFiles[index].name}</span>
-                    </p>
-                  )}
-                </div>
-              </div>
-            )}
+            <tbody>
 
-            {/* TEACHER UI */}
-            {role === "teacher" && (
-              <div className="flex gap-3 border-t pt-4">
-                <button
-                  onClick={() => setEditMode(true)}
-                  className="flex-1 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 hover:shadow-md flex items-center justify-center gap-2"
+              {homeworkData.map((item, index) => (
+
+                <tr
+                  key={index}
+                  className="border-b border-gray-200 hover:bg-blue-50"
                 >
-                  <EditOutlined />
-                  Edit Homework
-                </button>
-                <button className="flex-1 bg-gradient-to-r from-gray-500 to-gray-600 hover:from-gray-600 hover:to-gray-700 text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 hover:shadow-md">
-                  View Submissions
-                </button>
-              </div>
-            )}
 
-          </div>
-        ))}
+                  {/* TITLE */}
+
+                  <td className="px-6 py-4">
+
+                    <p className="font-semibold text-gray-900">
+                      {item.title}
+                    </p>
+
+                    <p className="text-sm text-gray-600">
+                      {item.description}
+                    </p>
+
+                  </td>
+
+                  {/* SUBJECT */}
+
+                  <td className="px-6 py-4">
+                    <Tag color="blue">{item.subject}</Tag>
+                  </td>
+
+                  {/* CLASS */}
+
+                  <td className="px-6 py-4">
+                    <Tag color="green">{item.className}</Tag>
+                  </td>
+
+                  {/* DUE DATE */}
+
+                  <td className="px-6 py-4">
+                    <div className="flex items-center gap-2">
+                      <ClockCircleOutlined />
+                      {item.dueDate}
+                    </div>
+                  </td>
+
+                  {/* STATUS */}
+
+                  <td className="px-6 py-4 text-center">
+
+                    {submittedHomework[item.id] ? (
+                      <Tag color="green">Completed</Tag>
+                    ) : uploadedFiles[item.id] ? (
+                      <Tag color="blue">File Ready</Tag>
+                    ) : (
+                      <Tag color="orange">Pending</Tag>
+                    )}
+
+                  </td>
+
+                  {/* SUBMISSION */}
+
+                  <td className="px-6 py-4 text-center">
+
+                    {submittedHomework[item.id] ? (
+
+                      <span className="text-green-600 font-semibold">
+                        Submitted
+                      </span>
+
+                    ) : uploadedFiles[item.id] ? (
+
+                      <span className="text-blue-600 font-semibold">
+                        📄 {uploadedFiles[item.id]?.name}
+                      </span>
+
+                    ) : (
+
+                      <span className="text-gray-500">
+                        No file uploaded
+                      </span>
+
+                    )}
+
+                  </td>
+
+                  {/* ACTION */}
+
+                  <td className="px-6 py-4">
+
+                   
+
+                      <div className="flex justify-center gap-2">
+
+                        <button
+                          onClick={() => handleUploadClick(item)}
+                          className="bg-blue-600 text-white px-3 py-2 rounded-lg"
+                        >
+                          Upload
+                        </button>
+
+                      </div>
+
+                    
+
+                  </td>
+
+                </tr>
+
+              ))}
+
+            </tbody>
+
+          </table>
+
+        </div>
+
       </div>
+
+      {/* UPLOAD MODAL */}
+
+      <Modal
+        title={`Upload Assignment: ${selectedHomework?.title}`}
+        open={isModalVisible}
+        onCancel={handleModalClose}
+        footer={null}
+      >
+
+        <Upload.Dragger
+          name="file"
+          multiple={false}
+          accept=".pdf,.doc,.docx"
+          beforeUpload={(file) => {
+
+            const isAllowed =
+              file.type === "application/pdf" ||
+              file.type === "application/msword" ||
+              file.type ===
+              "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+
+            if (!isAllowed) {
+              message.error("Only PDF or DOC files allowed!");
+              return Upload.LIST_IGNORE;
+            }
+
+            const isLt10M = file.size / 1024 / 1024 < 100;
+
+            if (!isLt10M) {
+              message.error("File must be smaller than 100MB!");
+              return Upload.LIST_IGNORE;
+            }
+
+            return false;
+
+          }}
+          onChange={handleUploadFiles}
+        >
+
+          <p className="text-lg font-semibold">
+            Drag file here or click to upload
+          </p>
+
+          <p className="text-gray-500 text-sm">
+            Supported: PDF, DOC, DOCX (Max 10MB)
+          </p>
+
+        </Upload.Dragger>
+
+        <div className="flex gap-3 mt-4">
+
+          <button
+            onClick={handleModalClose}
+            className="flex-1 bg-gray-500 text-white py-2 rounded"
+          >
+            Cancel
+          </button>
+
+          <button
+            onClick={handleSubmitHomework}
+            className="flex-1 bg-green-600 text-white py-2 rounded flex items-center justify-center gap-2"
+          >
+            <UploadOutlined />
+            Submit Homework
+          </button>
+
+        </div>
+
+      </Modal>
 
       {editMode && <HomeworkEdit />}
+
     </div>
   );
 }

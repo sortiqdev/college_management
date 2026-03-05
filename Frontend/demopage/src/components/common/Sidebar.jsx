@@ -4,16 +4,21 @@ import { useAuth } from "../../hooks/useAuth";
 import { ORG_MENU } from "../../config/sidebar.org";
 import "./Sidebar.css";
 import { ROLE_PERMISSIONS } from "../../config/permission";
+import {useUser } from "../../hooks/useUser"
+
+
 export default function Sidebar() {
   const { role } = useAuth();
   const location = useLocation();
+  const { user } = useUser();
+
 
   const [openKey, setOpenKey] = useState(null);
   const [collapsed, setCollapsed] = useState(false);
 
   // 🔥 Get full menu
   const fullMenu = ORG_MENU(role);
-
+  console.log(user);
   // 🔥 STRICT ROLE-BASED FILTERING
   // If item.roles is missing OR role not included → hide
  const permissions = ROLE_PERMISSIONS[role] || [];

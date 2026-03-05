@@ -1,44 +1,43 @@
-import React, { useState } from 'react';
-import { Input, Select, Button, message, Tag, Popconfirm } from 'antd';
-import {
-  PlusOutlined,
+import React, { useState } from "react";
+import { Input, Select, Button, Form, message } from "antd";
+import { PlusOutlined, FolderOutlined } from "@ant-design/icons";
+import axios from "axios";
 
-  FolderOutlined,
-  SearchOutlined
-} from '@ant-design/icons';
+const { Option } = Select;
 
 const DepartmentCreate = () => {
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
-    departmentName: '',
-    head: '',
-    description: ''
-  });
+  const [form] = Form.useForm();
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-  };
+  const handleCreateDepartment = async (values) => {
+    const payload = {
+      departmentName: values.departmentName,
+      departmentCode: values.departmentCode,
+      departmentHeadId: values.departmentHeadId,
+      departmentEmail: values.departmentEmail,
+      phoneNumber: values.phoneNumber,
+      location: values.location,
+      status: values.status,
+      description: values.description,
+    };
 
-  const handleCreateDepartment = () => {
-    if (!formData.departmentName || !formData.head || !formData.description) {
-      message.error('Please fill in all fields');
-      return;
-    }
+    try {
+      setLoading(true);
 
-    setLoading(true);
-    setTimeout(() => {
-      message.success(`Department "${formData.departmentName}" created successfully!`);
-      setFormData({
-        departmentName: '',
-        head: '',
-        description: ''
-      });
+      const res = await axios.post(
+        "/api/departments/create",
+        payload
+      );
+
+      
+message.success(res.data.message || "Department created successfully");      
+
+      form.resetFields();
+    } catch (error) {
+      message.error(`Failed to create department${error.message}`);
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
   };
 
   return (
@@ -48,82 +47,118 @@ const DepartmentCreate = () => {
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-2">
           <FolderOutlined className="text-4xl text-blue-600" />
-          <h1 className="text-4xl font-bold text-gray-900">Department Management</h1>
+          <h1 className="text-4xl font-bold text-gray-900">
+            Department Management
+          </h1>
         </div>
-        <p className="text-gray-600">Create and manage departments within your organization</p>
+        <p className="text-gray-600">
+          Create and manage departments within your organization
+        </p>
       </div>
 
-      {/* Create Department Form */}
-      <div className="bg-white rounded-2xl shadow-md p-8 mb-8 border-t-4 border-blue-500">
+      {/* Form */}
+      <div className="bg-white rounded-2xl shadow-md p-8 border-t-4 border-blue-500">
         <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-2">
           <PlusOutlined className="text-blue-600" />
           Create New Department
         </h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-          {/* Department Name */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Department Name <span className="text-red-500">*</span>
-            </label>
-            <Input
-              placeholder="e.g., Computer Science"
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={handleCreateDepartment}
+        >
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+
+            {/* Department Name */}
+            <Form.Item
+              label="Department Name"
               name="departmentName"
-              value={formData.departmentName}
-              onChange={handleInputChange}
-              className="py-2 px-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:outline-none"
-            />
-          </div>
+              rules={[{ required: true, message: "Department name required" }]}
+            >
+              <Input placeholder="Computer Science" />
+            </Form.Item>
 
-          {/* Department Head */}
-          <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Department Head <span className="text-red-500">*</span>
-            </label>
-            <Input
-              placeholder="e.g., Dr. John Doe"
-              name="head"
-              value={formData.head}
-              onChange={handleInputChange}
-              className="py-2 px-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:outline-none"
-            />
-          </div>
+            {/* Department Code */}
+            <Form.Item
+              label="Department Code"
+              name="departmentCode"
+              rules={[{ required: true, message: "Department code required" }]}
+            >
+              <Input placeholder="CSE" />
+            </Form.Item>
 
-          {/* Description */}
-          <div className="lg:col-span-2">
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Description <span className="text-red-500">*</span>
-            </label>
-            <Input
-              placeholder="e.g., Department of Computer Science and Engineering"
+            {/* Department Head */}
+            <Form.Item
+              label="Department Head"
+              name="departmentHeadId"
+              rules={[{ required: true, message: "Select department head" }]}
+            >
+              <Select placeholder="Select Faculty">
+                <Option value="1">Dr John Doe</Option>
+                <Option value="2">Dr Jane Smith</Option>
+              </Select>
+            </Form.Item>
+
+            {/* Email */}
+            <Form.Item
+              label="Department Email"
+              name="departmentEmail"
+              rules={[
+                { type: "email", message: "Enter valid email" },
+              ]}
+            >
+              <Input placeholder="cse@university.edu" />
+            </Form.Item>
+
+            {/* Phone */}
+            <Form.Item label="Phone Number" name="phoneNumber">
+              <Input placeholder="+91 XXXXXXXX" />
+            </Form.Item>
+
+            {/* Location */}
+            <Form.Item label="Office Location" name="location">
+              <Input placeholder="Building A - Room 302" />
+            </Form.Item>
+
+            {/* Status */}
+            <Form.Item label="Status" name="status" initialValue="active">
+              <Select>
+                <Option value="active">Active</Option>
+                <Option value="inactive">Inactive</Option>
+              </Select>
+            </Form.Item>
+
+            {/* Description */}
+            <Form.Item
+              label="Description"
               name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-              className="py-2 px-3 rounded-lg border-2 border-gray-300 focus:border-blue-500 focus:outline-none"
-            />
+              className="md:col-span-2 lg:col-span-3"
+            >
+              <Input.TextArea rows={3} placeholder="Department description" />
+            </Form.Item>
+
           </div>
-        </div>
 
-        {/* Submit Button */}
-        <div className="flex justify-end gap-3">
-          <Button
-            onClick={() => setFormData({ departmentName: '', head: '', description: '' })}
-            className="px-6 py-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-lg transition-colors"
-          >
-            Clear
-          </Button>
-          <Button
-            onClick={handleCreateDepartment}
-            loading={loading}
-            className="px-8 py-2 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-lg transition-all duration-300 flex items-center gap-2"
-          >
-            <PlusOutlined /> Create Department
-          </Button>
-        </div>
+          {/* Buttons */}
+          <div className="flex justify-end gap-3 mt-6">
+            <Button
+              onClick={() => form.resetFields()}
+            >
+              Clear
+            </Button>
+
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={loading}
+              icon={<PlusOutlined />}
+            >
+              Create Department
+            </Button>
+          </div>
+        </Form>
       </div>
-
-
-
     </div>
   );
 };

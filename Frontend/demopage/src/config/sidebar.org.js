@@ -22,7 +22,12 @@ import {
   Wallet,
 } from "lucide-react";
 
-export const ORG_MENU = (role) => [
+export const ORG_MENU = (role) => {
+
+  const isStudent = role === "student";
+
+  return [
+
   // ================= COMMON =================
   {
     key: "dashboard",
@@ -30,9 +35,6 @@ export const ORG_MENU = (role) => [
     path: `/dashboard/${role}`,
     icon: LayoutDashboard,
   },
-  
-
-
 
   // ================= ACADEMICS =================
   {
@@ -65,60 +67,129 @@ export const ORG_MENU = (role) => [
     path: `/dashboard/${role}/result`,
     icon: BarChart3,
   },
- 
-{
-  key: "users",
-  label: "User Management",
-  icon: Users,
-  children: [
-    {
-      key: "user-list",
-      label: "User List",
-      path: `/dashboard/${role}/users`,
-      icon: Users,
-    },
-    {
-      key: "user-create",
-      label: "Create User",
-      path: `/dashboard/${role}/users/add`,
-      icon: UserCog,
-    }
-  ]
-},
+
+  // ================= USER MANAGEMENT =================
+  {
+    key: "departments",
+    label: "Organization Mangement",
+    icon: Users,
+    children: [
+       {
+        key: "user-create",
+        label: "Create User",
+        path: `/dashboard/${role}/users/add`,
+        icon: UserCog,
+      },
+       {
+        key: "user-list",
+        label: "User List",
+        path: `/dashboard/${role}/users`,
+        icon: Users,
+      },
+       {
+        key: "academic-program",
+        label: "Create Programs",
+        path: `/dashboard/${role}/academic/program`,
+      }, 
+      {
+        key: "department-create",
+        label: "Create Department",
+        path: `/dashboard/${role}/departments/add`,
+      },
+      {
+        key: "department-list",
+        label: "Department List",
+        path: `/dashboard/${role}/departments`,
+      },
+     
+    ],
+  },
+
+
   // ================= SECURITY =================
   {
-    key: "roles-permissions",
+    key: "role",
     label: "Roles & Permissions",
-    path: `/dashboard/${role}/roles-permissions`,
+    path: `/dashboard/${role}/role`,
     icon: ShieldCheck,
   },
+
+
+
+    {
+    key: "academic-data",
+    label: "Academic Data",
+    icon: BookOpen,
+    children: [
+      {
+        key: "academic-calendar",
+        label: "Academic Calendar",
+        path: `/dashboard/${role}/academic/calender`,
+      },
+      {
+        key: "academic-timetable",
+        label: "Academic Timetable",
+        path: `/dashboard/${role}/academic/timetable`,
+      },
+      {
+        key: "academic-subject",
+        label: "Subjects",
+        path: `/dashboard/${role}/academic/subject`,
+      },
+     
+      {
+        key: "academic-semester",
+        label: "Semesters",
+        path: `/dashboard/${role}/academic/semester`,
+      },
+      {
+        key: "academic-class",
+        label: "Classes",
+        path: `/dashboard/${role}/academic/class`,
+      },
+       {
+        key: "academic-section",
+        label: "Sections",
+        path: `/dashboard/${role}/academic/section`,
+      },
+     
+      {
+        key: "academic-permissions",
+        label: "Academic Permissions",
+        path: `/dashboard/${role}/academic/permissions`,
+      },
+      {
+        key: "academic-assign",
+        label: "Assign Subjects",
+        path: `/dashboard/${role}/academic/assign`,
+      },
+      {
+        key: "academic-year",
+        label: "Academic Year",
+        path: `/dashboard/${role}/academic/year`,
+      },
+     
+       
+  
+  
+  ]},
+
   // ================= COMMUNICATION =================
   {
     key: "announcement",
     label: "Announcements",
     path: `/dashboard/${role}/announcement`,
     icon: Megaphone,
+    children: [
+      {
+        key: "announcement-create",
+        label: "Create Announcement",
+        path: `/dashboard/${role}/announcement/add`,
+      }
+    ]
   },
-   {
-  key: "departments",
-  label: "Departments",
-  icon: Building2,
+
  
-  children: [
-    {
-      key: "department-list",
-      label: "Department List",
-      path: `/dashboard/${role}/departments`,
-     
-    },
-    {
-      key: "department-create",
-      label: "Create Department",
-      path: `/dashboard/${role}/departments/add`,
- 
-    },
-  ],
-},
   {
     key: "notice",
     label: "Notices",
@@ -127,12 +198,7 @@ export const ORG_MENU = (role) => [
   },
 
   // ================= FINANCE =================
-  {
-    key: "fees",
-    label: "Fees Management",
-    path: `/dashboard/${role}/fees`,
-    icon: CreditCard,
-  },
+
   {
     key: "billing",
     label: "Billing & Subscription",
@@ -147,52 +213,68 @@ export const ORG_MENU = (role) => [
   },
 
   // ================= FACILITIES =================
+ 
+
+
   {
     key: "library",
     label: "Library",
-    
     icon: Library,
+    path: `/dashboard/${role}/library`,
+
+    ...(!isStudent && {
       children: [
         {
           key: "library-view",
           label: "View Books",
-          path : `/dashboard/${role}/library`,
+          path: `/dashboard/${role}/library`,
         },
         {
           key: "library-create",
           label: "Add Books",
-          path : `/dashboard/${role}/library/add`,
+          path: `/dashboard/${role}/library/add`,
         },
         {
-          key: "library-reports", 
+          key: "library-reports",
           label: "Library Reports",
-          path : `/dashboard/${role}/library/reports`,
+          path: `/dashboard/${role}/library/reports`,
         }
-      ],
+      ]
+    })
   },
+
   {
     key: "transport",
     label: "Transport",
-    path: `/dashboard/${role}/transport`,
     icon: Bus,
+    path: `/dashboard/${role}/transport`,
+
+    ...(!isStudent && {
+      children: [
+        {
+          key: "transport-management",
+          label: "Bus Management",
+          path: `/dashboard/${role}/transport/management`,
+        }
+      ]
+    })
   },
+
   {
     key: "hostel",
     label: "Hostel",
-   
     icon: Building2,
-    children: [
-      {
-        key: "hostel-view", 
-        label: "My Room",
-        path : `/dashboard/${role}/hostel`,
-      },
-      {
-        key: "hostel-management",
-        label: "Hostel Management",
-        path : `/dashboard/${role}/hostel/management`,
-      },
-    ],
+    path: `/dashboard/${role}/hostel`,
+
+    ...(!isStudent && {
+      children: [
+        {
+          key: "hostel-management",
+          label: "Hostel Management",
+          path: `/dashboard/${role}/hostel/management`,
+        }
+      ]
+    })
   },
 
   // ================= ORGANIZATION =================
@@ -202,6 +284,7 @@ export const ORG_MENU = (role) => [
     path: `/dashboard/${role}/school`,
     icon: School,
   },
+
   {
     key: "organization-profile",
     label: "Organization Profile",
@@ -209,19 +292,21 @@ export const ORG_MENU = (role) => [
     icon: Building2,
   },
 
-  // ================= USER MANAGEMENT =================
+  // ================= STUDENTS / STAFF =================
   {
     key: "students",
     label: "Students",
     path: `/dashboard/${role}/students`,
     icon: GraduationCap,
   },
+
   {
     key: "teachers",
     label: "Teachers",
     path: `/dashboard/${role}/teachers`,
     icon: Users,
   },
+
   {
     key: "admins",
     label: "Admins",
@@ -229,12 +314,14 @@ export const ORG_MENU = (role) => [
     icon: UserCog,
   },
 
+  // ================= SECURITY =================
   {
     key: "audit-logs",
     label: "Audit Logs",
     path: `/dashboard/${role}/audit-logs`,
     icon: FileSearch,
   },
+
   {
     key: "security-settings",
     label: "Security Settings",
@@ -243,16 +330,89 @@ export const ORG_MENU = (role) => [
   },
 
   // ================= REPORTING =================
+ {
+  key: "reports",
+  label: "Reports",
+ 
+  icon: BarChart3,
+children: [
   {
-    key: "reports",
-    label: "Reports",
+    key: "academic-reports",
+    label: "Academic Reports",
     path: `/dashboard/${role}/reports`,
-    icon: BarChart3,
   },
-   {
+  {
+    key: "fee-reports",
+    label: "Fee Reports",
+    path: `/dashboard/${role}/reports/fees`,
+  },
+  {
+    key: "payroll-reports",
+    label: "Payroll Reports",
+    path: `/dashboard/${role}/reports/payroll`,
+  },
+]
+},
+{
+  key: "fees",
+  label: "Fees Management",
+  icon: CreditCard,
+  children: [
+    {
+      key: "fees-structure",
+      label: "Fees Structure",
+      path: `/dashboard/${role}/fees/structure`,
+    },
+    {
+      key: "fees-program-map",
+      label: "Fee Program Map",
+      path: `/dashboard/${role}/fees/program-map`,
+    },
+    {
+      key: "fees-admin",
+      label: "Fees Admin",
+      path: `/dashboard/${role}/fees/collection`,
+    },
+  ],
+},
+{
+  key: "payroll",
+  label: "Payroll",
+  icon: Wallet, // or DollarSign / CreditCard
+  children: [
+    {
+      key: "teacher-payroll",
+      label: "Teacher Payroll",
+      path: `/dashboard/${role}/payroll/teacher-payroll`,
+    },
+    {
+      key: "salary-structure",
+      label: "Salary Structure",
+      path: `/dashboard/${role}/payroll/salary-structure`,
+    },
+    {
+      key: "approval",
+      label: "Payroll Approval",
+      path: `/dashboard/${role}/payroll/approval`,
+    },
+    {
+      key: "change-request",
+      label: "Change Requests",
+      path: `/dashboard/${role}/payroll/change-request`,
+    },
+    {
+      key: "student-fees",
+      label: "Student Fees",
+      path: `/dashboard/${role}/payroll/student-fees`,
+    },
+  ],
+},
+  {
     key: "profile",
     label: "Profile",
     path: `/dashboard/${role}/profile`,
     icon: UserCog,
   },
+
 ];
+};

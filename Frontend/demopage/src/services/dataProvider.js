@@ -80,6 +80,17 @@ export const getStudentFees = async () => {
   }
 };
 
+export const getStudentTransport = async () => {
+  try {
+    const res = await API.get("/student/transport");
+    return res.data;
+  } catch {
+    console.log("Backend not ready — using mock data for transport");
+    // fallback to fees.transport if transport endpoint not available
+    return STUDENT_DATA.fees.transport;
+  }
+};
+
 export const getStudentHomework = async ()=>{
   try{
      const res = await API.get("/student/homework");

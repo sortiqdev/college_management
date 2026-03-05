@@ -160,6 +160,20 @@ attendance: {
       pickupPoint: "Main Chowk",
       timing: "7:30 AM",
       monthlyFare: 1500,
+      // schedule of time at each stop along the route
+      stops: [
+        { name: "Main Chowk", time: "7:30 AM" },
+        { name: "Central Park", time: "7:45 AM" },
+        { name: "College Gate", time: "8:00 AM" },
+      ],
+      // attendance details – whether student boarded the assigned bus
+      attendance: {
+        status: "on_bus", // other values: "not_on_bus", "other_bus"
+        busId: "Bus 5",
+        // if student boarded a different bus, optionally record it
+        otherBus: null,
+        message: "You are on the correct bus."
+      }
     },
 
     classOverview: []

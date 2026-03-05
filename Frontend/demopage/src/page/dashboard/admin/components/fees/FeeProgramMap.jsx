@@ -1,9 +1,29 @@
-import React from 'react'
+import React from "react";
+import { Card, Table } from "antd";
 
 const FeeProgramMap = () => {
-  return (
-    <div>FeeProgramMap</div>
-  )
-}
+  const columns = [
+    { title: "Program", dataIndex: "program" },
+    { title: "Department", dataIndex: "department" },
+    { title: "Academic Year", dataIndex: "year" },
+    { title: "Fee Structure", dataIndex: "structure" },
+  ];
 
-export default FeeProgramMap
+  const data = [
+    {
+      key: 1,
+      program: "B.Tech",
+      department: "Computer Science",
+      year: "2026",
+      structure: "Standard Structure",
+    },
+  ];
+
+  return (
+    <Card title="Fee Program Mapping">
+      <Table columns={columns} dataSource={data} />
+    </Card>
+  );
+};
+
+export default FeeProgramMap;

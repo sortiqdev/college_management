@@ -1,49 +1,20 @@
-import React, { useEffect, useState } from "react";
+
 import API from "../../../../../services/api";
 import "./Profile.css";
 import { useAuth } from "../../../../../hooks/useAuth";
+import { useUser } from "../../../../../hooks/useUser";
 
-import { getStudentProfile } from "../../../../../services/dataProvider";
 
 
 export default function ProfileView() {
     // console.log("ROLE:", role);
     const { role } = useAuth();
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchProfile = async () => {
-      try {
-        // const res = await API.get("/profile"); 
-        // backend should return role-based data
-        // setData(res.data || null);
-        const  result = await getStudentProfile();
-setData(result);
-      } catch{
-        console.log("Profile API not ready — showing empty state");
-        setData(null);
-      } finally {
-        setLoading(false);
-      }
-    };
+ 
+   const  {user} =  useUser();
 
-    fetchProfile();
-  }, []);
 
-  if (loading) {
-    return (
-      <div className="profile-container">
-        <div className="profile-right">
-          <div className="profile-section">
-            <div className="section-body">
-              Loading profile...
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+
 
   return (
     <div className="profile-container">
@@ -51,18 +22,18 @@ setData(result);
       {/* LEFT CARD */}
      <div className="profile-left">
       <div className="profile-avatar"></div>
-
-      <h3>{data?.name || "----"}</h3>
+<h3>{user?.firstname} {user?.lastname}</h3>
+<p className="profile-role">{role?.toUpperCase()}</p>
 
       <p>
-        {role === "student" && `Roll No: ${data?.rollNumber || "----"}`}
-        {role === "teacher" && `Employee ID: ${data?.employeeId || "----"}`}
-        {role === "parent" && `Parent ID: ${data?.parentId || "----"}`}
+        {role === "student" && `Roll No: ${user?.rollnumber || "----"}`}
+        {role === "teacher" && `Employee ID: ${user?.employeeId || "----"}`}
+        {role === "parent" && `Parent ID: ${user?.parentId || "----"}`}
       </p>
 
       <p>
-        {role === "student" && `Class: ${data?.class || "----"}`}
-        {role === "teacher" && `Department: ${data?.department || "----"}`}
+        {role === "student" && `Class: ${user?.department || "----"}`}
+        {role === "teacher" && `Department: ${user?.department || "----"}`}
       </p>
     </div>
       {/* RIGHT SIDE */}
@@ -72,18 +43,18 @@ setData(result);
     {role === "student" && (
   <>
     <Section title="Student Details">
-      <Row label="Name" value={data?.name} />
-      <Row label="D.O.B" value={data?.dob} />
-      <Row label="Email" value={data?.email} />
-      <Row label="Contact" value={data?.phone} />
-      <Row label="State" value={data?.state} />
-      <Row label="City" value={data?.city} />
+      <Row label="Name" value={user?.firstname} />
+      <Row label="D.O.B" value={user?.dateofbirth} />
+      <Row label="Email" value={user?.email} />
+      <Row label="Contact" value={user?.phone} />
+      <Row label="State" value={user?.state} />
+      <Row label="City" value={user?.city} />
     </Section>
 
     <Section title="Parent Details">
-      <Row label="Father Name" value={data?.parent?.fatherName} />
-      <Row label="Mother Name" value={data?.parent?.motherName} />
-      <Row label="Guardian Contact" value={data?.parent?.guardianPhone} />
+      <Row label="Father Name" value={user?.fathername} />
+      <Row label="Mother Name" value={user?.mothername} />
+      <Row label="Guardian Contact" value={user?.parentphone} />
     </Section>
   </>
 )}
@@ -92,11 +63,12 @@ setData(result);
         {/* TEACHER */}
         {role === "teacher" && (
           <Section title="Teacher Details">
-            <Row label="Name" value={data?.name} />
-            <Row label="Employee ID" value={data?.employeeId} />
-            <Row label="Department" value={data?.department} />
-            <Row label="Qualification" value={data?.qualification} />
-            <Row label="Experience" value={data?.experience} />
+            <Row label="Name" value={user?.name} />
+            <Row label="Employee ID" value={user?.employeeId} />
+            <Row label="Department" value={user?.department} />
+             <Row label="Designation" value={user?.designation} />
+            <Row label="Qualification" value={user?.qualification} />
+            <Row label="Experience" value={user?.experience} />
           </Section>
         )}
 
@@ -104,18 +76,68 @@ setData(result);
         {role === "parent" && (
           <>
             <Section title="Parent Information">
-              <Row label="Name" value={data?.name} />
-              <Row label="Email" value={data?.email} />
-              <Row label="Mobile" value={data?.mobile} />
+              <Row label="Name" value={user?.name} />
+              <Row label="Email" value={user?.email} />
+              <Row label="Mobile" value={user?.mobile} />
             </Section>
 
             <Section title="Child Information">
-              <Row label="Student Name" value={data?.child?.name} />
-              <Row label="Class" value={data?.child?.className} />
-              <Row label="Roll No" value={data?.child?.rollNumber} />
+              <Row label="Student Name" value={user?.child?.name} />
+              <Row label="Class" value={user?.child?.className} />
+              <Row label="Roll No" value={user?.child?.rollNumber} />
             </Section>
           </>
         )}
+
+        {role=== "admin"&&(
+<>
+
+<Section title="Admin Information">
+      <Row label="Name" value={`${user?.firstname} ${user?.lastname}`} />
+      <Row label="Email" value={user?.email} />
+      <Row label="Phone" value={user?.phone} />
+      <Row label="Department" value={user?.department} />
+      <Row label="Designation" value={user?.designation || "Administrator"} />
+    </Section>
+
+    <Section title="Organization Details">
+      <Row label="Organization Name" value={user?.organizationName} />
+      <Row label="Organization ID" value={user?.organizationId} />
+      <Row label="Address" value={user?.address} />
+      <Row label="City" value={user?.city} />
+      <Row label="State" value={user?.state} />
+    </Section>
+
+    <Section title="Account Details">
+      <Row label="Role" value="Admin" />
+      <Row label="Account Status" value="Active" />
+      <Row label="Created At" value={user?.createdAt} />
+    </Section>
+
+</>
+
+        )}
+        {role === "superadmin" && (
+  <>
+    <Section title="Super Admin Details">
+      <Row label="Name" value={`${user?.firstname} ${user?.lastname}`} />
+      <Row label="Email" value={user?.email} />
+      <Row label="Phone" value={user?.phone} />
+      <Row label="Super Admin ID" value={user?.superAdminId} />
+    </Section>
+
+    <Section title="Platform Control">
+      <Row label="Role" value="Super Admin" />
+      <Row label="System Access" value="Full Access" />
+      <Row label="Managed Organizations" value={user?.orgCount || "All"} />
+    </Section>
+
+    <Section title="System Information">
+      <Row label="Last Login" value={user?.lastLogin} />
+      <Row label="Account Status" value="Active" />
+    </Section>
+  </>
+)}
 
       </div>
     </div>

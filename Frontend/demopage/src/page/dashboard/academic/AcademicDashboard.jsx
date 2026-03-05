@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+
 import { Card, Tag, Spin } from "antd";
 import {
   BookOutlined,
@@ -11,28 +11,12 @@ import {
   BellOutlined,
   ClockCircleOutlined
 } from "@ant-design/icons";
+import {useUser} from "../../../hooks/useUser"
 
-import { getStudentDashboard } from "../../../services/dataProvider";
 
 export default function AcademicDashboard() {
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchDashboard = async () => {
-      try {
-        const result = await getStudentDashboard();
-        setData(result);
-      } catch {
-        console.log("Dashboard API not ready");
-        setData(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchDashboard();
-  }, []);
+  const { user} = useUser();
+ 
 
   const getDayOfWeek = (dateString) => {
     if (!dateString) return "Today";
@@ -41,13 +25,7 @@ export default function AcademicDashboard() {
     return days[date.getDay()];
   };
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center min-h-[60vh]">
-        <Spin size="large" />
-      </div>
-    );
-  }
+
 
   return (
     <div className="p-6 bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen">
@@ -61,20 +39,20 @@ export default function AcademicDashboard() {
             <div className="bg-blue-100 p-3 rounded-lg">
               <UserOutlined className="text-2xl text-blue-600" />
             </div>
-            <h3 className="text-lg font-bold text-gray-800">Student Profile</h3>
+            <h3 className="text-lg font-bold text-gray-800"> {user?.firstname} {user?.lastname}</h3>
           </div>
           <div className="space-y-3">
             <div>
               <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide">Roll Number</p>
-              <p className="text-xl font-bold text-gray-900">{data?.rollNumber ?? "—"}</p>
+              <p className="text-xl font-bold text-gray-900">{user?.rollnumber ?? "—"}</p>
             </div>
             <div>
               <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide">Class</p>
-              <p className="text-xl font-bold text-gray-900">{data?.class ?? "—"}</p>
+              <p className="text-xl font-bold text-gray-900">{user?.department}</p>
             </div>
             <div>
               <p className="text-xs text-gray-500 font-semibold uppercase tracking-wide">Student</p>
-              <p className="text-sm font-semibold text-gray-700">{data?.name ?? "Active Student"}</p>
+              <p className="text-lg font-semibold text-gray-700">{user?.firstname} {user?.lastname}</p>
             </div>
           </div>
         </div>
@@ -90,22 +68,22 @@ export default function AcademicDashboard() {
           <div className="space-y-4">
             <div className="text-center py-4 bg-gradient-to-r from-green-50 to-green-100 rounded-lg">
               <div className="text-3xl font-bold text-green-600">
-                {data?.attendance ? `${data.attendance}%` : "—"}
+                {user?.attendance ? `${user.attendance}%` : "—"}
               </div>
               <p className="text-xs text-gray-600 mt-1">Overall Attendance</p>
             </div>
             <div className="space-y-2">
               <div className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg">
                 <CheckCircleOutlined className="text-green-500 text-lg" />
-                <span className="text-sm text-gray-700">{data?.presentDays ?? "0"} Present</span>
+                <span className="text-sm text-gray-700">{user?.presentDays ?? "0"} Present</span>
               </div>
               <div className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg">
                 <CloseCircleOutlined className="text-red-500 text-lg" />
-                <span className="text-sm text-gray-700">{data?.absentDays ?? "0"} Absent</span>
+                <span className="text-sm text-gray-700">{user?.absentDays ?? "0"} Absent</span>
               </div>
               <div className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg">
                 <SolutionOutlined className="text-yellow-500 text-lg" />
-                <span className="text-sm text-gray-700">{data?.leaveDays ?? "0"} Leave</span>
+                <span className="text-sm text-gray-700">{user?.leaveDays ?? "0"} Leave</span>
               </div>
             </div>
           </div>
@@ -121,13 +99,13 @@ export default function AcademicDashboard() {
           </div>
           <div className="space-y-4">
             <div className="text-center py-4 bg-gradient-to-r from-purple-50 to-purple-100 rounded-lg">
-              <div className="text-3xl font-bold text-purple-600">{data?.totalAssignments ?? "0"}</div>
+              <div className="text-3xl font-bold text-purple-600">{user?.totalAssignments ?? "0"}</div>
               <p className="text-xs text-gray-600 mt-1">Total Assigned</p>
             </div>
-            {data?.assignments?.length ? (
+            {user?.assignments?.length ? (
               <div className="p-3 bg-gray-50 rounded-lg border-l-4 border-purple-500">
                 <p className="text-xs text-gray-500 uppercase font-semibold">Recent:</p>
-                <p className="text-sm font-semibold text-gray-800 mt-1 truncate">{data.assignments[0]?.title}</p>
+                <p className="text-sm font-semibold text-gray-800 mt-1 truncate">{user.assignments[0]?.title}</p>
               </div>
             ) : (
               <div className="p-3 bg-gray-50 rounded-lg text-center">
@@ -171,9 +149,9 @@ export default function AcademicDashboard() {
           </span>
         </div>
 
-        {data?.todayClasses?.length ? (
+        {user?.todayClasses?.length ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {data.todayClasses.map((item, index) => (
+            {user.todayClasses.map((item, index) => (
               <div key={index} className="p-5 bg-gradient-to-br from-blue-50 to-blue-90 border-2 border-blue-200 rounded-xl hover:shadow-md hover:border-blue-400 transition-all duration-300">
                 <div className="flex justify-between items-start mb-3">
                   <div className="flex items-center gap-2">
