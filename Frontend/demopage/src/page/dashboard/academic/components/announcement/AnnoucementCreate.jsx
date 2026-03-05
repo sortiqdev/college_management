@@ -1,16 +1,59 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 export default function AnnouncementCreate() {
+
+  const [loading,setLoading] = useState(false)
+
   const [form, setForm] = useState({
     title: "",
     description: "",
     target: "all",
   });
 
-  const handleSubmit = (e) => {
+  // Example user data (normally from JWT / Context / Redux)
+  const user = JSON.parse(localStorage.getItem("user"))
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(form);
-    alert("Announcement Published");
+
+    try {
+
+      setLoading(true)
+
+      const payload = {
+        ...form,
+        createdBy:{
+          userId:user?._id,
+          role:user?.role
+        }
+      }
+
+      // eslint-disable-next-line no-unused-vars
+      const res = await axios.post(
+        "http://localhost:5000/api/announcements/create",
+        payload
+      );
+
+      console.log("Payload Sent:",payload)
+
+      alert("Announcement Published")
+
+      setForm({
+        title:"",
+        description:"",
+        target:"all"
+      })
+
+    } catch (error) {
+
+      console.error(error)
+      alert("Failed to publish announcement")
+
+    } finally{
+      setLoading(false)
+    }
+
   };
 
   return (
@@ -31,9 +74,10 @@ export default function AnnouncementCreate() {
 
           <button
             onClick={handleSubmit}
+            disabled={loading}
             className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg text-sm font-medium transition"
           >
-            Publish
+            {loading ? "Publishing..." : "Publish"}
           </button>
         </div>
 
@@ -53,7 +97,7 @@ export default function AnnouncementCreate() {
               onChange={(e) =>
                 setForm({ ...form, title: e.target.value })
               }
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm"
               required
             />
           </div>
@@ -72,7 +116,7 @@ export default function AnnouncementCreate() {
               onChange={(e) =>
                 setForm({ ...form, description: e.target.value })
               }
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm"
               required
             />
 
@@ -92,7 +136,7 @@ export default function AnnouncementCreate() {
               onChange={(e) =>
                 setForm({ ...form, target: e.target.value })
               }
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm"
             >
               <option value="all">All Users</option>
               <option value="student">Students</option>
@@ -106,4 +150,4 @@ export default function AnnouncementCreate() {
 
     </div>
   );
-}
+}1
