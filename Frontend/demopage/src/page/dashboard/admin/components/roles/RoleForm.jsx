@@ -6,6 +6,7 @@ const RoleForm = ({ initialValues = {}, onCancel, onSubmit, submitting }) => {
 
   React.useEffect(() => {
     form.setFieldsValue(initialValues);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialValues]);
 
   return (

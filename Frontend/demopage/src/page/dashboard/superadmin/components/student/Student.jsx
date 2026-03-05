@@ -97,7 +97,7 @@ setLoading(false);
 }
 
 useEffect(()=>{
-// eslint-disable-next-line react-hooks/set-state-in-effect
+
 fetchStudents();
 // eslint-disable-next-line react-hooks/exhaustive-deps
 },[]);
