@@ -1,20 +1,30 @@
 import React from "react";
-import "./Notice.css";
+import { Tabs, Card } from "antd";
 import NoticeCreate from "./NoticeCreate";
 import NoticeView from "./NoticeView";
 
-export default function Notice({ role }) {
+const { TabPane } = Tabs;
+
+export default function Notice() {
   return (
-    <div className="notice-container">
-      <div className="notice-header">
-        <h2>📢 Notice Board</h2>
-      </div>
+    <Card
+      title="Notice Board"
+      style={{
+        borderRadius: 10,
+        boxShadow: "0 2px 8px rgba(0,0,0,0.05)"
+      }}
+    >
+      <Tabs defaultActiveKey="1">
 
-      {(role === "teacher" || role === "admin") && (
-        <NoticeCreate />
-      )}
+        <TabPane tab="View Notices" key="1">
+          <NoticeView />
+        </TabPane>
 
-      <NoticeView role={role} />
-    </div>
+        <TabPane tab="Create Notice" key="2">
+          <NoticeCreate />
+        </TabPane>
+
+      </Tabs>
+    </Card>
   );
 }

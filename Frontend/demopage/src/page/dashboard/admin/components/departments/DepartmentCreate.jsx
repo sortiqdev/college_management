@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { Input, Select, Button, Form, message } from "antd";
 import { PlusOutlined, FolderOutlined } from "@ant-design/icons";
-import axios from "axios";
+import API from "../../../../../services/api";
 
 const { Option } = Select;
 
 const DepartmentCreate = () => {
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
+  const user = JSON.parse(localStorage.getItem("user")) || {};
+  const createdBy = user.role; // get role from localStorage
 
   const handleCreateDepartment = async (values) => {
     const payload = {
@@ -19,13 +21,13 @@ const DepartmentCreate = () => {
       location: values.location,
       status: values.status,
       description: values.description,
+      createdBy: createdBy,
     };
 
     try {
       setLoading(true);
 
-      const res = await axios.post(
-        "/api/departments/create",
+      const res = await API.post("departments",
         payload
       );
 

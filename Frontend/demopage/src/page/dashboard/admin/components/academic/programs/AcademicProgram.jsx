@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Card, Input, Select, Button, message, Form } from "antd";
 import axios from "axios";
+import API from "../../../../../../services/api";
 
 const { Option } = Select;
 const { TextArea } = Input;
@@ -16,21 +17,23 @@ const AcademicProgram = () => {
     fetchDepartments();
   }, []);
 
-  const fetchDepartments = async () => {
+const fetchDepartments = async () => {
+  try {
 
-    try {
+    const res = await API.get("departments");
 
-      const res = await axios.get("/api/departments");
+    const deptList = res?.data?.data || [];
 
-      setDepartments(res.data.data || []);
+    console.log("Departments:", deptList);
 
-    } catch (error) {
+    setDepartments(deptList);
 
-      message.error(`Failed to load department${error.message}`);
+  } catch (error) {
 
-    }
+    message.error(`Failed to load department ${error.message}`);
 
-  };
+  }
+};
 
   // Submit Program
   const handleSubmit = async (values) => {
@@ -96,21 +99,21 @@ const AcademicProgram = () => {
 
           {/* Department */}
 
-          <Form.Item
-            label="Department"
-            name="departmentId"
-            rules={[{ required: true, message: "Select department" }]}
-          >
-            <Select placeholder="Select Department">
+         <Form.Item
+  label="Department"
+  name="departmentId"
+  rules={[{ required: true, message: "Select department" }]}
+>
+  <Select placeholder="Select Department">
 
-              {departments.map((dept) => (
-                <Option key={dept._id} value={dept._id}>
-                  {dept.name}
-                </Option>
-              ))}
+    {departments.map((dept) => (
+      <Option key={dept.id} value={dept.id}>
+        {dept.departmentName}
+      </Option>
+    ))}
 
-            </Select>
-          </Form.Item>
+  </Select>
+</Form.Item>
 
 
           {/* Duration */}

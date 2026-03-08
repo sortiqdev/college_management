@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Input, Button, message, Popconfirm, Spin, Select } from "antd";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
+import API from "../../../../../services/api";
 import GroupsIcon from "@mui/icons-material/Groups";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -23,7 +23,7 @@ const navigate = useNavigate();
     try {
       setLoading(true);
 
-      const res = await axios.get("/api/departments");
+      const res = await API.get("departments");
 
       setDepartments(res.data.data || []);
     } catch (error) {

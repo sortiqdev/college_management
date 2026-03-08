@@ -161,8 +161,8 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <SuperAdminDashboard /> },
       { path: "profile", element: <ProfileView /> },
-      { path: "notice", element: <NoticeCreate /> },
-      { path: "announcement", element: <AnnouncementCreate /> },
+      { path: "notice", element: <Notice /> },
+      { path: "announcement", element: <Announcement />},
       {path: "students", element : <Students />},
       {path:"teachers", element: <TeacherOverview />},
       {path:"admins",element:<AdminManagement />},
@@ -175,10 +175,8 @@ const router = createBrowserRouter([
             children: [
               { index: true, element: <UserList /> },
               { path: "add", element: <UserCreate /> },
-            ],},
+                    ],},
                { path: "billing", element: <Billing /> }
-
-
                ],},
 
       {
@@ -205,14 +203,9 @@ const router = createBrowserRouter([
        {      path: "payroll",      element: <PayrollReport />,    },
   ],},
         { path: "profile", element: <ProfileView /> },
-        { path: "notice", element: <NoticeCreate /> },
+        { path: "notice", element: <Notice /> },
         {path: "role" , element:<Role />},
-        { path: "announcement", element: <Announcement/>,
-          children:[
-            {index:true, element:<AnnouncementView />},
-            {path:"add", element:<AnnouncementCreate />}
-          ]
-         },
+        { path: "announcement", element: <Announcement />},
         { path: "departments",  element: <Departments />,
             children: [
              { index: true, element: <DepartmentList /> },
@@ -267,13 +260,11 @@ const router = createBrowserRouter([
         { path: "homework", element: <Homework /> },
         { path: "homework/view", element: <HomeworkView /> },
 
-        { path: "announcement", element: <Announcement />, 
-          children:[ {index:true, element:<AnnouncementView />},]},
+       { path: "announcement", element: <AnnouncementView />},
         
       
 
-        {path:"notice", element:<Notice />,
-          children:[ {index:true, element:<NoticeView />}, ] },
+        { path: "notice", element: <NoticeView /> },
 
         {path:"hostel", element: <Hostel />,
           children:[ {index: true, element: <HostelView />},] },
@@ -318,8 +309,11 @@ const router = createBrowserRouter([
         { index: true, element: <TeacherDashboard /> },
         { path: "attendance", element: <AttendanceCreate /> },
         { path: "homework", element: <HomeworkCreate /> },
-        { path: "notice", element: <NoticeCreate /> },
-        { path: "announcement", element: <AnnouncementCreate /> },
+        { path: "notice", element: <Notice /> },
+    {
+ path: "announcement",
+ element: <Announcement />
+},
         { path: "syllabus", element: <SyllabusUpload />,
             children:[{ path: "syllabus/view", element: <SyllabusView /> },] }, 
         { path: "results", element: <ResultEdit /> },

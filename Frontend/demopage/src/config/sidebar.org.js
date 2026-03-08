@@ -176,18 +176,11 @@ export const ORG_MENU = (role) => {
 
   // ================= COMMUNICATION =================
   {
-    key: "announcement",
-    label: "Announcements",
-    path: `/dashboard/${role}/announcement`,
-    icon: Megaphone,
-    children: [
-      {
-        key: "announcement-create",
-        label: "Create Announcement",
-        path: `/dashboard/${role}/announcement/add`,
-      }
-    ]
-  },
+  key: "announcement",
+  label: "Announcements",
+  path: `/dashboard/${role}/announcement`,
+  icon: Megaphone
+},
 
  
   {

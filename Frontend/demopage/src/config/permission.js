@@ -21,7 +21,9 @@ export const ROLE_PERMISSIONS = {
     "hostel",
     "result",
     "notice",
-    "announcement",
+      "announcement",
+  "announcement-view",
+
     
     "profile",
     
@@ -33,7 +35,9 @@ export const ROLE_PERMISSIONS = {
     "result",
     "fees",
     "notice",
-     "announcement",
+      "announcement",
+  "announcement-view",
+
        "profile",
   ],
 
@@ -45,13 +49,18 @@ export const ROLE_PERMISSIONS = {
     "assignments",
     "result",
     "notice",
+  "notice-view",
+  "notice-create",
+
      "library-create",
      "library-view",
      "hostel-view",
      "transport",
      "transport-management",
      "hostel-management",
-    "announcement",
+     "announcement",
+  "announcement-view",
+
     "fees",
     "library",
     "transport",
@@ -78,9 +87,14 @@ export const ROLE_PERMISSIONS = {
     "academic-program",
     "academic-section",
     "academic-permissions",
-    "announcement",
+     "announcement",
+  "announcement-view",
+
     "announcement-create",
     "notice",
+  "notice-view",
+  "notice-create",
+
     "fees",
     "library",
     "library-reports",
@@ -127,8 +141,14 @@ export const ROLE_PERMISSIONS = {
   "students",
   "teachers",
   "announcement",
-  "announcement-create",
+"announcement-create",
+  "announcement",
+  "announcement-view",
+
   "notice",
+  "notice-view",
+  "notice-create",
+
   "profile",
   ], // full access
 };
