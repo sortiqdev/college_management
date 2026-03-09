@@ -11,3 +11,178 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+//////////////////////////////////////////////////////
+// ENUMS
+//////////////////////////////////////////////////////
+
+enum subscriptionStatus {
+  active
+  expired
+  cancelled
+}
+
+enum paymentStatus {
+  pending
+  completed
+  due
+  failed
+}
+
+enum paymentMethod {
+  cash
+  check
+  bankTransfer
+  upi
+  card
+  onlineGateway
+}
+
+//////////////////////////////////////////////////////
+// ORGANIZATION
+//////////////////////////////////////////////////////
+
+model Organization {
+  id                Int      @id @default(autoincrement())
+  organizationName  String
+  domain            String?  @unique
+  ownerEmail        String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  subscriptions     OrganizationSubscription[]
+  payments          Payment[]
+
+  @@index([ownerEmail])
+}
+
+//////////////////////////////////////////////////////
+// PACKAGE
+//////////////////////////////////////////////////////
+
+model Package {
+  id            Int      @id @default(autoincrement())
+  packageName   String   @unique
+  isTrial       Boolean  @default(false)
+  createdAt     DateTime @default(now())
+
+  subscriptionPlans SubscriptionPlan[]
+  packageLimit      PackageLimit?
+  packageFeatures   PackageFeature[]
+}
+
+//////////////////////////////////////////////////////
+// SUBSCRIPTION PLAN
+//////////////////////////////////////////////////////
+
+model SubscriptionPlan {
+  id               Int      @id @default(autoincrement())
+  packageId        Int
+  subscriptionType String
+  durationDays     Int
+  price            Int
+  createdAt        DateTime @default(now())
+
+  package Package @relation(fields: [packageId], references: [id])
+
+  subscriptions OrganizationSubscription[]
+
+  @@index([packageId])
+  @@index([subscriptionType])
+}
+
+//////////////////////////////////////////////////////
+// PACKAGE LIMITS
+//////////////////////////////////////////////////////
+
+model PackageLimit {
+  id                     Int @id @default(autoincrement())
+  packageId              Int @unique
+  maxAdmins              Int
+  maxTeachers            Int
+  maxStudents            Int
+  announcementsPerMonth  Int
+  noticesPerMonth        Int @default(10)
+
+  package Package @relation(fields: [packageId], references: [id])
+}
+
+//////////////////////////////////////////////////////
+// FEATURES
+//////////////////////////////////////////////////////
+
+model Feature {
+  id           Int    @id @default(autoincrement())
+  featureName  String @unique
+  moduleType   String
+
+  packageFeatures PackageFeature[]
+}
+
+//////////////////////////////////////////////////////
+// PACKAGE FEATURES
+//////////////////////////////////////////////////////
+
+model PackageFeature {
+  id        Int @id @default(autoincrement())
+  packageId Int
+  featureId Int
+  isEnabled Boolean @default(true)
+
+  package Package @relation(fields: [packageId], references: [id])
+  feature Feature @relation(fields: [featureId], references: [id])
+
+  @@unique([packageId, featureId])
+  @@index([packageId])
+  @@index([featureId])
+}
+
+//////////////////////////////////////////////////////
+// ORGANIZATION SUBSCRIPTION
+//////////////////////////////////////////////////////
+
+model OrganizationSubscription {
+  id                     Int      @id @default(autoincrement())
+  organizationId         Int
+  subscriptionPlanId     Int
+  startDate              DateTime
+  expireDate             DateTime
+  organizationCreatedAt  DateTime
+  createdBy              String
+  status                 subscriptionStatus
+  createdAt              DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  subscriptionPlan SubscriptionPlan @relation(fields: [subscriptionPlanId], references: [id])
+
+  payments Payment[]
+
+  @@index([organizationId])
+  @@index([subscriptionPlanId])
+  @@index([status])
+}
+
+//////////////////////////////////////////////////////
+// PAYMENTS
+//////////////////////////////////////////////////////
+
+model Payment {
+  id                   Int      @id @default(autoincrement())
+  organizationId       Int
+  subscriptionId       Int
+  amount               Int
+  paymentStatus        paymentStatus
+  paymentMethod        paymentMethod
+  paymentDate          DateTime?
+  dueDate              DateTime?
+  transactionReference String?
+  notes                String?
+  createdAt            DateTime @default(now())
+
+  organization Organization @relation(fields: [organizationId], references: [id])
+  subscription OrganizationSubscription @relation(fields: [subscriptionId], references: [id])
+
+  @@index([organizationId])
+  @@index([subscriptionId])
+  @@index([paymentStatus])
+}

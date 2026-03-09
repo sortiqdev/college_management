@@ -1,13 +1,12 @@
+import React from 'react'
 import { useState } from "react";
 import { Mail, Lock, GraduationCap, User, Shield, Phone, Building } from "lucide-react";
-import API from "../../../services/api";
+import API from "../../../../services/api";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import { useUser } from "../../../hooks/useUser";
-
-
-export default function Login() {
-  const [role, setRole] = useState("student");
+import { useUser } from "../../../../hooks/useUser";
+const LoginModel = () => {
+     const [role, setRole] = useState("student");
  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
@@ -51,32 +50,8 @@ switch(role){
   }
 };
 
-
   return (
-    <div className="min-h-screen flex bg-gradient-to-br from-[#0f172a] via-[#1e3a5f] to-[#0f172a] text-white">
-
-      {/* LEFT SIDE */}
-      <div className="hidden lg:flex w-1/2 flex-col justify-center px-20 relative">
-        <h1 className="text-5xl font-bold mb-6 leading-tight">
-          Sortiq <br />
-          <span className="text-blue-400">Management Software</span>
-        </h1>
-
-        <h2 className="text-2xl text-blue-300 mb-4">
-          Integrate Technology With Modern Education
-        </h2>
-
-        <p className="text-gray-300 max-w-md leading-relaxed">
-          Integrated School, College & Institute Management System that
-          streamlines academics, administration, and operations using
-          modern technology.
-        </p>
-
-        <div className="w-20 h-1 bg-blue-500 mt-6 rounded-full"></div>
-      </div>
-
-      {/* RIGHT SIDE */}
-      <div className="flex w-full lg:w-1/2 items-center justify-center p-6">
+   <div className="flex w-full lg:w-1/2 items-center justify-center p-6">
         <div className="w-full max-w-xl bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/20 p-8">
 
           <h2 className="text-2xl font-semibold text-center mb-6">Login</h2>
@@ -134,8 +109,7 @@ switch(role){
             </div>
           </div>
 
-    
-
+        
           {/* Password */}
           <div className="mb-4">
             <label className="text-sm text-gray-300">Password</label>
@@ -168,6 +142,9 @@ switch(role){
           </button>
         </div>
       </div>
-    </div>
+
   );
 }
+
+
+export default LoginModel

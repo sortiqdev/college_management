@@ -12,33 +12,32 @@ export default function Blog() {
   const [sort, setSort] = useState("latest");
   const [category, setCategory] = useState("all");
 
-  const categories = ["all", "backend", "technology", "security"];
+  const categories = ["all", "backend", "technology", "security","education"];
 
   // API CALL
-  const fetchBlogs = async (page = 1, sortType = sort, cat = category) => {
-    try {
 
-      const res = await getAllBlogs(page, sortType, cat);
+// API CALL
+const fetchBlogs = async (page = 1, sortType = sort, cat = category) => {
+  try {
 
-      console.log("API RESPONSE:", res.data);
+    const res = await getAllBlogs(page, sortType, cat);
 
-      const apiData = res?.data?.data || {};
-      console.log("api data", apiData);
-    const blogs = Array.isArray(apiData) ? apiData : apiData.data || [];
+    console.log("API RESPONSE:", res.data);
 
-      console.log("BLOG ARRAY:", blogs);
+    const apiData = res?.data;
 
-      setBlogPosts(blogs);
-      setCurrentPage(apiData?.current_page || 1);
-      setLastPage(apiData?.last_page || 1);
+    const blogs = apiData?.data || [];
 
-    } catch (error) {
-      console.error("Error fetching blogs:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+    setBlogPosts(blogs);
+    setBlogPosts(apiData?.data || []);
+    setLastPage(apiData?.last_page || 1);
 
+  } catch (error) {
+    console.error("Error fetching blogs:", error);
+  } finally {
+    setLoading(false);
+  }
+};
   useEffect(() => {
     fetchBlogs(currentPage, sort, category);
   }, [currentPage, sort, category]);
@@ -175,27 +174,55 @@ export default function Blog() {
 
       </div>
 
-      {/* PAGINATION */}
-      <div className="flex justify-center gap-2 mt-12">
+   {/* PAGINATION */}
+{/* PAGINATION */}
+<div className="flex justify-center items-center gap-2 mt-12">
 
-        {Array.from({ length: lastPage }, (_, i) => i + 1).map((page) => (
+  {/* PREVIOUS */}
+  <button
+    disabled={currentPage === 1}
+    onClick={() => setCurrentPage(currentPage - 1)}
+    className={`px-3 py-2 rounded border
+      ${
+        currentPage === 1
+          ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+          : "bg-white hover:bg-gray-100"
+      }`}
+  >
+    ←
+  </button>
 
-          <button
-            key={page}
-            onClick={() => setCurrentPage(page)}
-            className={`px-4 py-2 rounded-md text-sm
-              ${
-                page === currentPage
-                  ? "bg-indigo-600 text-white"
-                  : "bg-gray-100 hover:bg-gray-200"
-              }`}
-          >
-            {page}
-          </button>
+  {/* PAGE NUMBERS */}
+  {Array.from({ length: lastPage }, (_, i) => i + 1).map((page) => (
+    <button
+      key={page}
+      onClick={() => setCurrentPage(page)}
+      className={`px-4 py-2 rounded-md text-sm
+        ${
+          page === currentPage
+            ? "bg-indigo-600 text-white"
+            : "bg-gray-100 hover:bg-gray-200"
+        }`}
+    >
+      {page}
+    </button>
+  ))}
 
-        ))}
+  {/* NEXT */}
+  <button
+    disabled={currentPage === lastPage}
+    onClick={() => setCurrentPage(currentPage + 1)}
+    className={`px-3 py-2 rounded border
+      ${
+        currentPage === lastPage
+          ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+          : "bg-white hover:bg-gray-100"
+      }`}
+  >
+    →
+  </button>
 
-      </div>
+</div>
 
     </div>
   );
