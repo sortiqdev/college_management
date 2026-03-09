@@ -1,200 +1,208 @@
 import React, { useState } from "react";
 import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
 import API from "../../../services/api";
+
 export default function Contact() {
+
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
-    full_name: "",
+    fullName: "",
     email: "",
-    phone_number: "",
+    phoneNumber: "",
     subject: "",
-    message: "",
+    message: ""
   });
 
+  // CONTACT INFO (key-value camelCase)
+  const contactInfo = [
+    {
+      title: "Visit Us",
+      icon: <MapPin />,
+      value: "E-51 Phase 8 Industrial Area Mohali Punjab 160072",
+      action: "View Map"
+    },
+    {
+      title: "Call Us",
+      icon: <Phone />,
+      value: "+91 9876543210 / +91 9876543211",
+      action: "Call Now"
+    },
+    {
+      title: "Email Us",
+      icon: <Mail />,
+      value: "info@academia.edu",
+      action: "Send Email"
+    },
+    {
+      title: "Office Hours",
+      icon: <Clock />,
+      value: "Mon–Fri 8AM–6PM | Sat 9AM–2PM",
+      action: ""
+    }
+  ];
+
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const res = await API.post("/contact", formData);
-      console.log("Response:", res);
-    } catch (error) {
-      console.log("Error:", error);
-    }
-    setSubmitted(true);
 
-    setTimeout(() => {
-      setSubmitted(false);
+    try {
+      setLoading(true);
+
+      const res = await API.post("/contact", formData);
+      console.log(res);
+
+      setSubmitted(true);
+
       setFormData({
-        full_name: "",
+        fullName: "",
         email: "",
-        phone_number: "",
+        phoneNumber: "",
         subject: "",
-        message: "",
+        message: ""
       });
-    }, 3000);
+
+      setTimeout(() => setSubmitted(false), 3000);
+
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="bg-gray-100">
 
-      {/* HERO SECTION */}
-      <section className="bg-white   py-20 text-center">
-        <h1 className="text-6xl font-serif  text-black font-black mb-4">Get in Touch</h1>
-        <p className="text-lg max-w-2xl mx-auto text-blue-900 opacity-90">
-          We'd love to hear from you. Reach out for admissions,
-          collaborations, or general inquiries.
+      {/* HERO */}
+      <section className="bg-white py-20 text-center">
+        <h1 className="text-5xl font-bold text-gray-900 mb-4">
+          Get in Touch
+        </h1>
+
+        <p className="max-w-xl mx-auto text-gray-600">
+          Have questions about admissions, programs, or collaboration?
+          Our team is here to help.
         </p>
       </section>
 
       {/* CONTACT CARDS */}
-      <section className="max-w-7xl mx-auto px-6 -mt-16 relative z-10">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 bg-gradient-to-b from-[#ffffff] to-[#bed9ff] p-8 rounded-3xl shadow-xl">
+      <section className="max-w-6xl mx-auto px-6 -mt-16 relative z-10">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 bg-white p-8 rounded-3xl shadow-xl">
 
-          {/* Visit */}
-          <div className="bg-white rounded-3xl shadow-lg p-8 text-center">
-            <div className="bg-blue-600 w-16 h-16 mx-auto rounded-2xl flex items-center justify-center text-white mb-4">
-              <MapPin />
-            </div>
-            <h3 className="font-semibold text-lg mb-2">Visit Us</h3>
-            <p className="text-gray-600 text-sm">
-              E-51, Phase 8<br />
-              Industrial Area<br />
-              Mohali, Punjab - 160072
-            </p>
-            <button className="text-teal-600 mt-4 text-sm font-medium">
-              View on Map →
-            </button>
-          </div>
+          {contactInfo.map((item, index) => (
+            <div
+              key={index}
+              className="bg-gray-50 hover:shadow-lg transition rounded-2xl p-6 text-center"
+            >
+              <div className="bg-blue-600 w-14 h-14 mx-auto flex items-center justify-center rounded-xl text-white mb-4">
+                {item.icon}
+              </div>
 
-          {/* Call */}
-          <div className="bg-white rounded-3xl shadow-lg p-8 text-center">
-            <div className="bg-teal-600 w-16 h-16 mx-auto rounded-2xl flex items-center justify-center text-white mb-4">
-              <Phone />
-            </div>
-            <h3 className="font-semibold text-lg mb-2">Call Us</h3>
-            <p className="text-gray-600 text-sm">
-              Admissions: +91 98765 43210<br />
-              General: +91 98765 43211
-            </p>
-            <button className="text-teal-600 mt-4 text-sm font-medium">
-              Call Now →
-            </button>
-          </div>
+              <h3 className="font-semibold text-lg mb-2">
+                {item.title}
+              </h3>
 
-          {/* Email */}
-          <div className="bg-white rounded-3xl shadow-lg p-8 text-center">
-            <div className="bg-yellow-500 w-16 h-16 mx-auto rounded-2xl flex items-center justify-center text-white mb-4">
-              <Mail />
-            </div>
-            <h3 className="font-semibold text-lg mb-2">Email Us</h3>
-            <p className="text-gray-600 text-sm">
-              info@academia.edu<br />
-              admissions@academia.edu
-            </p>
-            <button className="text-teal-600 mt-4 text-sm font-medium">
-              Send Email →
-            </button>
-          </div>
+              <p className="text-gray-600 text-sm">
+                {item.value}
+              </p>
 
-          {/* Hours */}
-          <div className="bg-white rounded-3xl shadow-lg p-8 text-center">
-            <div className="bg-purple-500 w-16 h-16 mx-auto rounded-2xl flex items-center justify-center text-white mb-4">
-              <Clock />
+              {item.action && (
+                <button className="text-blue-600 text-sm mt-3 font-medium">
+                  {item.action}
+                </button>
+              )}
             </div>
-            <h3 className="font-semibold text-lg mb-2">Office Hours</h3>
-            <p className="text-gray-600 text-sm">
-              Mon - Fri: 8AM - 6PM<br />
-              Saturday: 9AM - 2PM<br />
-              Sunday: Closed
-            </p>
-          </div>
+          ))}
 
         </div>
       </section>
 
       {/* CONTACT FORM */}
-      <section className="py-20">
-        <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-xl p-12">
+      <section className="py-20 px-6">
+        <div className="max-w-3xl mx-auto bg-white rounded-3xl shadow-xl p-10">
 
           <div className="text-center mb-8">
-            <p className="text-gray-500">Send Message</p>
-            <h2 className="text-3xl font-serif font-bold text-blue-900">
-              Let's Start a Conversation
+            <h2 className="text-3xl font-bold text-gray-900">
+              Send a Message
             </h2>
+
             <p className="text-gray-500 mt-2">
-              Fill out the form below and we'll get back to you within 24 hours.
+              Fill out the form and we will respond within 24 hours.
             </p>
           </div>
 
           {submitted && (
-            <div className="bg-green-100 text-green-700 p-4 rounded-xl mb-6 text-center">
-              ✔ Your message has been sent successfully.
+            <div className="bg-green-100 text-green-700 p-4 rounded-xl text-center mb-6">
+              Message sent successfully ✔
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="grid md:grid-cols-2 gap-6">
 
             <input
-              name="full_name"
-              placeholder="Full Name"
-              value={formData.full_name}
+              name="fullName"
+              value={formData.fullName}
               onChange={handleChange}
+              placeholder="Full Name"
               required
-              className="p-4 rounded-xl border border-gray-300 focus:ring-2 focus:ring-teal-500 outline-none"
+              className="border p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
             />
 
             <input
               name="email"
               type="email"
-              placeholder="Email Address"
               value={formData.email}
               onChange={handleChange}
+              placeholder="Email Address"
               required
-              className="p-4 rounded-xl border border-gray-300 focus:ring-2 focus:ring-teal-500 outline-none"
+              className="border p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
             />
 
             <input
-              name="phone_number"
-              placeholder="Phone Number"
-              value={formData.phone_number}
+              name="phoneNumber"
+              value={formData.phoneNumber}
               onChange={handleChange}
-              className="p-4 rounded-xl border border-gray-300 focus:ring-2 focus:ring-teal-500 outline-none"
+              placeholder="Phone Number"
+              className="border p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
             />
 
-            <select
+            <input
               name="subject"
               value={formData.subject}
               onChange={handleChange}
-              className="p-4 rounded-xl border border-gray-300 focus:ring-2 focus:ring-teal-500 outline-none"
-            >
-              <option value="">Select Subject</option>
-              <option>Join With Us</option>
-              <option>Support</option>
-              <option>General Inquiry</option>
-            </select>
+              placeholder="Subject"
+              className="border p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
+            />
 
             <textarea
               name="message"
               rows="5"
-              placeholder="Your Message"
               value={formData.message}
               onChange={handleChange}
+              placeholder="Your Message"
               required
-              className="md:col-span-2 p-4 rounded-xl border border-gray-300 focus:ring-2 focus:ring-teal-500 outline-none"
+              className="md:col-span-2 border p-3 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none"
             />
 
             <button
               type="submit"
-              className="md:col-span-2 bg-gradient-to-br from-[#76efff] to-[#00ccff] hover:from-indigo-600 hover:via-sky-600 hover:to-emerald-600 text-white rounded-[50px] px-6 py-3 shadow-lg transition-all duration-300 flex items-center justify-center gap-2"
+              disabled={loading}
+              className="md:col-span-2 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-full flex items-center justify-center gap-2 transition"
             >
-              Send Message <Send size={18} />
+              {loading ? "Sending..." : "Send Message"}
+              <Send size={18} />
             </button>
 
           </form>
+
         </div>
       </section>
 
@@ -206,31 +214,6 @@ export default function Contact() {
           src="https://maps.google.com/maps?q=Mohali%20Punjab&t=&z=13&ie=UTF8&iwloc=&output=embed"
           allowFullScreen
         />
-      </section>
-
-      {/* SOCIAL CONNECT */}
-      <section className="py-16 text-center bg-gray-100">
-        <h2 className="text-2xl font-serif font-bold text-blue-900 mb-6">
-          Connect With Us
-        </h2>
-
-        <div className="flex flex-wrap justify-center gap-4">
-          <button className="px-6 py-3 bg-blue-100 text-blue-700 rounded-full">
-            Facebook
-          </button>
-          <button className="px-6 py-3 bg-sky-100 text-sky-600 rounded-full">
-            Twitter
-          </button>
-          <button className="px-6 py-3 bg-blue-50 text-blue-900 rounded-full">
-            LinkedIn
-          </button>
-          <button className="px-6 py-3 bg-pink-100 text-pink-600 rounded-full">
-            Instagram
-          </button>
-          <button className="px-6 py-3 bg-red-100 text-red-600 rounded-full">
-            YouTube
-          </button>
-        </div>
       </section>
 
     </div>
