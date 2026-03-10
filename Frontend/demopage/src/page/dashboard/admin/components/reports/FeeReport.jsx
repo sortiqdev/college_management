@@ -1,34 +1,39 @@
-export default function FeeReport() {
+import React from "react";
+import { Tabs, Card } from "antd";
+
+import StudentFeeReport from "./components/StudentFeeReport";
+import BusFeeReport from "./components/BusFeeReport";
+import HostelFeeReport from "./components/HostelFeeReport";
+import PayrollReportTab from "./components/PayrollReportTab";
+
+const { TabPane } = Tabs;
+
+const FeeReport = () => {
   return (
-    <div className="bg-gray-50 p-6 rounded-lg border">
+    <Card title="Fee Structure Reports">
 
-      <h2 className="text-lg font-semibold mb-4">
-        Fee Reports
-      </h2>
+      <Tabs defaultActiveKey="1">
 
-      <div className="grid grid-cols-4 gap-4">
+        <TabPane tab="Student Fees" key="1">
+          <StudentFeeReport />
+        </TabPane>
 
-        <input
-          className="border p-2 rounded-lg"
-          placeholder="Student ID"
-        />
+        <TabPane tab="Bus Fees" key="2">
+          <BusFeeReport />
+        </TabPane>
 
-        <input
-          className="border p-2 rounded-lg"
-          placeholder="Program"
-        />
+        <TabPane tab="Hostel Fees" key="3">
+          <HostelFeeReport />
+        </TabPane>
 
-        <input
-          className="border p-2 rounded-lg"
-          placeholder="Year"
-        />
+        <TabPane tab="Payroll" key="4">
+          <PayrollReportTab />
+        </TabPane>
 
-        <button className="bg-green-600 text-white rounded-lg px-4">
-          Generate
-        </button>
+      </Tabs>
 
-      </div>
-
-    </div>
+    </Card>
   );
-}
+};
+
+export default FeeReport;

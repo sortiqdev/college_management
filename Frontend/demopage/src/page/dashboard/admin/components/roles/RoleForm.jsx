@@ -18,7 +18,14 @@ const RoleForm = ({ initialValues = {}, onCancel, onSubmit, submitting }) => {
       >
         <Input placeholder="e.g. Senior Lecturer / Accountant" />
       </Form.Item>
-
+       
+         <Form.Item
+        label="Departmnet"
+        name="department"
+        rules={[{ required: true, message: 'Please enter designation name' }]}
+      >
+        <Input placeholder="Add to which department" />
+      </Form.Item>
       <Form.Item label="Code" name="code">
         <Input placeholder="Optional code" />
       </Form.Item>
