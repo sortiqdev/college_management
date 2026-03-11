@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useEffect } from "react";
 import {
   Table,
@@ -11,18 +12,17 @@ import {
   Drawer,
   Descriptions,
   Modal,
+  Form,
 } from "antd";
 
 import {
-  SearchOutlined,
-  FilterOutlined,
   EyeOutlined,
   EditOutlined,
   DeleteOutlined,
-  DownloadOutlined,
-  ClearOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
+
+import API from "../../../../../services/api";
 
 const { Option } = Select;
 
@@ -31,27 +31,14 @@ const UserList = () => {
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
 
-  const [searchText, setSearchText] = useState("");
-  const [selectedRole, setSelectedRole] = useState(null);
-  const [selectedDepartment, setSelectedDepartment] = useState(null);
-  const [selectedClass, setSelectedClass] = useState(null);
-
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
 
-  const departments = [
-    { label: "Computer Science", value: "computer_science" },
-    { label: "Mathematics", value: "mathematics" },
-    { label: "Physics", value: "physics" },
-    { label: "Chemistry", value: "chemistry" },
-  ];
+  const [editingKey, setEditingKey] = useState("");
 
-  const classes = [
-    { label: "Class 10 A", value: "10A" },
-    { label: "Class 10 B", value: "10B" },
-    { label: "Class 12 A", value: "12A" },
-    { label: "Class 12 B", value: "12B" },
-  ];
+  const [form] = Form.useForm();
+
+  const isEditing = (record) => record.id === editingKey;
 
   useEffect(() => {
     fetchUsers();
@@ -61,53 +48,116 @@ const UserList = () => {
     setLoading(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 800));
+      const res = await API.get("roles");
 
-      const apiData = [];
+      const data = res.data?.data?.data || [];
 
-      setUsers(apiData);
-      setFilteredUsers(apiData);
+      setUsers(data);
+      setFilteredUsers(data);
     } catch (error) {
-      message.error(`Failed to load user${error.message}`);
+      message.error("Failed to load users");
     } finally {
       setLoading(false);
     }
   };
 
-  useEffect(() => {
-    let filtered = users;
+  // ========================
+  // EDIT
+  // ========================
 
-    if (searchText) {
-      filtered = filtered.filter(
-        (user) =>
-          user.firstName?.toLowerCase().includes(searchText.toLowerCase()) ||
-          user.lastName?.toLowerCase().includes(searchText.toLowerCase()) ||
-          user.email?.toLowerCase().includes(searchText.toLowerCase())
-      );
+  const edit = (record) => {
+    form.setFieldsValue({
+      phone: record.phone,
+      role: record.role,
+    });
+
+    setEditingKey(record.id);
+  };
+
+  const cancel = () => {
+    setEditingKey("");
+  };
+
+  // ========================
+  // SAVE (PATCH API)
+  // ========================
+
+  const save = async (id) => {
+    try {
+      const row = await form.validateFields();
+
+      const index = users.findIndex((item) => item.id === id);
+
+      if (index === -1) return;
+
+      const user = users[index];
+
+      const formData = new FormData();
+
+      formData.append("role", row.role || user.role);
+      formData.append("firstName", user.firstName);
+      formData.append("lastName", user.lastName);
+      formData.append("email", user.email);
+      formData.append("phone", row.phone || user.phone);
+
+      await API.patch(`roles/${id}`, formData);
+
+      const updatedUsers = [...users];
+
+      updatedUsers[index] = {
+        ...user,
+        ...row,
+      };
+
+      setUsers(updatedUsers);
+      setFilteredUsers(updatedUsers);
+
+      setEditingKey("");
+
+      message.success("User updated successfully");
+    } catch (error) {
+      console.log(error);
+      message.error("Update failed");
     }
+  };
 
-    if (selectedRole) {
-      filtered = filtered.filter((user) => user.role === selectedRole);
-    }
+  // ========================
+  // DELETE API
+  // ========================
 
-    if (selectedDepartment) {
-      filtered = filtered.filter(
-        (user) => user.department === selectedDepartment
-      );
-    }
+  const handleDeleteUser = (id) => {
+    Modal.confirm({
+      title: "Delete User",
+      content: "Are you sure you want to delete this user?",
+      okType: "danger",
 
-    if (selectedClass) {
-      filtered = filtered.filter((user) => user.class === selectedClass);
-    }
+      async onOk() {
+        try {
+          await API.delete(`roles/${id}`);
 
-    setFilteredUsers(filtered);
-  }, [searchText, selectedRole, selectedDepartment, selectedClass, users]);
+          const updatedUsers = users.filter((user) => user.id !== id);
+
+          setUsers(updatedUsers);
+          setFilteredUsers(updatedUsers);
+
+          message.success("User deleted successfully");
+        } catch (error) {
+          console.log(error);
+          message.error("Delete failed");
+        }
+      },
+    });
+  };
+
+  // ========================
+  // TABLE COLUMNS
+  // ========================
 
   const columns = [
     {
       title: "User",
       key: "name",
-      width: 200,
+      width: 250,
       render: (_, record) => (
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 rounded-full bg-blue-100 flex items-center justify-center font-semibold text-blue-600">
@@ -115,9 +165,10 @@ const UserList = () => {
           </div>
 
           <div>
-            <p className="font-semibold text-gray-900">
+            <p className="font-semibold">
               {record.firstName} {record.lastName}
             </p>
+
             <p className="text-xs text-gray-500">{record.email}</p>
           </div>
         </div>
@@ -127,42 +178,40 @@ const UserList = () => {
     {
       title: "Phone",
       dataIndex: "phone",
-      width: 140,
+      width: 150,
+      render: (text, record) =>
+        isEditing(record) ? (
+          <Form.Item name="phone" style={{ margin: 0 }}>
+            <Input />
+          </Form.Item>
+        ) : (
+          text
+        ),
     },
 
     {
       title: "Role",
       dataIndex: "role",
-      width: 120,
-      render: (role) => {
-        const colors = {
-          admin: "red",
-          teacher: "green",
-          student: "purple",
-          staff: "blue",
-        };
-
-        return <Tag color={colors[role]}>{role}</Tag>;
-      },
-    },
-
-    {
-      title: "Department",
-      dataIndex: "department",
-      width: 160,
-    },
-
-    {
-      title: "Class",
-      dataIndex: "class",
-      width: 120,
-      render: (text) => text || "-",
+      width: 150,
+      render: (text, record) =>
+        isEditing(record) ? (
+          <Form.Item name="role" style={{ margin: 0 }}>
+            <Select>
+              <Option value="admin">Admin</Option>
+              <Option value="teacher">Teacher</Option>
+              <Option value="student">Student</Option>
+              <Option value="staff">Staff</Option>
+            </Select>
+          </Form.Item>
+        ) : (
+          <Tag color="blue">{text}</Tag>
+        ),
     },
 
     {
       title: "Status",
       dataIndex: "status",
-      width: 120,
+      width: 150,
       render: (status) => (
         <Tag color={status === "active" ? "green" : "orange"}>
           {status === "active" ? "Active" : "Inactive"}
@@ -172,175 +221,77 @@ const UserList = () => {
 
     {
       title: "Actions",
-      width: 200,
-      render: (_, record) => (
-        <Space>
-          <Button
-            type="primary"
-            icon={<EyeOutlined />}
-            onClick={() => {
-              setSelectedUser(record);
-              setDrawerVisible(true);
-            }}
-          >
-            View
-          </Button>
+      width: 260,
+      render: (_, record) => {
+        const editable = isEditing(record);
 
-          <Button icon={<EditOutlined />}>Edit</Button>
+        return editable ? (
+          <Space>
+            <Button type="primary" onClick={() => save(record.id)}>
+              Save
+            </Button>
 
-          <Button
-            danger
-            icon={<DeleteOutlined />}
-            onClick={() => handleDeleteUser(record.id)}
-          >
-            Delete
-          </Button>
-        </Space>
-      ),
-    },
-  ];
-
-  // eslint-disable-next-line no-unused-vars
-  const handleDeleteUser = (id) => {
-    Modal.confirm({
-      title: "Delete User",
-      content: "Are you sure you want to delete this user?",
-      okType: "danger",
-      onOk() {
-        message.success("User deleted");
-      },
-    });
-  };
-
-  const handleClearFilters = () => {
-    setSearchText("");
-    setSelectedRole(null);
-    setSelectedDepartment(null);
-    setSelectedClass(null);
-  };
-
-  const handleExport = () => {
-    message.info("Export feature coming soon");
-  };
-
-  return (
-    <div className="p-6 bg-gray-50 min-h-screen">
-      {/* Header */}
-
-      <div className="flex items-center gap-3 mb-6">
-        <TeamOutlined className="text-3xl text-blue-600" />
-        <h1 className="text-2xl font-bold text-gray-800">Users</h1>
-      </div>
-
-      <Spin spinning={loading}>
-        {/* FILTERS */}
-
-        <div className="bg-white rounded-xl shadow-sm p-6 mb-6">
-          <div className="flex items-center gap-2 mb-5">
-            <FilterOutlined className="text-blue-600" />
-            <h2 className="text-lg font-semibold">Filters</h2>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {/* Search */}
-
-            <Input
-              placeholder="Search users..."
-              prefix={<SearchOutlined />}
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)}
-              size="large"
-              allowClear
-            />
-
-            {/* Role */}
-
-            <Select
-              placeholder="Select role"
-              size="large"
-              allowClear
-              value={selectedRole}
-              onChange={setSelectedRole}
+            <Button onClick={cancel}>Cancel</Button>
+          </Space>
+        ) : (
+          <Space>
+            <Button
+              type="primary"
+              icon={<EyeOutlined />}
+              onClick={() => {
+                setSelectedUser(record);
+                setDrawerVisible(true);
+              }}
             >
-              <Option value="admin">Admin</Option>
-              <Option value="teacher">Teacher</Option>
-              <Option value="student">Student</Option>
-              <Option value="staff">Staff</Option>
-            </Select>
+              View
+            </Button>
 
-            {/* Department */}
-
-            <Select
-              placeholder="Department"
-              size="large"
-              allowClear
-              value={selectedDepartment}
-              onChange={setSelectedDepartment}
-              options={departments}
-            />
-
-            {/* Class */}
-
-            <Select
-              placeholder="Class"
-              size="large"
-              allowClear
-              value={selectedClass}
-              onChange={setSelectedClass}
-              options={classes}
-            />
-          </div>
-
-          {/* Buttons */}
-
-          <div className="flex justify-end gap-3 mt-6">
-            <Button icon={<ClearOutlined />} onClick={handleClearFilters}>
-              Clear
+            <Button icon={<EditOutlined />} onClick={() => edit(record)}>
+              Edit
             </Button>
 
             <Button
-              type="primary"
-              icon={<DownloadOutlined />}
-              onClick={handleExport}
+              danger
+              icon={<DeleteOutlined />}
+              onClick={() => handleDeleteUser(record.id)}
             >
-              Export
+              Delete
             </Button>
-          </div>
-        </div>
+          </Space>
+        );
+      },
+    },
+  ];
 
-        {/* TABLE */}
+  return (
+    <div className="p-6 bg-gray-50 min-h-screen">
+      <div className="flex items-center gap-3 mb-6">
+        <TeamOutlined className="text-3xl text-blue-600" />
+        <h1 className="text-2xl font-bold">Users</h1>
+      </div>
 
+      <Spin spinning={loading}>
         <div className="bg-white rounded-xl shadow-sm p-4">
-          {filteredUsers.length === 0 ? (
-            <div className="py-16 text-center">
-              <TeamOutlined className="text-5xl text-gray-300 mb-4" />
-
-              <h2 className="text-xl font-semibold text-gray-600">
-                No Users Found
-              </h2>
-
-              <p className="text-gray-400">
-                Connect your API to load user data
-              </p>
-            </div>
-          ) : (
+          <Form form={form} component={false}>
             <Table
               columns={columns}
-              dataSource={filteredUsers.map((u, i) => ({
+              dataSource={filteredUsers.map((u) => ({
                 ...u,
-                key: i,
+                key: u.id,
               }))}
               pagination={{
                 pageSize: 10,
                 showSizeChanger: true,
               }}
-              scroll={{ x: 1100 }}
+              scroll={{ x: 900 }}
             />
-          )}
+          </Form>
         </div>
       </Spin>
 
-      {/* DRAWER */}
+      {/* ========================
+         USER DETAILS DRAWER
+      ======================== */}
 
       <Drawer
         title="User Details"
@@ -369,14 +320,6 @@ const UserList = () => {
 
             <Descriptions.Item label="Role">
               {selectedUser.role}
-            </Descriptions.Item>
-
-            <Descriptions.Item label="Department">
-              {selectedUser.department}
-            </Descriptions.Item>
-
-            <Descriptions.Item label="Class">
-              {selectedUser.class || "-"}
             </Descriptions.Item>
           </Descriptions>
         )}

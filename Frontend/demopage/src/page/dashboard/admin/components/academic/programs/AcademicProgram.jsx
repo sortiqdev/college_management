@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card, Input, Select, Button, message, Form } from "antd";
-import axios from "axios";
+
 import API from "../../../../../../services/api";
 
 const { Option } = Select;
@@ -42,7 +42,7 @@ const fetchDepartments = async () => {
 
       setLoading(true);
 
-      await axios.post("/api/programs", values);
+      await API.post("programs", values);
 
       message.success("Program created successfully");
 
@@ -118,14 +118,18 @@ const fetchDepartments = async () => {
 
           {/* Duration */}
 
-          <Form.Item
-            label="Duration"
-            name="duration"
-            rules={[{ required: true }]}
-          >
-            <Input type="number" placeholder="Example: 4" />
-          </Form.Item>
-
+         <Form.Item
+  label="Total Years"
+  name="totalYears"
+>
+  <Select placeholder="Select Years">
+    {[1,2,3,4,5,6].map((year) => (
+      <Select.Option key={year} value={year}>
+        {year} Year
+      </Select.Option>
+    ))}
+  </Select>
+</Form.Item>
 
           {/* Duration Type */}
 
@@ -146,12 +150,18 @@ const fetchDepartments = async () => {
 
           {/* Total Semesters */}
 
-          <Form.Item
-            label="Total Semesters"
-            name="totalSemesters"
-          >
-            <Input type="number" placeholder="Example: 8" />
-          </Form.Item>
+        <Form.Item
+  label="Total Semesters"
+  name="totalSemesters"
+>
+  <Select placeholder="Select Semesters">
+    {Array.from({ length: 10 }, (_, i) => i + 1).map((sem) => (
+      <Select.Option key={sem} value={sem}>
+        Semester {sem}
+      </Select.Option>
+    ))}
+  </Select>
+</Form.Item>
 
 
           {/* Description */}

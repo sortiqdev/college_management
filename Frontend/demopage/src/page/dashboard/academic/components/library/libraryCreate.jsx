@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 // LibraryCreate.jsx
 import React, { useState, useEffect, useCallback } from "react";
 import {

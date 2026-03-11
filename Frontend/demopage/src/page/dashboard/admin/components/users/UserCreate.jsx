@@ -719,8 +719,9 @@ const handleSubmit = async (values) => {
         options={[
           { label: "Warden", value: "warden" },
           { label: "Librarian", value: "librarian" },
-          { label: "Assistant Librarian", value: "assistant_librarian" },
-          { label: "Bus Coordinator", value: "bus_coordinator" },
+          { label: "Assistant Librarian", value: "assistantLibrarian" },
+          {label: "Transport manager",  value:"transportManger"},
+          { label: "Bus Coordinator", value: "busCoordinator" },
           { label: "Accountant", value: "accountant" },
         ]}
       />

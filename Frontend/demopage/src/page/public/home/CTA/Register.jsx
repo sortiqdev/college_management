@@ -21,36 +21,53 @@ const RegisterModal = ({ onClose }) => {
     });
   };
 
-  const handleApiSubmit = async (type) => {
-    try {
+const handleApiSubmit = async (type) => {
+  try {
 
-      setLoading(true);
+    setLoading(true);
 
-      const payload = {
-        ...form,
-        type
-      };
+    const payload = {
+      ...form,
+      type
+    };
 
-      const res = await API.post("/enquiries", payload);
-      console.log("show response: ", res);
-      if (type === "trial") {
-        setPopupMessage("🎉 Your 14 Day Trial has Started!");
-      } else {
-        setPopupMessage("✅ Your enquiry has been submitted!");
-      }
+    let res;
 
-      setTimeout(() => {
-        setPopupMessage("");
-        onClose();
-      }, 2500);
+    if (type === "trial") {
 
-    } catch (error) {
-      console.error(error);
-      alert("Something went wrong");
-    } finally {
-      setLoading(false);
+      // Trial API
+      res = await API.post("/trial/apply", payload);
+
+      setPopupMessage("🎉 Your 14 Day Trial has Started!");
+
+    } else {
+
+      // Enquiry API
+      res = await API.post("/enquiries", payload);
+
+      setPopupMessage("✅ Your enquiry has been submitted!");
+
     }
-  };
+
+    console.log("response:", res);
+
+    setTimeout(() => {
+      setPopupMessage("");
+      onClose();
+    }, 2500);
+
+  } catch (error) {
+
+    console.error(error);
+    alert("Something went wrong");
+
+  } finally {
+
+    setLoading(false);
+
+  }
+
+};
 
   return (
     <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">

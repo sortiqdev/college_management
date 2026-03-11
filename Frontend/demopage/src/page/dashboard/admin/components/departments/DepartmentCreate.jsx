@@ -94,7 +94,7 @@ message.success(res.data.message || "Department created successfully");
             <Form.Item
               label="Department Head"
               name="departmentHeadId"
-              rules={[{ required: true, message: "Select department head" }]}
+              rules={[{  message: "Select department head" }]}
             >
               <Select placeholder="Select Faculty">
                 <Option value="1">Dr John Doe</Option>

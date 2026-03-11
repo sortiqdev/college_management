@@ -7,9 +7,12 @@ import { useUser } from "../../../hooks/useUser";
 
 export default function Login() {
 
-  const [email, setEmail] = useState("");
+
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
+  const [showForgot, setShowForgot] = useState(false);
+const [email, setEmail] = useState("");
+const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
   const { saveUser } = useUser();
@@ -76,6 +79,27 @@ export default function Login() {
     }
 
   };
+
+
+  const handleForgotPassword = async () => {
+  try {
+    setLoading(true);
+
+    const res = await API.post("/auth/forgot-password", {
+      email: email,
+    });
+
+    alert(res.data.message || "Reset link sent to your email");
+
+    setShowForgot(false);
+    setEmail("");
+
+  } catch (error) {
+    alert(error.response?.data?.message || "Something went wrong");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
 
@@ -192,9 +216,13 @@ export default function Login() {
               Remember me
             </label>
 
-            <a href="#" className="text-blue-400 hover:underline">
-              Forgot password?
-            </a>
+           <a
+  href="#"
+  onClick={() => setShowForgot(true)}
+  className="text-blue-400 hover:underline"
+>
+  Forgot password?
+</a>
 
           </div>
 
@@ -210,6 +238,48 @@ export default function Login() {
         </div>
 
       </div>
+      {showForgot && (
+  <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+    
+    <div className="bg-white w-[400px] rounded-lg p-6 shadow-lg">
+      
+      <h2 className="text-xl font-semibold mb-4 text-gray-800">
+        Reset Password
+      </h2>
+
+      <p className="text-sm text-gray-500 mb-4">
+        Enter your email to receive a password reset link.
+      </p>
+
+      <input
+        type="email"
+        placeholder="Enter your email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        className="w-full border rounded-md p-2 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      />
+
+      <div className="flex justify-end gap-2">
+
+        <button
+          onClick={() => setShowForgot(false)}
+          className="px-4 py-2 bg-gray-200 rounded"
+        >
+          Cancel
+        </button>
+
+        <button
+          onClick={handleForgotPassword}
+          disabled={loading}
+          className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          {loading ? "Sending..." : "Send Mail"}
+        </button>
+
+      </div>
+    </div>
+  </div>
+)}
 
     </div>
 

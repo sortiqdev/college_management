@@ -134,6 +134,7 @@ import FeesAdmin from "../page/dashboard/admin/components/fees/FeesAdmi";
 import Billing from "../page/dashboard/superadmin/components/billing&subscriptions/billing";
 import Students from "../page/dashboard/superadmin/components/student/Student";
 import TeacherOverview from "../page/dashboard/superadmin/components/teacher/TeacherOverview";
+import AcademicPermission from "../page/dashboard/admin/components/academic/permission/AcademicPermission";
 const router = createBrowserRouter([
   /* 🌐 PUBLIC WEBSITE */
   {
@@ -195,7 +196,12 @@ const router = createBrowserRouter([
             {path: "program", element: <AcademicProgram />},
             {path: "assign", element: <AcademicAssign />},
             {path: "year", element: <AcademicYear />},
+            {path: "permissions", element: <AcademicPermission />}
           ]        },
+            {path:"transport", element:<Transport />,
+          children:[
+            {index: true, element:<TransportView />},
+            {path:"management", element:<TransportCreate />}]},
         {  path: "reports",  element: <Reports />,
   children: [
        {index:"true" ,        element:  <AcademicReport />   },
@@ -242,7 +248,8 @@ const router = createBrowserRouter([
     { path: "program-map", element: <FeeProgramMap /> },
     { path: "collection", element: <FeesAdmin /> },
   ],
-}
+},
+
       ],
     },
     // =========================
